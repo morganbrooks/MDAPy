@@ -30,9 +30,9 @@ import io
 # https://stackoverflow.com/questions/31575496/prevent-negative-inputs-in-form-input-type-number
 # https://stackoverflow.com/questions/7372067/is-there-any-way-to-prevent-input-type-number-getting-negative-values
 #
-app = dash.Dash(__name__)
+# app = dash.Dash(__name__)
 
-app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP, dbc.icons.FONT_AWESOME])
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP, dbc.icons.FONT_AWESOME])
 app.title = "MDAPy Dashboard"
 app.layout = dbc.Container(fluid=True, children=[
 
