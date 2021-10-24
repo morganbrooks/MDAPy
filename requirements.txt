@@ -1,8 +1,8 @@
 agate==1.6.3
 amqp==5.0.6
 ansicon==1.89.0
-appdirs==1.4.4
-apturl==0.5.2
+appdirs
+apturl
 argon2-cffi==21.1.0
 arrow==1.2.0
 asgiref==3.4.1
