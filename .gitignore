@@ -1,4 +1,4 @@
-dashenv
+venv
 *.pyc
 .env
 .DS_Store
