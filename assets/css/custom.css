@@ -1,0 +1,72 @@
+html, body {
+    background-color: #F8F8F9;
+    font-size: .85rem;
+}
+
+.card-header{
+    background-color: #FFFFFF;
+}
+
+.input-row{
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.inputNumbers {
+    width: 35%;
+    /* font-size: 14px; */
+}
+.inputCte {
+    width: 15%;
+    /* font-size: 12px; */
+}
+
+.labelCte {
+    /* font-size: 12px; */
+}
+
+.settings-menu{
+    border: 1px solid rgba(0,0,0,.125);
+    background-color: #FFFFFF;
+    margin-top: 20px;
+    margin-left: 20px;
+    padding: 20px;
+    border-radius: 6px;
+    min-width: 400px;
+}
+
+.settings-buttons{
+    margin-left: -35px;
+}
+
+.workbench{
+    border: 1px solid rgba(0,0,0,.125);
+    background-color: #FFFFFF;
+    margin-top: 20px;
+    margin-right: 20px;
+    padding-top: 25px;
+    padding-left: 25px;
+    border-radius: 6px;
+    min-width: 400px;
+}
+
+input[type="radio"]{
+  margin: 10px 10px 0 10px;
+}
+
+.Select-control{
+    width: 97%;
+}
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  text-align: end;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+  text-align: end;
+}
