@@ -31,7 +31,6 @@ import io
 # https://stackoverflow.com/questions/7372067/is-there-any-way-to-prevent-input-type-number-getting-negative-values
 #
 app = dash.Dash(__name__)
-server = app.server
 
 app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP, dbc.icons.FONT_AWESOME])
 app.title = "MDAPy Dashboard"
@@ -240,7 +239,7 @@ def func(selection, download):
 
 
 
-
+server = app.server
 
 
 if __name__ == '__main__':
