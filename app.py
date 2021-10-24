@@ -7,6 +7,7 @@ from dash import html
 from dash import dash_table
 import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output, State
+from MDAPy import MDAPy_Functions as MDAFunc
 import plotly.express as px
 import pandas as pd
 import base64
@@ -32,12 +33,16 @@ import io
 #
 # app = dash.Dash(__name__)
 
+# ASSETS
+# https://dash.plotly.com/external-resources
+# https://dash.plotly.com/dash-enterprise/static-assets
+#
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP, dbc.icons.FONT_AWESOME])
 app.title = "MDAPy Dashboard"
 app.layout = dbc.Container(fluid=True, children=[
 
     dbc.CardHeader(children=[
-        html.Img(src=app.get_asset_url('img/logo.png'), className="col-sm-1 align-self-center", style={'width': "100px"}),
+        html.A([html.Img(src=app.get_asset_url('img/logo.png'), className="col-sm-1 align-self-center", style={'width': "auto", 'height': "50px"})], href='/', style={'width':'auto'}),
         html.Div(className="col-sm-9 align-self-center"), # <i class="fab fa-bootstrap"></i>
         html.Div([dbc.Row([
         dbc.Col(children=[html.I(className='fa fa-undo'), " Reset Form"]),
