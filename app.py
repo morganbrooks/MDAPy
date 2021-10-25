@@ -41,6 +41,7 @@ import io
 # Callbacks
 # https://dash.plotly.com/advanced-callbacks
 # https://dash.plotly.com/dash-core-components/download
+# https://docs.faculty.ai/user-guide/apps/examples/dash_file_upload_download.html
 #
 # ASSETS
 # https://dash.plotly.com/external-resources
@@ -54,6 +55,7 @@ app.layout = dbc.Container(fluid=True, children=[
         html.A([html.Img(src=app.get_asset_url('img/logo.png'), className="col-sm-1 align-self-center", style={'width': "auto", 'height': "50px"})], href='/', style={'width':'auto'}),
         html.Div(className="col-sm-9 align-self-center"), # <i class="fab fa-bootstrap"></i>
         html.Div([dbc.Row([
+        dbc.Button([html.I(className='fa fa-undo'), " Reset Form"], color="light", id="data-reset", className="mb-3 col-sm-11"),
         dbc.Col(children=[html.I(className='fa fa-undo'), " Reset Form"]),
         dbc.Col(children=[html.I(className='far fa-question-circle'), " Help"])
         ])], 
@@ -127,7 +129,8 @@ app.layout = dbc.Container(fluid=True, children=[
         html.Div(2, className='col-sm-9 workbench',id='main-panel'),
     ], className='row justify-content-between'),
     html.Br(),
-    dbc.Alert("Hello Bootstrap!", color="success")],
+    # dbc.Alert("Hello Bootstrap!", color="success")
+    ],
     className="container-fluid",
 
 )
@@ -230,18 +233,23 @@ def update_output(selection, contents, filename, clicked):
             html.P("Complete the fields and load your data into"),
             html.P("the input form on the left to begin.")
         ], style={'text-align': 'center'})
-        table = dash_table.DataTable(
-            id='datatable-upload-container',
-            columns=([{'id': p, 'name': p} for p in params]),
-            data=[
-                dict(Model=i, **{param: 0 for param in params})
-                for i in range(1, 21)
-            ],
-            editable=True,
-            page_action="native",
-            page_size= 20
-        )   
+        # table = dash_table.DataTable(
+        #     id='datatable-upload-container',
+        #     columns=([{'id': p, 'name': p} for p in params]),
+        #     data=[
+        #         dict(Model=i, **{param: 0 for param in params})
+        #         for i in range(1, 21)
+        #     ],
+        #     editable=True,
+        #     page_action="native",
+        #     page_size= 20
+        # )   
 
+
+@app.callback(Output('dropdown', 'value'), 
+[Input('dropdown', 'options')])
+def callback(value):
+    return ""
 
 @app.callback(
     Output("download-template", "data"),
