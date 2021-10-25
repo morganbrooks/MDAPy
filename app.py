@@ -55,11 +55,10 @@ app.layout = dbc.Container(fluid=True, children=[
         html.A([html.Img(src=app.get_asset_url('img/logo.png'), className="col-sm-1 align-self-center", style={'width': "auto", 'height': "50px"})], href='/', style={'width':'auto'}),
         html.Div(className="col-sm-9 align-self-center"), # <i class="fab fa-bootstrap"></i>
         html.Div([dbc.Row([
-        dbc.Button([html.I(className='fa fa-undo'), " Reset Form"], color="light", id="data-reset", className="mb-3 col-sm-11"),
-        dbc.Col(children=[html.I(className='fa fa-undo'), " Reset Form"]),
-        dbc.Col(children=[html.I(className='far fa-question-circle'), " Help"])
-        ])], 
-            className="col-sm-2 align-self-center")],
+        dbc.Button([html.I(className='fa fa-undo'), " Reset Form"], color="outline-primary", id="data-reset", className="col-sm-5"), 
+        html.Div(className="col-sm-1"),
+        dbc.Button([html.I(className='far fa-question-circle'), " Help"], color="outline-primary", id="data-help", className="col-sm-5")
+        ])], className="col-sm-2 align-self-center")],
         className='row dashHeader justify-content-between'),
 
     html.Div(children=[
@@ -70,12 +69,13 @@ app.layout = dbc.Container(fluid=True, children=[
                                   {'label': u'Best Age & SX', 'value': 'Ages'}], value='Ages', id='dataset-dropdown'),
             html.Br(),
             html.Label('Select Sigma (sx)'),
-            dcc.RadioItems(options=[{'label': '1 sx', 'value': 1}, {'label': '2 sx', 'value': 2}], value=1, labelClassName='col-sm-6'),
+            dcc.RadioItems(options=[{'label': '1 sx', 'value': 1}, {'label': '2 sx', 'value': 2}],
+                           id='radio-sigma', value=1, labelClassName='col-sm-6'),
             html.Br(),
             html.Label('Select Uncertainty Format'),
             dcc.RadioItems(options=[{'label': 'Percent (%)', 'value': 'percent'}, 
                                     {'label': 'Absolute (ABS)', 'value': 'absolute'}],
-                                     value='percent', #labelStyle={'display': 'inline-block'},
+                                     value='percent', id='radio-uncertainty', 
                                      labelClassName='col-sm-6'),
             html.Br(),
             html.Div(children=[html.Label('Best Age Cut Off', className='labelCte col-sm-7'), dcc.Input(value=1500, type='number', className='inputNumbers col-sm-2')], className="row input-row"),
@@ -246,10 +246,13 @@ def update_output(selection, contents, filename, clicked):
         # )   
 
 
-@app.callback(Output('dropdown', 'value'), 
-[Input('dropdown', 'options')])
-def callback(value):
-    return ""
+@app.callback(
+    Output('dataset-dropdown', 'value'), 
+    Output('radio-uncertainty', 'value'), 
+    Output('radio-sigma', 'value'),
+    Input("data-reset", "n_clicks"))
+def clear_selection(value):
+    return "", "", ""
 
 @app.callback(
     Output("download-template", "data"),
