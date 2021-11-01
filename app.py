@@ -2,6 +2,7 @@
 # visit http://127.0.0.1:8050/ in your web browser.
 
 import dash
+import json
 from dash import dcc
 from dash import html
 from dash import dash_table
@@ -47,6 +48,47 @@ import io
 # https://dash.plotly.com/external-resources
 # https://dash.plotly.com/dash-enterprise/static-assets
 #
+
+def sampleSelector(df):
+    checklist_options = [{'label': 'Sample ' + i, 'value': i} for i in df]
+    # checklist_options.append({'label': 'All Samples', 'value': json.dumps([i for i in df])})
+    selector = dcc.Checklist(options = checklist_options, value = [df[0]],
+    labelStyle = {'display': 'inline-block', 'margin-bottom': '0.5rem', 'font-size': '1.15rem'}, labelClassName='col-sm-6')
+    return selector
+
+
+dimensions = [html.H5('Age Plotting Dimensions'), html.Br(), html.P('For individual MDA plots with all ages plotted, this input controls the maximum age to be plotted to control how many measurements are shown on one plot. Input (Ma) will be added to the oldest age in the age clusters to give a max plotting age.')]
+
+summary = html.Div(id='summary-header', children=[
+            html.Div(id='summary-data', className="col-sm-3 summary-cards", style={'height': '100%'}),
+            html.Div(id='sample-selector',className="col-sm-3 summary-cards", style={'height': '100%'}),
+            html.Div(id='plotting-dimensions', className="col-sm-3 summary-cards", style={'height': '100%'}),
+            ], className="row input-row justify-content-between", style={'height': '275px'})
+
+
+methods = html.Div(id='summary-methods', children=[
+    dbc.Button([html.I(className='far fa-question-circle'), " Calculate All MDA Methods And Plot"], color="outline-primary", className="col-sm-3 button-method"),
+    dbc.Button([html.I(className='far fa-question-circle'), " Calculate Individual MDAs And Plot"], color="outline-primary", className="col-sm-3 button-method"),
+    dbc.Button([html.I(className='far fa-question-circle'), " Plot All Samples With One MDA Method"], color="outline-primary", className="col-sm-3 button-method")
+            ], className="row input-row justify-content-between")
+
+accordion = html.Div(
+    dbc.Accordion(
+        [
+            dbc.AccordionItem([html.Div(id='main-panel')], title="Inspect Dataset"),
+            dbc.AccordionItem(
+                [
+                    # html.P("This is the content of the second section"),
+                    # dbc.Button("Don't click me!", color="danger"),
+                    summary,
+                    methods,
+                ],
+                title="Run Analysis",
+            ),
+        ],
+    ), className='col-sm-9 workbench'
+)
+
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP, dbc.icons.FONT_AWESOME])
 app.title = "MDAPy Dashboard"
 app.layout = dbc.Container(fluid=True, children=[
@@ -60,7 +102,7 @@ app.layout = dbc.Container(fluid=True, children=[
         dbc.Button([html.I(className='far fa-question-circle'), " Help"], color="outline-primary", id="data-help", className="col-sm-5")
         ])], className="col-sm-2 align-self-center")],
         className='row dashHeader justify-content-between'),
-
+    
     html.Div(children=[
         html.Div(children=[
             html.B('Input Data'), html.Br(),html.Br(),
@@ -113,22 +155,18 @@ app.layout = dbc.Container(fluid=True, children=[
             html.Label('Decay Constant Uncertainty U 235', className='labelCte col-sm-9'),
             dcc.Input(value=0.2, type='number', className='inputCte col-sm-2',  min=0)
             ], className="row input-row"),html.Br(),
-            
-            # html.Div(children=[
-            # dbc.Button("Load Data", color="primary", id="data-load", className="mb-3 col-sm-4")
-            # ], className="row justify-content-around settings-buttons"),
 
             dbc.Button("Load Sample Data", color="primary", id="data-load", className="mb-3 col-sm-11"),
             dcc.Upload(dbc.Button("Import Data", color="primary", className="mb-3 col-sm-12"), id="data-upload", className="col-sm-11"),
             dbc.Button("Download Import Template", color="primary", id="btn-download-template", className="mb-3 col-sm-11"),
-            dcc.Download(id="download-template")
-
-            
+            dcc.Download(id="download-template")            
 
         ], className='col-sm-2 settings-menu'),
-        html.Div(2, className='col-sm-9 workbench',id='main-panel'),
-    ], className='row justify-content-between'),
+        accordion,
+    ], className='row justify-content-between'), 
     html.Br(),
+    # dcc.Store stores the intermediate value
+    dcc.Store(id='computed-data'),
     # dbc.Alert("Hello Bootstrap!", color="success")
     ],
     className="container-fluid",
@@ -171,19 +209,53 @@ def MDATabLoader(template_path, selection):
         tabs.append(
             dcc.Tab(
                 label=f"Sample { idx_df }",
-                value=f"tab{ idx+1 }",
+                value=f"tab{ idx + 1 }",
                 children=[html.Br(),
                             dash_table.DataTable(id='datatable-upload-container',
                                                 columns=[{"name": i, "id": i} for i in temp.columns],
                                                 data=temp.to_dict('records'),
-                                                editable=True,
+                                                editable=True, style_cell={'textAlign': 'center'},
                                                 page_action="native",
-                                                page_size=20)])
+                                                page_size=10)])
         )
+    # 
+    sa_tables = MDAFunc.check_data_loading(analyses_df, Data_Type)
+    sample_selector = sampleSelector(sa_tables['Sample_ID'])
+    summary_table = dash_table.DataTable(id='datatable-summary', columns=[{"name": i, "id": i} for i in sa_tables.columns], data=sa_tables.to_dict('records'), page_action="native", page_size=5, style_cell={'textAlign': 'center'})
 
-    return dcc.Tabs(id="tab", value="tab1",children=tabs)
+    df_all_data = {
+        'main_df': main_df.to_json(date_format='iso', orient='split'),
+        'main_byid_df': main_byid_df.to_json(date_format='iso', orient='split'),
+        'samples_df': samples_df.to_json(date_format='iso', orient='split'),
+        'analyses_df': analyses_df.to_json(date_format='iso', orient='split'),
+        'Data_Type': json.dumps(Data_Type),
+        'sample_amounts_table': sa_tables.to_json(date_format='iso', orient='split')
+
+     }
+
+    return dcc.Tabs(id="tab", value="tab1",children=tabs), json.dumps(df_all_data), [html.H5('Data Upload Summary'), html.Br(), summary_table], [html.H5('Select Samples to Plot'), html.Br(), sample_selector], dimensions
+
+# @app.callback(Output('test_output', 'children'),
+#               Input('computed-data', 'data'))
+# def update_graph(stored_data):
+#     if stored_data is not None and len(stored_data) > 2:
+#         #
+#         loaded_data=json.loads(stored_data)
+#         samples_df = pd.read_json(loaded_data.get('samples_df'), orient='split')
+#         Data_Type = json.loads(loaded_data.get('Data_Type'))
+#         analyses_df = pd.read_json(loaded_data.get('analyses_df'), orient='split')
+#         #
+#         sample_amounts_table = MDAFunc.check_data_loading(analyses_df, Data_Type)
+#         loaded_data['sample_amounts_table'] = sample_amounts_table.to_json(date_format='iso', orient='split')
+#     #
+#     return html.Div(), json.dumps(loaded_data)
+
 
 @app.callback(Output('main-panel', 'children'),
+              Output('computed-data', 'data'),
+              Output('summary-data', 'children'),
+              Output('sample-selector', 'children'),
+              Output('plotting-dimensions', 'children'),
               Input('dataset-dropdown', 'value'),
               Input('data-upload', 'contents'),
               State('data-upload', 'filename'),
@@ -232,7 +304,7 @@ def update_output(selection, contents, filename, clicked):
             html.H4("No Data Yet"),
             html.P("Complete the fields and load your data into"),
             html.P("the input form on the left to begin.")
-        ], style={'text-align': 'center'})
+        ], style={'text-align': 'center'}), json.dumps({}), [html.H5('Age Plotting Dimensions'), html.Br(), html.P('Load or import data to start.', style={'text-align': 'center'})], [html.H5('Select Samples to Plot'), html.Br(), html.P('Load or import data to start.', style={'text-align': 'center'})], [html.H5('Age Plotting Dimensions'), html.P('Load or import data to start.', style={'text-align': 'center'})]
         # table = dash_table.DataTable(
         #     id='datatable-upload-container',
         #     columns=([{'id': p, 'name': p} for p in params]),
