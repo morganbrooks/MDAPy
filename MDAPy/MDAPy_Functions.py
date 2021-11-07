@@ -55,16 +55,16 @@ def MDA_Calculator(ages, errors, sample_list, dataToLoad_MLA, eight_six_ratios, 
 
 def output_tables(sample_list, YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau_MDA, YSP_MDA, YPP_MDA, MLA_MDA):
     
-    YSG_Table = pd.DataFrame(data=YSG_MDA, index=[sample_list], columns=['YSG_MDA', 'YSG_+/-1$\sigma$']) 
-    YDZ_Table = pd.DataFrame(data=YDZ_MDA, index=[sample_list], columns=['YDZ_MDA', 'YDZ_+2$\sigma$', 'YDZ_-2$\sigma$'])
+    YSG_Table = pd.DataFrame(data=YSG_MDA, index=[sample_list], columns=['YSG_MDA', 'YSG_+/-1σ']) 
+    YDZ_Table = pd.DataFrame(data=YDZ_MDA, index=[sample_list], columns=['YDZ_MDA', 'YDZ_+2σ', 'YDZ_-2σ'])
     YPP_Table = pd.DataFrame(data=YPP_MDA, index=[sample_list], columns=['YPP_MDA'])
-    YC1s_Table = pd.DataFrame(data=YC1s_MDA, index=[sample_list], columns=['YC1$\sigma$_MDA', 'YC1$\sigma$_+/-1$\sigma$', 'YC1$\sigma$_MSWD', 'YC1$\sigma$_Grains'])
-    YC2s_Table = pd.DataFrame(data=YC2s_MDA, index=[sample_list], columns=['YC2$\sigma$_MDA', 'YC2$\sigma$_+/-1$\sigma$', 'YC2$\sigma$_MSWD', 'YC2$\sigma$_Grains'])
-    Y3Zo_Table = pd.DataFrame(data=Y3Zo_MDA, index=[sample_list], columns=['Y3Zo_MDA', 'Y3Zo_+/-1$\sigma$', 'Y3Zo_MSWD', 'Y3Zo_Grains'])
-    Y3Za_Table = pd.DataFrame(data=Y3Za_MDA, index=[sample_list], columns=['Y3Za_MDA', 'Y3Za_+/-1$\sigma$', 'Y3Za_MSWD','Y3Za_Grains'])
-    Tau_Table = pd.DataFrame(data=Tau_MDA, index=[sample_list], columns=['Tau_MDA', 'Tau_+/-1$\sigma$', 'Tau_MSWD','Tau_Grains'])
-    YSP_Table = pd.DataFrame(data=YSP_MDA, index=[sample_list], columns=['YSP_MDA', 'YSP_+/-1$\sigma$', 'YSP_MSWD','YSP_Grains'])
-    MLA_Table = pd.DataFrame(data=MLA_MDA, index=[sample_list], columns=['MLA_MDA', 'MLA_+/-1$\sigma$'])
+    YC1s_Table = pd.DataFrame(data=YC1s_MDA, index=[sample_list], columns=['YC1σ_MDA', 'YC1σ_+/-1σ', 'YC1σ_MSWD', 'YC1σ_Grains'])
+    YC2s_Table = pd.DataFrame(data=YC2s_MDA, index=[sample_list], columns=['YC2σ_MDA', 'YC2σ_+/-1σ', 'YC2σ_MSWD', 'YC2σ_Grains'])
+    Y3Zo_Table = pd.DataFrame(data=Y3Zo_MDA, index=[sample_list], columns=['Y3Zo_MDA', 'Y3Zo_+/-1σ', 'Y3Zo_MSWD', 'Y3Zo_Grains'])
+    Y3Za_Table = pd.DataFrame(data=Y3Za_MDA, index=[sample_list], columns=['Y3Za_MDA', 'Y3Za_+/-1σ', 'Y3Za_MSWD','Y3Za_Grains'])
+    Tau_Table = pd.DataFrame(data=Tau_MDA, index=[sample_list], columns=['Tau_MDA', 'Tau_+/-1σ', 'Tau_MSWD','Tau_Grains'])
+    YSP_Table = pd.DataFrame(data=YSP_MDA, index=[sample_list], columns=['YSP_MDA', 'YSP_+/-1σ', 'YSP_MSWD','YSP_Grains'])
+    MLA_Table = pd.DataFrame(data=MLA_MDA, index=[sample_list], columns=['MLA_MDA', 'MLA_+/-1σ'])
     
     #create a sample_ID column in each MDA result table 
     Y3Zo_Table['Sample_ID'] = sample_list
@@ -89,11 +89,11 @@ def output_tables(sample_list, YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y
     merge8 = pd.merge(merge7, MLA_Table)
     all_MDA_data = pd.merge(merge8, YSG_Table)
    
-    all_MDA_data = pd.DataFrame(data=all_MDA_data, columns=['Sample_ID','Y3Zo_MDA', 'Y3Zo_+/-1$\sigma$', 'Y3Zo_MSWD','Y3Zo_Grains', 'YSP_MDA', 'YSP_+/-1$\sigma$', 'YSP_MSWD', 'YSP_Grains', 'Tau_MDA', 'Tau_+/-1$\sigma$', 'Tau_MSWD', 'Tau_Grains', 'Y3Za_MDA', 'Y3Za_+/-1$\sigma$', 'Y3Za_MSWD', 'Y3Za_Grains', 'YC2$\sigma$_MDA', 'YC2$\sigma$_+/-1$\sigma$', 'YC2$\sigma$_MSWD', 'YC2$\sigma$_Grains', 'YC1$\sigma$_MDA', 'YC1$\sigma$_+/-1$\sigma$', 'YC1$\sigma$_MSWD', 'YC1$\sigma$_Grains', 'YPP_MDA', 'YDZ_MDA', 'YDZ_+2$\sigma$', 'YDZ_-2$\sigma$', 'YSG_MDA', 'YSG_+/-1$\sigma$','MLA_MDA', 'MLA_+/-1$\sigma$'])
+    all_MDA_data = pd.DataFrame(data=all_MDA_data, columns=['Sample_ID','Y3Zo_MDA', 'Y3Zo_+/-1σ', 'Y3Zo_MSWD','Y3Zo_Grains', 'YSP_MDA', 'YSP_+/-1σ', 'YSP_MSWD', 'YSP_Grains', 'Tau_MDA', 'Tau_+/-1σ', 'Tau_MSWD', 'Tau_Grains', 'Y3Za_MDA', 'Y3Za_+/-1σ', 'Y3Za_MSWD', 'Y3Za_Grains', 'YC2σ_MDA', 'YC2σ_+/-1σ', 'YC2σ_MSWD', 'YC2σ_Grains', 'YC1σ_MDA', 'YC1σ_+/-1σ', 'YC1σ_MSWD', 'YC1σ_Grains', 'YPP_MDA', 'YDZ_MDA', 'YDZ_+2σ', 'YDZ_-2σ', 'YSG_MDA', 'YSG_+/-1σ','MLA_MDA', 'MLA_+/-1σ'])
     
-    excel_MDA_data = all_MDA_data.to_excel("Saved_Files/All_MDA_Data.xlsx") 
+    excel_MDA_data = all_MDA_data.to_excel("data/All_MDA_Data.xlsx") 
 
-    MDAs_1s_table = pd.DataFrame(data=all_MDA_data, columns=['Sample_ID','Y3Zo_MDA','Y3Zo_+/-1$\sigma$','YSP_MDA','YSP_+/-1$\sigma$','Tau_MDA','Tau_+/-1$\sigma$','Y3Za_MDA','Y3Za_+/-1$\sigma$','YC1$\sigma$_MDA', 'YC1$\sigma$_+/-1$\sigma$','YC2$\sigma$_MDA','YC2$\sigma$_+/-1$\sigma$','YPP_MDA', 'YDZ_MDA', 'YDZ_+2$\sigma$', 'YDZ_-2$\sigma$','YSG_MDA','YSG_+/-1$\sigma$','MLA_MDA', 'MLA_+/-1$\sigma$'])
+    MDAs_1s_table = pd.DataFrame(data=all_MDA_data, columns=['Sample_ID','Y3Zo_MDA','Y3Zo_+/-1σ','YSP_MDA','YSP_+/-1σ','Tau_MDA','Tau_+/-1σ','Y3Za_MDA','Y3Za_+/-1σ','YC1σ_MDA', 'YC1σ_+/-1σ','YC2σ_MDA','YC2σ_+/-1σ','YPP_MDA', 'YDZ_MDA', 'YDZ_+2σ', 'YDZ_-2σ','YSG_MDA','YSG_+/-1σ','MLA_MDA', 'MLA_+/-1σ'])
     
     pd.options.display.float_format = "{:,.2f}".format
     
@@ -109,53 +109,53 @@ def output_tables(sample_list, YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y
 def Plot_MDA(MDAs_1s_table, all_MDA_data, sample_list, YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau_MDA, YSP_MDA, YPP_MDA, MLA_MDA, Image_File_Option, plotwidth, plotheight):
     
     #Builds large cumulative table with 1s and 2s error added and subtracted from MDAs  
-    MDA_plot = all_MDA_data[['Sample_ID','Y3Zo_MDA', 'Y3Zo_+/-1$\sigma$', 'YSP_MDA', 'YSP_+/-1$\sigma$', 'Tau_MDA', 'Tau_+/-1$\sigma$', 'Y3Za_MDA', 'Y3Za_+/-1$\sigma$', 'YC2$\sigma$_MDA', 'YC2$\sigma$_+/-1$\sigma$', 'YC1$\sigma$_MDA', 'YC1$\sigma$_+/-1$\sigma$', 'YPP_MDA', 'YDZ_MDA', 'YDZ_+2$\sigma$', 'YDZ_-2$\sigma$', 'YSG_MDA', 'YSG_+/-1$\sigma$','MLA_MDA', 'MLA_+/-1$\sigma$']]
+    MDA_plot = all_MDA_data[['Sample_ID','Y3Zo_MDA', 'Y3Zo_+/-1σ', 'YSP_MDA', 'YSP_+/-1σ', 'Tau_MDA', 'Tau_+/-1σ', 'Y3Za_MDA', 'Y3Za_+/-1σ', 'YC2σ_MDA', 'YC2σ_+/-1σ', 'YC1σ_MDA', 'YC1σ_+/-1σ', 'YPP_MDA', 'YDZ_MDA', 'YDZ_+2σ', 'YDZ_-2σ', 'YSG_MDA', 'YSG_+/-1σ','MLA_MDA', 'MLA_+/-1σ']]
     MDA_plot.reset_index(inplace = True, drop = True)
 
-    Y3Zo_1sErrorM = list((MDA_plot['Y3Zo_MDA'])-(MDA_plot['Y3Zo_+/-1$\sigma$']))
-    Y3Zo_1sErrorP = list((MDA_plot['Y3Zo_MDA'])+(MDA_plot['Y3Zo_+/-1$\sigma$']))
-    Y3Zo_2sErrorM = list((MDA_plot['Y3Zo_MDA'])-(MDA_plot['Y3Zo_+/-1$\sigma$']*2))
-    Y3Zo_2sErrorP = list((MDA_plot['Y3Zo_MDA'])+(MDA_plot['Y3Zo_+/-1$\sigma$']*2))
+    Y3Zo_1sErrorM = list((MDA_plot['Y3Zo_MDA'])-(MDA_plot['Y3Zo_+/-1σ']))
+    Y3Zo_1sErrorP = list((MDA_plot['Y3Zo_MDA'])+(MDA_plot['Y3Zo_+/-1σ']))
+    Y3Zo_2sErrorM = list((MDA_plot['Y3Zo_MDA'])-(MDA_plot['Y3Zo_+/-1σ']*2))
+    Y3Zo_2sErrorP = list((MDA_plot['Y3Zo_MDA'])+(MDA_plot['Y3Zo_+/-1σ']*2))
 
-    YSP_1sErrorM = list((MDA_plot['YSP_MDA'])-(MDA_plot['YSP_+/-1$\sigma$']))
-    YSP_1sErrorP = list((MDA_plot['YSP_MDA'])+(MDA_plot['YSP_+/-1$\sigma$']))
-    YSP_2sErrorM = list((MDA_plot['YSP_MDA'])-(MDA_plot['YSP_+/-1$\sigma$']*2))
-    YSP_2sErrorP = list((MDA_plot['YSP_MDA'])+(MDA_plot['YSP_+/-1$\sigma$']*2))
+    YSP_1sErrorM = list((MDA_plot['YSP_MDA'])-(MDA_plot['YSP_+/-1σ']))
+    YSP_1sErrorP = list((MDA_plot['YSP_MDA'])+(MDA_plot['YSP_+/-1σ']))
+    YSP_2sErrorM = list((MDA_plot['YSP_MDA'])-(MDA_plot['YSP_+/-1σ']*2))
+    YSP_2sErrorP = list((MDA_plot['YSP_MDA'])+(MDA_plot['YSP_+/-1σ']*2))
 
-    Tau_1sErrorM = list((MDA_plot['Tau_MDA'])-(MDA_plot['Tau_+/-1$\sigma$']))
-    Tau_1sErrorP = list((MDA_plot['Tau_MDA'])+(MDA_plot['Tau_+/-1$\sigma$']))
-    Tau_2sErrorM = list((MDA_plot['Tau_MDA'])-(MDA_plot['Tau_+/-1$\sigma$']*2))
-    Tau_2sErrorP = list((MDA_plot['Tau_MDA'])+(MDA_plot['Tau_+/-1$\sigma$']*2))
+    Tau_1sErrorM = list((MDA_plot['Tau_MDA'])-(MDA_plot['Tau_+/-1σ']))
+    Tau_1sErrorP = list((MDA_plot['Tau_MDA'])+(MDA_plot['Tau_+/-1σ']))
+    Tau_2sErrorM = list((MDA_plot['Tau_MDA'])-(MDA_plot['Tau_+/-1σ']*2))
+    Tau_2sErrorP = list((MDA_plot['Tau_MDA'])+(MDA_plot['Tau_+/-1σ']*2))
 
-    Y3Za_1sErrorM = list((MDA_plot['Y3Za_MDA'])-(MDA_plot['Y3Za_+/-1$\sigma$']))
-    Y3Za_1sErrorP = list((MDA_plot['Y3Za_MDA'])+(MDA_plot['Y3Za_+/-1$\sigma$']))
-    Y3Za_2sErrorM = list((MDA_plot['Y3Za_MDA'])-(MDA_plot['Y3Za_+/-1$\sigma$']*2))
-    Y3Za_2sErrorP = list((MDA_plot['Y3Za_MDA'])+(MDA_plot['Y3Za_+/-1$\sigma$']*2))
+    Y3Za_1sErrorM = list((MDA_plot['Y3Za_MDA'])-(MDA_plot['Y3Za_+/-1σ']))
+    Y3Za_1sErrorP = list((MDA_plot['Y3Za_MDA'])+(MDA_plot['Y3Za_+/-1σ']))
+    Y3Za_2sErrorM = list((MDA_plot['Y3Za_MDA'])-(MDA_plot['Y3Za_+/-1σ']*2))
+    Y3Za_2sErrorP = list((MDA_plot['Y3Za_MDA'])+(MDA_plot['Y3Za_+/-1σ']*2))
 
-    YC2s_1sErrorM = list((MDA_plot['YC2$\sigma$_MDA'])-(MDA_plot['YC2$\sigma$_+/-1$\sigma$']))
-    YC2s_1sErrorP = list((MDA_plot['YC2$\sigma$_MDA'])+(MDA_plot['YC2$\sigma$_+/-1$\sigma$']))
-    YC2s_2sErrorM = list((MDA_plot['YC2$\sigma$_MDA'])-(MDA_plot['YC2$\sigma$_+/-1$\sigma$']*2))
-    YC2s_2sErrorP = list((MDA_plot['YC2$\sigma$_MDA'])+(MDA_plot['YC2$\sigma$_+/-1$\sigma$']*2))
+    YC2s_1sErrorM = list((MDA_plot['YC2σ_MDA'])-(MDA_plot['YC2σ_+/-1σ']))
+    YC2s_1sErrorP = list((MDA_plot['YC2σ_MDA'])+(MDA_plot['YC2σ_+/-1σ']))
+    YC2s_2sErrorM = list((MDA_plot['YC2σ_MDA'])-(MDA_plot['YC2σ_+/-1σ']*2))
+    YC2s_2sErrorP = list((MDA_plot['YC2σ_MDA'])+(MDA_plot['YC2σ_+/-1σ']*2))
 
-    YC1s_1sErrorM = list((MDA_plot['YC1$\sigma$_MDA'])-(MDA_plot['YC1$\sigma$_+/-1$\sigma$']))
-    YC1s_1sErrorP = list((MDA_plot['YC1$\sigma$_MDA'])+(MDA_plot['YC1$\sigma$_+/-1$\sigma$']))
-    YC1s_2sErrorM = list((MDA_plot['YC1$\sigma$_MDA'])-(MDA_plot['YC1$\sigma$_+/-1$\sigma$']*2))
-    YC1s_2sErrorP = list((MDA_plot['YC1$\sigma$_MDA'])+(MDA_plot['YC1$\sigma$_+/-1$\sigma$']*2))
+    YC1s_1sErrorM = list((MDA_plot['YC1σ_MDA'])-(MDA_plot['YC1σ_+/-1σ']))
+    YC1s_1sErrorP = list((MDA_plot['YC1σ_MDA'])+(MDA_plot['YC1σ_+/-1σ']))
+    YC1s_2sErrorM = list((MDA_plot['YC1σ_MDA'])-(MDA_plot['YC1σ_+/-1σ']*2))
+    YC1s_2sErrorP = list((MDA_plot['YC1σ_MDA'])+(MDA_plot['YC1σ_+/-1σ']*2))
 
-    YSG_1sErrorM = list((MDA_plot['YSG_MDA'])-(MDA_plot['YSG_+/-1$\sigma$']))
-    YSG_1sErrorP = list((MDA_plot['YSG_MDA'])+(MDA_plot['YSG_+/-1$\sigma$']))
-    YSG_2sErrorM = list((MDA_plot['YSG_MDA'])-(MDA_plot['YSG_+/-1$\sigma$']*2))
-    YSG_2sErrorP = list((MDA_plot['YSG_MDA'])+(MDA_plot['YSG_+/-1$\sigma$']*2))
+    YSG_1sErrorM = list((MDA_plot['YSG_MDA'])-(MDA_plot['YSG_+/-1σ']))
+    YSG_1sErrorP = list((MDA_plot['YSG_MDA'])+(MDA_plot['YSG_+/-1σ']))
+    YSG_2sErrorM = list((MDA_plot['YSG_MDA'])-(MDA_plot['YSG_+/-1σ']*2))
+    YSG_2sErrorP = list((MDA_plot['YSG_MDA'])+(MDA_plot['YSG_+/-1σ']*2))
 
-    YDZ_1sErrorM = list((MDA_plot['YDZ_MDA'])-(MDA_plot['YDZ_-2$\sigma$']/2))
-    YDZ_1sErrorP = list((MDA_plot['YDZ_MDA'])+(MDA_plot['YDZ_+2$\sigma$']/2))
-    YDZ_2sErrorMi = list((MDA_plot['YDZ_MDA'])-(MDA_plot['YDZ_-2$\sigma$']))
-    YDZ_2sErrorPl = list((MDA_plot['YDZ_MDA'])+(MDA_plot['YDZ_+2$\sigma$']))
+    YDZ_1sErrorM = list((MDA_plot['YDZ_MDA'])-(MDA_plot['YDZ_-2σ']/2))
+    YDZ_1sErrorP = list((MDA_plot['YDZ_MDA'])+(MDA_plot['YDZ_+2σ']/2))
+    YDZ_2sErrorMi = list((MDA_plot['YDZ_MDA'])-(MDA_plot['YDZ_-2σ']))
+    YDZ_2sErrorPl = list((MDA_plot['YDZ_MDA'])+(MDA_plot['YDZ_+2σ']))
     
-    MLA_1sErrorM = list((MDA_plot['MLA_MDA'])-(MDA_plot['MLA_+/-1$\sigma$']))
-    MLA_1sErrorP = list((MDA_plot['MLA_MDA'])+(MDA_plot['MLA_+/-1$\sigma$']))
-    MLA_2sErrorM = list((MDA_plot['MLA_MDA'])-(MDA_plot['MLA_+/-1$\sigma$']*2))
-    MLA_2sErrorP = list((MDA_plot['MLA_MDA'])+(MDA_plot['MLA_+/-1$\sigma$']*2))
+    MLA_1sErrorM = list((MDA_plot['MLA_MDA'])-(MDA_plot['MLA_+/-1σ']))
+    MLA_1sErrorP = list((MDA_plot['MLA_MDA'])+(MDA_plot['MLA_+/-1σ']))
+    MLA_2sErrorM = list((MDA_plot['MLA_MDA'])-(MDA_plot['MLA_+/-1σ']*2))
+    MLA_2sErrorP = list((MDA_plot['MLA_MDA'])+(MDA_plot['MLA_+/-1σ']*2))
 
     sample_list = list(MDA_plot['Sample_ID'])
     
@@ -163,7 +163,7 @@ def Plot_MDA(MDAs_1s_table, all_MDA_data, sample_list, YSG_MDA, YC1s_MDA, YC2s_M
     
     MDA_plot_merge = pd.merge(MDA_plot, MDA_errors)
     
-    MDA_plot_final = MDA_plot_merge[['Sample_ID','Y3Zo_MDA', 'Y3Zo_1sErrorM', 'Y3Zo_1sErrorP', 'Y3Zo_2sErrorM', 'Y3Zo_2sErrorP', 'YSP_MDA', 'YSP_1sErrorM', 'YSP_1sErrorP', 'YSP_2sErrorM', 'YSP_2sErrorP','Tau_MDA', 'Tau_1sErrorP','Tau_1sErrorM', 'Tau_2sErrorP', 'Tau_2sErrorM', 'Y3Za_MDA', 'Y3Za_1sErrorM','Y3Za_1sErrorP','Y3Za_2sErrorM', 'Y3Za_2sErrorP', 'YC2$\sigma$_MDA', 'YC2s_1sErrorP','YC2s_1sErrorM','YC2s_2sErrorP','YC2s_2sErrorM', 'YC1$\sigma$_MDA', 'YC1s_1sErrorP', 'YC1s_1sErrorM', 'YC1s_2sErrorM', 'YC1s_2sErrorP', 'YPP_MDA', 'YDZ_MDA', 'YDZ_1sErrorM', 'YDZ_1sErrorP', 'YDZ_2sErrorMi', 'YDZ_2sErrorPl', 'YSG_MDA', 'YSG_1sErrorP', 'YSG_1sErrorM','YSG_2sErrorM','YSG_2sErrorP', 'MLA_MDA', 'MLA_1sErrorM', 'MLA_1sErrorP', 'MLA_2sErrorM', 'MLA_2sErrorP']]
+    MDA_plot_final = MDA_plot_merge[['Sample_ID','Y3Zo_MDA', 'Y3Zo_1sErrorM', 'Y3Zo_1sErrorP', 'Y3Zo_2sErrorM', 'Y3Zo_2sErrorP', 'YSP_MDA', 'YSP_1sErrorM', 'YSP_1sErrorP', 'YSP_2sErrorM', 'YSP_2sErrorP','Tau_MDA', 'Tau_1sErrorP','Tau_1sErrorM', 'Tau_2sErrorP', 'Tau_2sErrorM', 'Y3Za_MDA', 'Y3Za_1sErrorM','Y3Za_1sErrorP','Y3Za_2sErrorM', 'Y3Za_2sErrorP', 'YC2σ_MDA', 'YC2s_1sErrorP','YC2s_1sErrorM','YC2s_2sErrorP','YC2s_2sErrorM', 'YC1σ_MDA', 'YC1s_1sErrorP', 'YC1s_1sErrorM', 'YC1s_2sErrorM', 'YC1s_2sErrorP', 'YPP_MDA', 'YDZ_MDA', 'YDZ_1sErrorM', 'YDZ_1sErrorP', 'YDZ_2sErrorMi', 'YDZ_2sErrorPl', 'YSG_MDA', 'YSG_1sErrorP', 'YSG_1sErrorM','YSG_2sErrorM','YSG_2sErrorP', 'MLA_MDA', 'MLA_1sErrorM', 'MLA_1sErrorP', 'MLA_2sErrorM', 'MLA_2sErrorP']]
     
     MDA_plot_final.reset_index(inplace = True, drop = True)
 
@@ -257,11 +257,11 @@ def Plot_MDA(MDAs_1s_table, all_MDA_data, sample_list, YSG_MDA, YC1s_MDA, YC2s_M
     
     N = len(sample_arrays)
     
-    MDA_methods = [" ","YSG","YDZ","YPP","YC1$\sigma$","YC2$\sigma$","Y3Za","Y3Zo","Tau","YSP", "MLA"," "]
+    MDA_methods = [" ","YSG","YDZ","YPP","YC1σ","YC2σ","Y3Za","Y3Zo","Tau","YSP", "MLA"," "]
     
     #Plotting     
     
-    MDAfig, ax = plt.subplots(N,1, figsize=(plotwidth, N*plotheight))
+    MDAfig, ax = plt.subplots(N, 1, figsize=(plotwidth, N*plotheight), dpi=600)
     
         
     for i in range(N):
@@ -272,6 +272,7 @@ def Plot_MDA(MDAs_1s_table, all_MDA_data, sample_list, YSG_MDA, YC1s_MDA, YC2s_M
             axi = ax[i]
         else:
             axi = ax
+        MDAfig, axi = plt.subplots(1, 1, figsize=(plotwidth, 1*plotheight))
             
         #Setting graph y-limits
         ymax_ = ymax[i]
@@ -378,8 +379,8 @@ def Plot_MDA(MDAs_1s_table, all_MDA_data, sample_list, YSG_MDA, YC1s_MDA, YC2s_M
         MLA_err2s = MLA_MDAs_2s[0][1]
         
         #YSG
-        axi.broken_barh([(0.9, 0.22)], (YSG1-YSG_err2s, YSG_err1s), facecolors=('lightsteelblue'), label='2$\sigma$  Error')
-        axi.broken_barh([(0.9, 0.22)], (YSG1-YSG_err1s,YSG_err1s), facecolors=('cornflowerblue'), label='1$\sigma$  Error')
+        axi.broken_barh([(0.9, 0.22)], (YSG1-YSG_err2s, YSG_err1s), facecolors=('lightsteelblue'), label='2σ  Error')
+        axi.broken_barh([(0.9, 0.22)], (YSG1-YSG_err1s,YSG_err1s), facecolors=('cornflowerblue'), label='1σ  Error')
         axi.broken_barh([(0.9, 0.22)], (YSG1, YSG_err1s), facecolors=('cornflowerblue'))
         axi.broken_barh([(0.9, 0.22)], (YSG1+YSG_err1s, YSG_err1s), facecolors=('lightsteelblue'))
         axi.hlines(y=YSG1, xmin=1.1, xmax=0.9, color = 'midnightblue', lw=1, label='MDA', linewidth=3)
@@ -458,32 +459,38 @@ def Plot_MDA(MDAs_1s_table, all_MDA_data, sample_list, YSG_MDA, YC1s_MDA, YC2s_M
         plt.subplots_adjust(bottom=0.15)
         MDAfig.tight_layout(pad=3)
         
+        asset_folder = 'assets/plots/All_MDA_Methods_Plots/'
+        filename = 'All_MDA_Methods_Plots_' + str(i)
+
         if Image_File_Option == 'pdf':
-            MDAfig.savefig('Saved_Files/All_MDA_Methods_Plots/All_MDA_Methods_Plots.pdf')
+            MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
         if Image_File_Option == 'png':
-            MDAfig.savefig('Saved_Files/All_MDA_Methods_Plots/All_MDA_Methods_Plots.png')
+            MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
         if Image_File_Option == 'eps':
-            MDAfig.savefig('Saved_Files/All_MDA_Methods_Plots/All_MDA_Methods_Plots.eps')
+            MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
         if Image_File_Option == 'jpeg':
-            MDAfig.savefig('Saved_Files/All_MDA_Methods_Plots/All_MDA_Methods_Plots.jpeg')
+            MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
         if Image_File_Option == 'jpg':
-            MDAfig.savefig('Saved_Files/All_MDA_Methods_Plots/All_MDA_Methods_Plots.jpg')
+            MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
         if Image_File_Option == 'pgf':
-            MDAfig.savefig('Saved_Files/All_MDA_Methods_Plots/All_MDA_Methods_Plots.pgf')
+            MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
         if Image_File_Option == 'ps':
-            MDAfig.savefig('Saved_Files/All_MDA_Methods_Plots/All_MDA_Methods_Plots.ps')
+            MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
         if Image_File_Option == 'raw':
-            MDAfig.savefig('Saved_Files/All_MDA_Methods_Plots/All_MDA_Methods_Plots.raw')
+            MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
         if Image_File_Option == 'rgba':
-            MDAfig.savefig('Saved_Files/All_MDA_Methods_Plots/All_MDA_Methods_Plots.rgba')
+            MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
         if Image_File_Option == 'svg':
-            MDAfig.savefig('Saved_Files/All_MDA_Methods_Plots/All_MDA_Methods_Plots.svg')
+            MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
         if Image_File_Option == 'svgz':
-            MDAfig.savefig('Saved_Files/All_MDA_Methods_Plots/All_MDA_Methods_Plots.svgz')
+            MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
         if Image_File_Option == 'tif':
-            MDAfig.savefig('Saved_Files/All_MDA_Methods_Plots/All_MDA_Methods_Plots.tif')
+            MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
         if Image_File_Option == 'tiff':
-            MDAfig.savefig('Saved_Files/All_MDA_Methods_Plots/All_MDA_Methods_Plots.tif')
+            MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
+        if Image_File_Option == 'web':
+            MDAfig.savefig(asset_folder + filename + '.svg')
+            MDAfig.savefig(asset_folder + filename + '.tiff')
         
 
     return MDAfig, MDA_plot_final
@@ -614,8 +621,8 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
             #YSGaxi.set_xticklabels(YSG_sample_sort,rotation='vertical') 
             
         YSGaxi.hlines(y=YSG_age_values, xmin=0, xmax=(0), color = 'midnightblue', lw=1, linewidth=3, label='MDA: YSG')
-        YSGaxi.broken_barh([(0.15, 0)], (YSG_age_values,0), facecolors=('cornflowerblue'), label='1$\sigma$ Error')
-        YSGaxi.broken_barh([(0.15, 0)], (YSG_age_values,0), facecolors=('lightsteelblue'), label='2$\sigma$ Error')
+        YSGaxi.broken_barh([(0.15, 0)], (YSG_age_values,0), facecolors=('cornflowerblue'), label='1σ Error')
+        YSGaxi.broken_barh([(0.15, 0)], (YSG_age_values,0), facecolors=('lightsteelblue'), label='2σ Error')
 
         YSGaxi.set_ylabel('Age'+" " +'(Ma)', labelpad=25)
         YSGaxi.set_yticks(np.arange(round(YSG_Y_Max[-1]-20),round(YSG_sorted[0][0]+20), 5))
@@ -788,8 +795,8 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
             YDZaxi.set_xticklabels(YDZ_sample_sort, rotation='vertical')  
             
         YDZaxi.hlines(y=YDZ_age_values, xmin=0, xmax=(0), color = 'midnightblue', lw=1, linewidth=3, label='MDA: YDZ')
-        YDZaxi.broken_barh([(0.15, 0)], (YDZ_age_values,0), facecolors=('cornflowerblue'), label='1$\sigma$ Error')
-        YDZaxi.broken_barh([(0.15, 0)], (YDZ_age_values,0), facecolors=('lightsteelblue'), label='2$\sigma$ Error')
+        YDZaxi.broken_barh([(0.15, 0)], (YDZ_age_values,0), facecolors=('cornflowerblue'), label='1σ Error')
+        YDZaxi.broken_barh([(0.15, 0)], (YDZ_age_values,0), facecolors=('lightsteelblue'), label='2σ Error')
         
     
         YDZaxi.set_ylabel('Age'+" " +'(Ma)', labelpad=25)
@@ -958,8 +965,8 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
             #YC1saxi.set_xticklabels(YC1s_sample_sort, rotation='vertical') 
         
         YC1saxi.hlines(y=YC1s_age_values, xmin=0, xmax=(0), color = 'midnightblue', lw=1, linewidth=3, label='MDA: YC1s')
-        YC1saxi.broken_barh([(0.15, 0)], (YC1s_age_values,0), facecolors=('cornflowerblue'), label='1$\sigma$ Error')
-        YC1saxi.broken_barh([(0.15, 0)], (YC1s_age_values,0), facecolors=('lightsteelblue'), label='2$\sigma$ Error')
+        YC1saxi.broken_barh([(0.15, 0)], (YC1s_age_values,0), facecolors=('cornflowerblue'), label='1σ Error')
+        YC1saxi.broken_barh([(0.15, 0)], (YC1s_age_values,0), facecolors=('lightsteelblue'), label='2σ Error')
 
         YC1saxi.yaxis.grid(True)
        
@@ -970,7 +977,7 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
         YC1saxi.set_ylabel('Age'+" " +'(Ma)',labelpad=25)
         YC1saxi.set_xlabel('Samples', labelpad=25)
         
-        YC1saxi.set_title('YC1$\sigma$ MDA: All Samples') 
+        YC1saxi.set_title('YC1σ MDA: All Samples') 
         plt.legend(loc='upper left')
         
         if Image_File_Option == 'pdf':
@@ -1125,9 +1132,9 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
             YC2saxi.set_xticks(x_arrays)
             YC2saxi.set_xticklabels(YC2s_sample_sort, rotation='vertical') 
         
-        YC2saxi.hlines(y=YC2s_age_values, xmin=0, xmax=(0), color = 'midnightblue', lw=1, linewidth=3, label='MDA: YC2$\sigma$')
-        YC2saxi.broken_barh([(0.15, 0)], (YC2s_age_values,0), facecolors=('cornflowerblue'), label='1$\sigma$ Error')
-        YC2saxi.broken_barh([(0.15, 0)], (YC2s_age_values,0), facecolors=('lightsteelblue'), label='2$\sigma$ Error')
+        YC2saxi.hlines(y=YC2s_age_values, xmin=0, xmax=(0), color = 'midnightblue', lw=1, linewidth=3, label='MDA: YC2σ')
+        YC2saxi.broken_barh([(0.15, 0)], (YC2s_age_values,0), facecolors=('cornflowerblue'), label='1σ Error')
+        YC2saxi.broken_barh([(0.15, 0)], (YC2s_age_values,0), facecolors=('lightsteelblue'), label='2σ Error')
     
         
         YC2saxi.set_ylabel('Age'+" " +'(Ma)',labelpad=25)
@@ -1138,7 +1145,7 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
         plt.gca().invert_yaxis()
         YC2saxi.set_xlabel('Samples', labelpad=25)
         
-        YC2saxi.set_title('YC2$\sigma$ MDA: All Samples') 
+        YC2saxi.set_title('YC2σ MDA: All Samples') 
         plt.legend(loc='upper left')
         
   
@@ -1293,8 +1300,8 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
             Y3Zoaxi.set_xticklabels(Y3Zo_sample_sort, rotation='vertical') 
         
         Y3Zoaxi.hlines(y=Y3Zo_age_values, xmin=0, xmax=(0), color = 'midnightblue', lw=1, linewidth=3, label='MDA: Y3Zo')
-        Y3Zoaxi.broken_barh([(0.15, 0)], (Y3Zo_age_values,0), facecolors=('cornflowerblue'), label='1$\sigma$ Error')
-        Y3Zoaxi.broken_barh([(0.15, 0)], (Y3Zo_age_values,0), facecolors=('lightsteelblue'), label='2$\sigma$ Error')
+        Y3Zoaxi.broken_barh([(0.15, 0)], (Y3Zo_age_values,0), facecolors=('cornflowerblue'), label='1σ Error')
+        Y3Zoaxi.broken_barh([(0.15, 0)], (Y3Zo_age_values,0), facecolors=('lightsteelblue'), label='2σ Error')
     
         Y3Zoaxi.set_ylabel('Age'+" " +'(Ma)',labelpad=25)
         Y3Zoaxi.yaxis.grid(True)  
@@ -1459,8 +1466,8 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
             Tauaxi.set_xticklabels(Tau_sample_sort, rotation='vertical') 
         
         Tauaxi.hlines(y=Tau_age_values, xmin=0, xmax=(0), color = 'midnightblue', lw=1, linewidth=3, label='MDA: Tau')
-        Tauaxi.broken_barh([(0.15, 0)], (Tau_age_values,0), facecolors=('cornflowerblue'), label='1$\sigma$ Error')
-        Tauaxi.broken_barh([(0.15, 0)], (Tau_age_values,0), facecolors=('lightsteelblue'), label='2$\sigma$ Error')
+        Tauaxi.broken_barh([(0.15, 0)], (Tau_age_values,0), facecolors=('cornflowerblue'), label='1σ Error')
+        Tauaxi.broken_barh([(0.15, 0)], (Tau_age_values,0), facecolors=('lightsteelblue'), label='2σ Error')
     
         Tauaxi.set_ylabel('Age'+" " +'(Ma)',labelpad=25)
         Tauaxi.yaxis.grid(True)  
@@ -1627,8 +1634,8 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
             Y3Zaaxi.set_xticklabels(Y3Za_sample_sort, rotation='vertical') 
         
         Y3Zaaxi.hlines(y=Y3Za_age_values, xmin=0, xmax=(0), color = 'midnightblue', lw=1, linewidth=3, label='MDA: Y3Za')
-        Y3Zaaxi.broken_barh([(0.15, 0)], (Y3Za_age_values,0), facecolors=('cornflowerblue'), label='1$\sigma$ Error')
-        Y3Zaaxi.broken_barh([(0.15, 0)], (Y3Za_age_values,0), facecolors=('lightsteelblue'), label='2$\sigma$ Error')
+        Y3Zaaxi.broken_barh([(0.15, 0)], (Y3Za_age_values,0), facecolors=('cornflowerblue'), label='1σ Error')
+        Y3Zaaxi.broken_barh([(0.15, 0)], (Y3Za_age_values,0), facecolors=('lightsteelblue'), label='2σ Error')
     
         Y3Zaaxi.set_ylabel('Age'+" " +'(Ma)',labelpad=25)
         Y3Zaaxi.yaxis.grid(True)  
@@ -1793,8 +1800,8 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
             #YSPaxi.set_xticklabels(YSP_sample_sort, rotation='vertical') 
         
         YSPaxi.hlines(y=YSP_age_values, xmin=0, xmax=(0), color = 'midnightblue', lw=1, linewidth=3, label='MDA: YSP')
-        YSPaxi.broken_barh([(0.15, 0)], (YSP_age_values,0), facecolors=('cornflowerblue'), label='1$\sigma$ Error')
-        YSPaxi.broken_barh([(0.15, 0)], (YSP_age_values,0), facecolors=('lightsteelblue'), label='2$\sigma$ Error')
+        YSPaxi.broken_barh([(0.15, 0)], (YSP_age_values,0), facecolors=('cornflowerblue'), label='1σ Error')
+        YSPaxi.broken_barh([(0.15, 0)], (YSP_age_values,0), facecolors=('lightsteelblue'), label='2σ Error')
     
         YSPaxi.set_ylabel('Age'+" " +'(Ma)',labelpad=25)
         YSPaxi.yaxis.grid(True)  
@@ -1909,8 +1916,8 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
             YPPaxi.set_xticklabels(YPP_sample_sort, rotation='vertical') 
         
         YPPaxi.hlines(y=YPP_age_values, xmin=0, xmax=(0), color = 'midnightblue', lw=1, linewidth=3, label='MDA: YPP')
-        YPPaxi.broken_barh([(0.15, 0)], (YPP_age_values,0), facecolors=('cornflowerblue'), label='1$\sigma$ Error')
-        YPPaxi.broken_barh([(0.15, 0)], (YPP_age_values,0), facecolors=('lightsteelblue'), label='2$\sigma$ Error')
+        YPPaxi.broken_barh([(0.15, 0)], (YPP_age_values,0), facecolors=('cornflowerblue'), label='1σ Error')
+        YPPaxi.broken_barh([(0.15, 0)], (YPP_age_values,0), facecolors=('lightsteelblue'), label='2σ Error')
     
         YPPaxi.set_ylabel('Age'+" " +'(Ma)',labelpad=25)
         YPPaxi.yaxis.grid(True)  
@@ -2074,8 +2081,8 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
             MLAaxi.set_xticklabels(MLA_sample_sort, rotation='vertical') 
         
         MLAaxi.hlines(y=MLA_age_values, xmin=0, xmax=(0), color = 'midnightblue', lw=1, linewidth=3, label='MDA: MLA')
-        MLAaxi.broken_barh([(0.15, 0)], (MLA_age_values,0), facecolors=('cornflowerblue'), label='1$\sigma$ Error')
-        MLAaxi.broken_barh([(0.15, 0)], (MLA_age_values,0), facecolors=('lightsteelblue'), label='2$\sigma$ Error')
+        MLAaxi.broken_barh([(0.15, 0)], (MLA_age_values,0), facecolors=('cornflowerblue'), label='1σ Error')
+        MLAaxi.broken_barh([(0.15, 0)], (MLA_age_values,0), facecolors=('lightsteelblue'), label='2σ Error')
     
         MLAaxi.set_ylabel('Age'+" " +'(Ma)',labelpad=25)
         MLAaxi.yaxis.grid(True)  
@@ -2284,8 +2291,8 @@ def YSG_outputs(ages, errors, plotwidth, plotheight, sample_list, YSG_MDA, age_a
                 break 
         
         YSGaxi.hlines(y=YSG_value, xmin=0, xmax=(0), color = 'midnightblue', lw=1, linewidth=3, label='Age'+" " +'(Ma)')
-        YSGaxi.broken_barh([(0.15, 0)], (YSG_value,0), facecolors=('cornflowerblue'), label='1$\sigma$ Error')
-        YSGaxi.broken_barh([(0.15, 0)], (YSG_value,0), facecolors=('lightsteelblue'), label='2$\sigma$ Error')
+        YSGaxi.broken_barh([(0.15, 0)], (YSG_value,0), facecolors=('cornflowerblue'), label='1σ Error')
+        YSGaxi.broken_barh([(0.15, 0)], (YSG_value,0), facecolors=('lightsteelblue'), label='2σ Error')
         YSGaxi.broken_barh([(0.15, 0)], (YSG_value,0), facecolors=('crimson'), label='YSG: '+str(round(YSG_value,2)) +"+/- "+str(round(YSG_err1s_value,2)))
         YSGaxi.set_xticks([])
         YSGaxi.set_ylabel('Age'+" " +'(Ma)')                
@@ -2326,7 +2333,7 @@ def YSG_outputs(ages, errors, plotwidth, plotheight, sample_list, YSG_MDA, age_a
         YSGfig.tight_layout(pad=3)
 
     
-    YSG_Table_ = pd.DataFrame(data=YSG_MDA, index=[sample_list], columns=['YSG_MDA (Ma)', 'YSG_+/-1$\sigma$'])
+    YSG_Table_ = pd.DataFrame(data=YSG_MDA, index=[sample_list], columns=['YSG_MDA (Ma)', 'YSG_+/-1σ'])
     
     return YSG_MDA, YSG_Table_
 
@@ -2365,8 +2372,8 @@ def YDZ_outputs(YDZ_MDA, minAges, mode, ages, errors, sample_list, plotwidth, pl
         axYDZ.hist(minAges, bins=25)
         axYDZ.axvline(mode,color='red', linewidth=3,label='MDA:'+str(round(mode,2)))
             
-        axYDZ.axvline(np.percentile(minAges,2.5),linestyle='--',color='black', label='2$\sigma$ Error: - '+str(round(minus_error,2)))
-        axYDZ.axvline(np.percentile(minAges,97.5),linestyle='dashdot',color='black', label='2$\sigma$ Error: + '+str(round(plus_error,2)))
+        axYDZ.axvline(np.percentile(minAges,2.5),linestyle='--',color='black', label='2σ Error: - '+str(round(minus_error,2)))
+        axYDZ.axvline(np.percentile(minAges,97.5),linestyle='dashdot',color='black', label='2σ Error: + '+str(round(plus_error,2)))
             
         axYDZ.set_xlabel('Age (Ma)')
         YDZfig.tight_layout(pad=3)
@@ -2403,7 +2410,7 @@ def YDZ_outputs(YDZ_MDA, minAges, mode, ages, errors, sample_list, plotwidth, pl
             YDZfig.savefig('Saved_Files/Individual_MDA_Plots/YDZ_Plots.tiff')         
 
        
-    YDZ_Table_ = pd.DataFrame(data=YDZ_MDA, index=[sample_list], columns=['YDZ_MDA (Ma)', 'YDZ_+2$\sigma$', 'YDZ_-2$\sigma$'])
+    YDZ_Table_ = pd.DataFrame(data=YDZ_MDA, index=[sample_list], columns=['YDZ_MDA (Ma)', 'YDZ_+2σ', 'YDZ_-2σ'])
   
     return YDZ_MDA, YDZ_Table_
 
@@ -2666,12 +2673,12 @@ def YC1s_outputs(ages, errors, sample_list, YC1s_MDA, YC1s_cluster_arrays, plotw
         
         YC1saxi.hlines(y=YC1s_value, xmin=0, xmax=(0), color = 'midnightblue', lw=1, linewidth=3, label='Age'+" " +'(Ma)')
         YC1saxi.axhline(YC1s_value,color='black', linestyle='dotted', label='MDA: '+str(round(YC1s_value,2))+"+/- "+str(round(YC1s_err1s_value,2)))
-        YC1saxi.broken_barh([(0.15, 0)], (YC1s_value,0), facecolors=('cornflowerblue'), label='1$\sigma$ Error')
-        YC1saxi.broken_barh([(0.15, 0)], (YC1s_value,0), facecolors=('lightsteelblue'), label='2$\sigma$ Error')
+        YC1saxi.broken_barh([(0.15, 0)], (YC1s_value,0), facecolors=('cornflowerblue'), label='1σ Error')
+        YC1saxi.broken_barh([(0.15, 0)], (YC1s_value,0), facecolors=('lightsteelblue'), label='2σ Error')
         YC1saxi.broken_barh([(0.15, 0)], (YC1s_value,0), facecolors=('crimson'), label='Cluster: '+str(YC1s_grains_value))
         YC1saxi.set_xticks([])
         YC1saxi.set_ylabel('Age'+" " +'(Ma)')                
-        YC1saxi.set_xlabel('Individual Age Measurements +/- 1$\sigma$/2$\sigma$ Error')
+        YC1saxi.set_xlabel('Individual Age Measurements +/- 1σ/2σ Error')
         YC1saxi.set_title(samples[0]) 
         YC1saxi.yaxis.grid(True)
         plt.legend(loc='lower right')
@@ -2705,7 +2712,7 @@ def YC1s_outputs(ages, errors, sample_list, YC1s_MDA, YC1s_cluster_arrays, plotw
             YC1sfig.savefig('Saved_Files/Individual_MDA_Plots/YC1s_Plots.tiff')         
 
     
-    YC1s_Table_= pd.DataFrame(data=YC1s_MDA, index=[sample_list], columns=['YC1$\sigma$_MDA (Ma)', 'YC1$\sigma$_+/-1$\sigma$', 'YC1$\sigma$_MSWD', 'YC1$\sigma$_Grains'])
+    YC1s_Table_= pd.DataFrame(data=YC1s_MDA, index=[sample_list], columns=['YC1σ_MDA (Ma)', 'YC1σ_+/-1σ', 'YC1σ_MSWD', 'YC1σ_Grains'])
     
     return YC1s_MDA, YC1s_Table_
 
@@ -2873,14 +2880,14 @@ def YC2s_outputs(ages, errors, sample_list, YC2s_MDA, YC2s_cluster_arrays, plotw
         
         YC2saxi.hlines(y=YC2s_value, xmin=0, xmax=(0), color = 'midnightblue', lw=1, linewidth=3, label='Age'+" " +'(Ma)')
         YC2saxi.axhline(YC2s_value,color='black', linestyle='dotted', label='MDA: '+str(round(YC2s_value,2))+"+/- "+str(round(YC2s_err1s_value,2)))
-        YC2saxi.broken_barh([(0.15, 0)], (YC2s_value,0), facecolors=('cornflowerblue'), label='1$\sigma$ Error')
-        YC2saxi.broken_barh([(0.15, 0)], (YC2s_value,0), facecolors=('lightsteelblue'), label='2$\sigma$ Error')
+        YC2saxi.broken_barh([(0.15, 0)], (YC2s_value,0), facecolors=('cornflowerblue'), label='1σ Error')
+        YC2saxi.broken_barh([(0.15, 0)], (YC2s_value,0), facecolors=('lightsteelblue'), label='2σ Error')
         YC2saxi.broken_barh([(0.15, 0)], (YC2s_value,0), facecolors=('crimson'), label='Cluster: '+str(YC2s_grains_value))
         
         YC2saxi.set_xticks([])
         
         YC2saxi.set_ylabel('Age'+" " +'(Ma)')                
-        YC2saxi.set_xlabel('Individual Age Measurements +/- 1$\sigma$/2$\sigma$ Error')
+        YC2saxi.set_xlabel('Individual Age Measurements +/- 1σ/2σ Error')
         YC2saxi.set_title(samples[0]) 
         YC2saxi.yaxis.grid(True)
         plt.legend(loc='lower right')
@@ -2915,7 +2922,7 @@ def YC2s_outputs(ages, errors, sample_list, YC2s_MDA, YC2s_cluster_arrays, plotw
 
       
     
-    YC2s_Table_ = pd.DataFrame(data=YC2s_MDA, index=[sample_list], columns=['YC2$\sigma$_MDA (Ma)', 'YC2$\sigma$_+/-1s', 'YC2$\sigma$_MSWD', 'YC2$\sigma$_Grains'])
+    YC2s_Table_ = pd.DataFrame(data=YC2s_MDA, index=[sample_list], columns=['YC2σ_MDA (Ma)', 'YC2σ_+/-1s', 'YC2σ_MSWD', 'YC2σ_Grains'])
     
     return YC2s_MDA, YC2s_Table_
 
@@ -3081,13 +3088,13 @@ def Y3Zo_outputs(ages, errors, sample_list, Y3Zo_MDA, Y3Zo_cluster_arrays, plotw
         
         Y3Zoaxi.hlines(y=Y3Zo_value, xmin=0, xmax=(0), color = 'midnightblue', lw=1, linewidth=3, label='Age'+" " +'(Ma)')
         Y3Zoaxi.axhline(Y3Zo_value,color='black', linestyle='dotted', label='MDA: '+str(round(Y3Zo_value,2))+"+/- "+str(round(Y3Zo_err1s_value,2)))
-        Y3Zoaxi.broken_barh([(0.15, 0)], (Y3Zo_value,0), facecolors=('cornflowerblue'), label='1$\sigma$ Error')
-        Y3Zoaxi.broken_barh([(0.15, 0)], (Y3Zo_value,0), facecolors=('lightsteelblue'), label='2$\sigma$ Error')
+        Y3Zoaxi.broken_barh([(0.15, 0)], (Y3Zo_value,0), facecolors=('cornflowerblue'), label='1σ Error')
+        Y3Zoaxi.broken_barh([(0.15, 0)], (Y3Zo_value,0), facecolors=('lightsteelblue'), label='2σ Error')
         Y3Zoaxi.broken_barh([(0.15, 0)], (Y3Zo_value,0), facecolors=('crimson'), label='3 Grain Cluster')
         
         Y3Zoaxi.set_xticks([])
         Y3Zoaxi.set_ylabel('Age'+" " +'(Ma)')                
-        Y3Zoaxi.set_xlabel('Individual Age Measurements +/- 1$\sigma$/2$\sigma$  Error')
+        Y3Zoaxi.set_xlabel('Individual Age Measurements +/- 1σ/2σ  Error')
         Y3Zoaxi.set_title(samples[0]) 
         Y3Zoaxi.yaxis.grid(True)
         plt.legend(loc='lower right')
@@ -3122,7 +3129,7 @@ def Y3Zo_outputs(ages, errors, sample_list, Y3Zo_MDA, Y3Zo_cluster_arrays, plotw
 
         
     
-    Y3Zo_Table_ = pd.DataFrame(data=Y3Zo_MDA, index=[sample_list], columns=['Y3Zo_MDA (Ma)', 'Y3Zo_+/-1$\sigma$', 'Y3Zo_MSWD','Y3Zo_Grains'])
+    Y3Zo_Table_ = pd.DataFrame(data=Y3Zo_MDA, index=[sample_list], columns=['Y3Zo_MDA (Ma)', 'Y3Zo_+/-1σ', 'Y3Zo_MSWD','Y3Zo_Grains'])
     
     return Y3Zo_MDA, Y3Zo_Table_
 
@@ -3290,13 +3297,13 @@ def Y3Za_outputs(ages, errors, Y3Za_MDA, Y3Za_cluster_arrays, sample_list, plotw
         
         Y3Zaaxi.hlines(y=Y3Za_value, xmin=0, xmax=(0), color = 'midnightblue', lw=1, linewidth=3, label='Age'+" " +'(Ma)')
         Y3Zaaxi.axhline(Y3Za_value,color='black', linestyle='dotted', label='MDA: '+str(round(Y3Za_value,2))+"+/- "+str(round(Y3Za_err1s_value,2)))
-        Y3Zaaxi.broken_barh([(0.15, 0)], (Y3Za_value,0), facecolors=('cornflowerblue'), label='1$\sigma$ Error')
-        Y3Zaaxi.broken_barh([(0.15, 0)], (Y3Za_value,0), facecolors=('lightsteelblue'), label='2$\sigma$ Error')
+        Y3Zaaxi.broken_barh([(0.15, 0)], (Y3Za_value,0), facecolors=('cornflowerblue'), label='1σ Error')
+        Y3Zaaxi.broken_barh([(0.15, 0)], (Y3Za_value,0), facecolors=('lightsteelblue'), label='2σ Error')
         Y3Zaaxi.broken_barh([(0.15, 0)], (Y3Za_value,0), facecolors=('crimson'), label='3 Grain Cluster')
         
         Y3Zaaxi.set_xticks([])
         Y3Zaaxi.set_ylabel('Age'+" " +'(Ma)')                
-        Y3Zaaxi.set_xlabel('Individual Age Measurements +/- 1$\sigma$/2$\sigma$ Error')
+        Y3Zaaxi.set_xlabel('Individual Age Measurements +/- 1σ/2σ Error')
         Y3Zaaxi.set_title(samples[0]) 
         Y3Zaaxi.yaxis.grid(True)
         plt.legend(loc='lower right')
@@ -3330,7 +3337,7 @@ def Y3Za_outputs(ages, errors, Y3Za_MDA, Y3Za_cluster_arrays, sample_list, plotw
             Y3Zafig.savefig('Saved_Files/Individual_MDA_Plots/Y3Za_Plots.tiff')         
 
     
-    Y3Za_Table_ = pd.DataFrame(data=Y3Za_MDA, index=[sample_list], columns=['Y3Za_MDA (Ma)', 'Y3Za_+/-1$\sigma$', 'Y3Za_MSWD','Y3Za_Grains'])
+    Y3Za_Table_ = pd.DataFrame(data=Y3Za_MDA, index=[sample_list], columns=['Y3Za_MDA (Ma)', 'Y3Za_+/-1σ', 'Y3Za_MSWD','Y3Za_Grains'])
     
     return Y3Za_MDA, Y3Za_Table_
 
@@ -3464,7 +3471,7 @@ def Tau_outputs(ages, errors, sample_list, eight_six_ratios, eight_six_error, se
 
             
         
-    Tau_Table_ = pd.DataFrame(data=Tau, index=[sample_list], columns=['Tau_MDA (Ma)', 'Tau_+/-1$\sigma$', 'Tau_MSWD','Grains'])
+    Tau_Table_ = pd.DataFrame(data=Tau, index=[sample_list], columns=['Tau_MDA (Ma)', 'Tau_+/-1σ', 'Tau_MSWD','Grains'])
     
     
     return Tau, Tau_Table_
@@ -3632,14 +3639,14 @@ def YSP_outputs(ages, errors, sample_list, YSP_MDA, YSP_cluster, plotwidth, plot
         
         YSPaxi.hlines(y=YSP_value, xmin=0, xmax=(0), color = 'midnightblue', lw=1, linewidth=3, label='Age'+" " +'(Ma)')
         YSPaxi.axhline(YSP_value,color='black', linestyle='dotted', label='MDA: '+str(round(YSP_value,2))+"+/- "+str(round(YSP_err1s_value,2)))
-        YSPaxi.broken_barh([(0.15, 0)], (YSP_value,0), facecolors=('cornflowerblue'), label='1$\sigma$ Error')
-        YSPaxi.broken_barh([(0.15, 0)], (YSP_value,0), facecolors=('lightsteelblue'), label='2$\sigma$ Error')
+        YSPaxi.broken_barh([(0.15, 0)], (YSP_value,0), facecolors=('cornflowerblue'), label='1σ Error')
+        YSPaxi.broken_barh([(0.15, 0)], (YSP_value,0), facecolors=('lightsteelblue'), label='2σ Error')
         YSPaxi.broken_barh([(0.15, 0)], (YSP_value,0), facecolors=('crimson'), label='Cluster: '+str(YSP_grains_value))
         
         YSPaxi.set_xticks([])
         
         YSPaxi.set_ylabel('Age'+" " +'(Ma)')                
-        YSPaxi.set_xlabel('Individual Age Measurements +/- 1$\sigma$/2$\sigma$ Error')
+        YSPaxi.set_xlabel('Individual Age Measurements +/- 1σ/2σ Error')
         YSPaxi.set_title(samples[0]) 
         YSPaxi.yaxis.grid(True)
         plt.legend(loc='lower right')
@@ -3674,7 +3681,7 @@ def YSP_outputs(ages, errors, sample_list, YSP_MDA, YSP_cluster, plotwidth, plot
 
 
     
-    YSP_Table_ = pd.DataFrame(data=YSP_MDA, index=[sample_list], columns=['YSP_MDA (Ma)', 'YSP_+/-1$\sigma$', 'YSP_MSWD','YSP_Grains'])
+    YSP_Table_ = pd.DataFrame(data=YSP_MDA, index=[sample_list], columns=['YSP_MDA (Ma)', 'YSP_+/-1σ', 'YSP_MSWD','YSP_Grains'])
 
     
     return YSP_MDA, YSP_Table_ 
@@ -3719,7 +3726,7 @@ def MLA_outputs(sample_list, dataToLoad):
     
     MLA_Table = pd.DataFrame.from_dict(MLA_MDA_1sError,orient='index').reset_index()
     pd.options.display.float_format = "{:,.2f}".format
-    MLA_Table.columns = [' ', 'MLA_MDA (Ma)', 'MLA_+/-1$\sigma$']
+    MLA_Table.columns = [' ', 'MLA_MDA (Ma)', 'MLA_+/-1σ']
     display(MLA_Table)
     
     Radial_Plots = radial_plots()
@@ -4126,11 +4133,11 @@ def sampleToData(sample_list, main_byid_df, sigma, Data_Type, uncertainty, best_
         ages_errors_calculated = pd.concat([Ages_Table, Errors_Table], axis=1)
 
 
-        with pd.ExcelWriter('Data/ages_errors_calculated.xlsx') as writer:  
+        with pd.ExcelWriter('data/ages_errors_calculated.xlsx') as writer:  
             sample_sheet_.to_excel(writer, sheet_name='Samples')
             ages_errors_calculated.to_excel(writer, sheet_name='Data')
 
-        dataToLoad_MLA = ['Data/ages_errors_calculated.xlsx']
+        dataToLoad_MLA = ['data/ages_errors_calculated.xlsx']
 
     elif len(sample_list) > 1:
         ages_array = np.array(ages, dtype=object)
@@ -4149,11 +4156,11 @@ def sampleToData(sample_list, main_byid_df, sigma, Data_Type, uncertainty, best_
 
         ages_errors_calculated = pd.concat([Ages_Table, Errors_Table], axis=1)
 
-        with pd.ExcelWriter('Data/ages_errors_calculated.xlsx') as writer:  
+        with pd.ExcelWriter('data/ages_errors_calculated.xlsx') as writer:  
             sample_sheet_.to_excel(writer, sheet_name='Samples')
             ages_errors_calculated.to_excel(writer, sheet_name='Data')
 
-        dataToLoad_MLA = ['Data/ages_errors_calculated.xlsx']
+        dataToLoad_MLA = ['data/ages_errors_calculated.xlsx']
     
 
     return  ages, errors, eight_six_ratios, eight_six_error, seven_six_ratios, seven_six_error, numGrains, labels, sample_list, best_age_cut_off, dataToLoad_MLA, U238_decay_constant,U235_decay_constant,U238_U235,excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235
