@@ -17,3 +17,7 @@ assets/plots/*/*.png
 assets/plots/*/*.svg
 assets/plots/*/*.tiff
 MDAPy/Data/~*
+MDAPy/R_Scripts/.ipynb_checkpoints/*
+MDAPy/Saved_Files/All_MDA_Methods_Plots/*.tif
+MDAPy/.ipynb_checkpoints/*
+MDAPy/Saved_Files/All_MDA_Methods_Plots/*
