@@ -349,7 +349,7 @@ def buttons(selection, summary):
     if len(summary) <= 2:
         B4, B5, B6 = True, True, True
     else:
-        B4, B5, B6 = False, False, False
+        B4, B5, B6 = False, True, True
 
     return B1, B2, B3, B4, B5, B6
 
