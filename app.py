@@ -68,8 +68,9 @@ def sampleSelector(df):
     return selector
 
 
-dimensions = [html.H5('Age Plotting Dimensions'), html.Br(), html.P(
-    'For individual MDA plots with all ages plotted, this input controls the maximum age to be plotted to control how many measurements are shown on one plot. Input (Ma) will be added to the oldest age in the age clusters to give a max plotting age.')]
+dimensions = [html.H5('Age Plotting Dimensions'), html.Br(), 
+html.P('For individual MDA plots with all ages plotted, this input controls the maximum age to be plotted to control how many measurements are shown on one plot. Input (Ma) will be added to the oldest age in the age clusters to give a max plotting age.'),
+html.Div(children=[dcc.Input(id='age-plot-dimensions', value=4, type='number', className='col-sm-6',  min=1)], style={'width': '100%'}, className="row justify-content-end")]
 
 summary = html.Div(id='summary-header', children=[
     html.Div(id='summary-data', className="col-sm-3 summary-cards",
@@ -338,20 +339,22 @@ def MDATabLoader(template_path, selection):
               Output("mda_all_methods_and_plots", "disabled"),
               Output("mda_individual_method_and_plot", "disabled"),
               Output("mda_one_method_all_plots", "disabled"),
+              Output("btn-download-template", "disabled"),
+              Output("data-reset", "disabled"),
               Input('dataset-dropdown', 'value'),
               Input('computed-data', 'data'))
 def buttons(selection, summary):
 
     if (selection == '') or (selection is None):
-        B1, B2, B3 = True, True, True
+        B1, B2, B3, B7, B8 = True, True, True, True, True
     else:
-        B1, B2, B3 = False, False, False
+        B1, B2, B3, B7, B8 = False, False, False, False, False
     if len(summary) <= 2:
         B4, B5, B6 = True, True, True
     else:
         B4, B5, B6 = False, True, True
 
-    return B1, B2, B3, B4, B5, B6
+    return B1, B2, B3, B4, B5, B6, B7, B8
 
 
 @app.callback(Output('main-panel', 'children'),
@@ -403,11 +406,11 @@ def update_output(selection, contents, filename, clicked):
             return MDATabLoader(template_path, selection)
     else:
         return html.Div([
-            html.Img(src=app.get_asset_url('img/empty.png'),
-                     className="col-sm-1 align-self-center", style={'width': "100%", 'height': "auto"}),
-            html.H4("No Data Yet"),
-            html.P("Complete the fields and load your data into"),
-            html.P("the input form on the left to begin.")
+            html.Img(src=app.get_asset_url('img/empty.svg'),
+                     className="col-sm-1 align-self-center", style={'width': "60%", 'height': "auto"}),
+            # html.H4("No Data Yet"),
+            # html.P("Complete the fields and load your data into"),
+            # html.P("the input form on the left to begin.")
         ], style={'text-align': 'center'}), json.dumps({}), [html.H5('Age Plotting Dimensions'), html.Br(), html.P('Load or import data to start.', style={'text-align': 'center'})], [html.H5('Select Samples to Plot'), html.Br(), html.P('Load or import data to start.', style={'text-align': 'center'}), html.Div(id='sample_selection')], [html.H5('Age Plotting Dimensions'), html.P('Load or import data to start.', style={'text-align': 'center'})]
         # table = dash_table.DataTable(
         #     id='datatable-upload-container',
