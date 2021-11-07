@@ -9,3 +9,4 @@ assets/plots/*/*.png
 MDAPy/Saved_Files/All_MDA_Methods_Plots/*.svg
 MDAPy/Saved_Files/All_MDA_Methods_Plots/*.png
 MDAPy/Saved_Files/All_MDA_Methods_Plots/*.tiff
+dev/
