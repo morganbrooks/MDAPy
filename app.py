@@ -95,8 +95,12 @@ methods = html.Div(id='summary-methods', children=[
 accordion = html.Div(
     dbc.Accordion(
         [
-            dbc.AccordionItem([html.Div(id='main-panel')],
-                              title="Inspect Dataset"),
+            dbc.AccordionItem([dcc.Loading(
+                id="loading-main-panel",
+                type="default",
+                children=html.Div(id='main-panel'),
+            )],
+                title="Inspect Dataset"),
             dbc.AccordionItem(
                 [
                     # html.P("This is the content of the second section"),
