@@ -4,3 +4,4 @@ venv
 .DS_Store
 data/temp_data.xlsx
 assets/plots
+MDAPy/Saved_Files/All_MDA_Methods_Plots
