@@ -1,6 +1,11 @@
+![MDAPy Logo](assets/img/logo.png)     
 # MDAPy
+[**TODO**] TBD
+
+Brief description here
 
 ## 1) Introduction
+[**TODO**] TBD
 <!-- $~$ -->
 ## 2) Instalation
 ### 2.1) Requirements
@@ -58,4 +63,4 @@ Explain about the package and its use here.
 Assuming you have Heroku properly configured in your systems, you can set your App to source to deploy from your repository and push to the Heroku branch.
 
 ### 2.4) Docker Deployment
-TBD
+[**TODO**] TBD
