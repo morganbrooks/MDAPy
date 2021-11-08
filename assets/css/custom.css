@@ -33,6 +33,7 @@ html, body {
     padding: 20px;
     border-radius: 6px;
     min-width: 400px;
+    height: 100%;
 }
 
 .settings-buttons{
@@ -73,43 +74,43 @@ input[type=number] {
 
 .accordion-button:not(.collapsed) {
     color: #ffffff;
-    background-color: #63cac6;
+    background-color: #2e93a4;
     box-shadow: inset 0 -1px 0 rgb(0 0 0 / 13%);
 }
 
 .btn-primary {
     color: #fff;
-    background-color: #63cac6;
-    border-color: #63cac6;
+    background-color: #2e93a4;
+    border-color: #2e93a4;
 }
 
 .btn-check:focus+.btn-primary, .btn-primary:focus {
     color: #fff;
-    background-color: #63cac6;
-    border-color: #63cac6;
+    background-color: #2e93a4;
+    border-color: #2e93a4;
     box-shadow: 0 0 0 0.25rem rgb(99 202 198 / 24%);
 }
 
 .btn-primary:hover {
     color: #fff;
-    background-color: #63cac6;
-    border-color: #63cac6;
+    background-color: #2e93a4;
+    border-color: #2e93a4;
 }
 
 .btn-outline-primary {
-    color: #63cac6;
-    border-color: #63cac6;
+    color: #2e93a4;
+    border-color: #2e93a4;
 }
 
 .btn-outline-primary:hover {
     color: #fff;
-    background-color: #63cac6;
-    border-color: #63cac6;
+    background-color: #2e93a4;
+    border-color: #2e93a4;
 }
 .btn-check:active+.btn-outline-primary, .btn-check:checked+.btn-outline-primary, .btn-outline-primary.active, .btn-outline-primary.dropdown-toggle.show, .btn-outline-primary:active {
     color: #fff;
-    background-color: #63cac6;
-    border-color: #63cac6;
+    background-color: #2e93a4;
+    border-color: #2e93a4;
 }
 
 .btn-check:focus+.btn-outline-primary, .btn-outline-primary:focus {
@@ -118,8 +119,8 @@ input[type=number] {
 
 .btn-check:active+.btn-primary, .btn-check:checked+.btn-primary, .btn-primary.active, .btn-primary:active, .show>.btn-primary.dropdown-toggle {
     color: #fff;
-    background-color: #63cac6;
-    border-color: #63cac6;
+    background-color: #2e93a4;
+    border-color: #2e93a4;
 }
 
 .summary-cards {
@@ -239,7 +240,7 @@ th {
 }
 
 .dash-default-spinner > div {
-    background-color: #63cac6 !important;
+    background-color: #2e93a4 !important;
 }
 
 input[type="checkbox"] { /* change "blue" browser chrome to yellow */
@@ -256,4 +257,8 @@ input[type="checkbox"] { /* change "blue" browser chrome to yellow */
 
 .carousel-item {
     text-align: -webkit-center;
+}
+
+.tab--selected {
+    border-top: 2px solid #2e93a4 !important;
 }
