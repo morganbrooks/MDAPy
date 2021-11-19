@@ -17,7 +17,6 @@ Clone the repository to your computer by running the following code in your term
 
 ```
 git clone https://github.com/diegofcoelho/MDAPy.git
-
 ```
 
 While you can install all dependecies listed in `requirements.txt` directly to your python library, we highly recommend the use of virtual environments (`pyenv`) to manage the correct versions necessary to run MDAPy.
