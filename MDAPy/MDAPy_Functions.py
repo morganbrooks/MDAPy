@@ -618,7 +618,7 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
         
         for i in range(N):
             YSGaxi.set_xticks(x_arrays)
-            #YSGaxi.set_xticklabels(YSG_sample_sort,rotation='vertical') 
+            YSGaxi.set_xticklabels(YSG_sample_sort,rotation='vertical') 
             
         YSGaxi.hlines(y=YSG_age_values, xmin=0, xmax=(0), color = 'midnightblue', lw=1, linewidth=3, label='MDA: YSG')
         YSGaxi.broken_barh([(0.15, 0)], (YSG_age_values,0), facecolors=('cornflowerblue'), label='1σ Error')
@@ -962,7 +962,7 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
         
         for i in range(N):
             YC1saxi.set_xticks(x_arrays)
-            #YC1saxi.set_xticklabels(YC1s_sample_sort, rotation='vertical') 
+            YC1saxi.set_xticklabels(YC1s_sample_sort, rotation='vertical') 
         
         YC1saxi.hlines(y=YC1s_age_values, xmin=0, xmax=(0), color = 'midnightblue', lw=1, linewidth=3, label='MDA: YC1s')
         YC1saxi.broken_barh([(0.15, 0)], (YC1s_age_values,0), facecolors=('cornflowerblue'), label='1σ Error')
@@ -1797,7 +1797,7 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
         
         for i in range(N):
             YSPaxi.set_xticks(x_arrays)
-            #YSPaxi.set_xticklabels(YSP_sample_sort, rotation='vertical') 
+            YSPaxi.set_xticklabels(YSP_sample_sort, rotation='vertical') 
         
         YSPaxi.hlines(y=YSP_age_values, xmin=0, xmax=(0), color = 'midnightblue', lw=1, linewidth=3, label='MDA: YSP')
         YSPaxi.broken_barh([(0.15, 0)], (YSP_age_values,0), facecolors=('cornflowerblue'), label='1σ Error')

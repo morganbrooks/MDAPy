@@ -2,7 +2,8 @@
 args = commandArgs(trailingOnly = TRUE)
 # then we list all required code and install, load the packages.
 invisible({
-  pkgs <- c("IsoplotR", "dplyr", "rjson", "openxlsx")
+  suppressPackageStartupMessages({
+  pkgs <- c("IsoplotR", "dplyr", "rjson", "openxlsx", "readxl")
   installed <- (pkgs %in% rownames(installed.packages()))
   if (!all(installed)) {install.packages(pkgs[!installed], quiet = TRUE, 
                                          verbose = FALSE,
@@ -12,22 +13,23 @@ invisible({
   # provide a full path to the folder containing the data.
   file <- paste0(getwd(), "/", args[1]) 
   # we load the data 
-  data <- read.xlsx(file, sheet = "Data")
+  # data <- read.xlsx(file, sheet = "Data")
+  data <- read_excel(file, sheet = "Data")
   #
   samples <- rjson::fromJSON(args[2])
   #
   peak_values <- sapply(samples, function(sample){
-    png(filename = paste0("Saved_Files/MLA_Plots/plot_", sample, ".png"))
+    png(filename = paste0(getwd(), "/assets/plots/IsoplotR/plot_", sample, ".png"))
     mixtures <- data %>% filter(Sample_ID == sample) %>% select(-Sample_ID)
     # then we generate the plot
-    radialplot(mixtures, k = 'min', bg = 'cornflowerblue', transformation='log', sigdig=2, alpha=0.05)
+    radialplot(as.data.frame(mixtures), k = 'min', bg = 'cornflowerblue', transformation='log', sigdig=2, alpha=0.05)
     # If you don't want the sample name written on the picture, delete the line
     # bellow
     #title(main = sample, adj = 1, line = 2)
     # save on disk
     invisible(dev.off())
     # and calculate the parameter, returning it to python
-    peakfit(mixtures, k = 'min', sigdig = 2,alpha=0.05)$peaks[2]
+    peakfit(as.data.frame(mixtures), k = 'min', sigdig = 2,alpha=0.05)$peaks[2]
 
     
     })
