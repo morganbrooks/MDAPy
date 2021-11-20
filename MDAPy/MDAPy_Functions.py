@@ -166,6 +166,10 @@ def Plot_MDA(MDAs_1s_table, all_MDA_data, sample_list, YSG_MDA, YC1s_MDA, YC2s_M
     MDA_plot_final = MDA_plot_merge[['Sample_ID','Y3Zo_MDA', 'Y3Zo_1sErrorM', 'Y3Zo_1sErrorP', 'Y3Zo_2sErrorM', 'Y3Zo_2sErrorP', 'YSP_MDA', 'YSP_1sErrorM', 'YSP_1sErrorP', 'YSP_2sErrorM', 'YSP_2sErrorP','Tau_MDA', 'Tau_1sErrorP','Tau_1sErrorM', 'Tau_2sErrorP', 'Tau_2sErrorM', 'Y3Za_MDA', 'Y3Za_1sErrorM','Y3Za_1sErrorP','Y3Za_2sErrorM', 'Y3Za_2sErrorP', 'YC2σ_MDA', 'YC2s_1sErrorP','YC2s_1sErrorM','YC2s_2sErrorP','YC2s_2sErrorM', 'YC1σ_MDA', 'YC1s_1sErrorP', 'YC1s_1sErrorM', 'YC1s_2sErrorM', 'YC1s_2sErrorP', 'YPP_MDA', 'YDZ_MDA', 'YDZ_1sErrorM', 'YDZ_1sErrorP', 'YDZ_2sErrorMi', 'YDZ_2sErrorPl', 'YSG_MDA', 'YSG_1sErrorP', 'YSG_1sErrorM','YSG_2sErrorM','YSG_2sErrorP', 'MLA_MDA', 'MLA_1sErrorM', 'MLA_1sErrorP', 'MLA_2sErrorM', 'MLA_2sErrorP']]
     
     MDA_plot_final.reset_index(inplace = True, drop = True)
+    
+    MDAs_Only = MDA_plot_merge[['Y3Zo_MDA', 'YSP_MDA', 'Tau_MDA', 'Y3Za_MDA', 'YC2σ_MDA', 'YC1σ_MDA', 'YPP_MDA', 'YDZ_MDA', 'YSG_MDA', 'MLA_MDA']]
+    
+    Errors_only = all_MDA_data[['Y3Zo_+/-1σ', 'YSP_+/-1σ', 'Tau_+/-1σ', 'Y3Za_+/-1σ',  'YC2σ_+/-1σ', 'YC1σ_+/-1σ','YDZ_+2σ', 'YDZ_-2σ', 'YSG_+/-1σ', 'MLA_+/-1σ']]
 
     #Arrange MDA data for each method into sets of arrays 
 
@@ -180,8 +184,14 @@ def Plot_MDA(MDAs_1s_table, all_MDA_data, sample_list, YSG_MDA, YC1s_MDA, YC2s_M
     sample_arrays = np.split(sample_array,len(sample_array))
 
     #Setting Graph Y-Limits 
-    sample_ymax = np.array(MDA_plot_final.max(axis = 1)+5)
-    sample_ymin = np.array(MDA_plot_final.min(axis = 1)-5)
+    MDAs_array_ = np.array(MDAs_Only)
+    MDAs_array_int = MDAs_array_.astype('int')
+    Errors_array = np.array(Errors_only)
+    Errors_array_int = Errors_array.astype('float')
+    y_space = ((Errors_array_int.max(axis=1)*2)+5)
+    
+    sample_ymax = (MDAs_array_int.max(axis = 1) +  y_space)
+    sample_ymin = (MDAs_array_int.min(axis = 1) -  y_space)
     ymax = np.split(sample_ymax,len(sample_ymax))
     ymin = np.split(sample_ymin,len(sample_ymin))
 
@@ -495,6 +505,7 @@ def Plot_MDA(MDAs_1s_table, all_MDA_data, sample_list, YSG_MDA, YC1s_MDA, YC2s_M
 
     return MDAfig, MDA_plot_final
 
+
 #Plot for All samples using one MDA method: Code by morganbrooks 
 
 def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau_MDA, YSP_MDA, YPP_MDA, MLA_MDA, ages, errors, sample_list, Image_File_Option, plotwidth, plotheight, MDA_Method):
@@ -692,7 +703,8 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
             YDZ_sorted.append([YDZ_Zipped[0][0],YDZ_Zipped[0][1],YDZ_Zipped[0][2],YDZ_Zipped[0][3]])
             YDZ_sorted.sort(reverse=True)
     
-        YDZ_sorted_array = np.array(YDZ_sorted)
+        YDZ_sorted_array = np.array(YDZ_sorted, dtype=object)
+        
         YDZ_MDA_sort = YDZ_sorted_array[:,0]        
         YDZ_error1sP_sort = YDZ_sorted_array[:,1]
         YDZ_error1sM_sort = YDZ_sorted_array[:,2]
@@ -3578,7 +3590,7 @@ def YSP_outputs(ages, errors, sample_list, YSP_MDA, YSP_cluster, plotwidth, plot
         YSP_max_cluster = np.max(YSP_cluster_age_arrays_split_i)
         
         
-        for s, t, u in YSP_cluster_age_arrays_split_i:
+        for s, t, u, v, w in YSP_cluster_age_arrays_split_i:
             clust_age = s
             clust_error = t
             cluster_age_and_error = s+t
@@ -5127,7 +5139,7 @@ def MLA(sample_list, dataToLoad_MLA):
     # The solution is a mix of python, R and markdown to manage the files, plot and display of pictures here on jupyter.
     import glob, os, json, subprocess
     #
-    files = glob.glob("Saved_Files/MLA_Plots/*.png")
+    files = glob.glob("assets/plots/IsoplotR/*.png")
     #
     for f in files:
         os.remove(f)
