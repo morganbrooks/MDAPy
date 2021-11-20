@@ -2,12 +2,14 @@
 args = commandArgs(trailingOnly = TRUE)
 # then we list all required code and install, load the packages.
 invisible({
+    suppressPackageStartupMessages({
   pkgs <- c("IsoplotR", "dplyr", "rjson", "openxlsx", "readxl")
   installed <- (pkgs %in% rownames(installed.packages()))
   if (!all(installed)) {install.packages(pkgs[!installed], quiet = TRUE, 
                                          verbose = FALSE,
                                          repos = "http://cran.us.r-project.org")}
   load_all_libraries <- lapply(pkgs, require, character.only = TRUE)
+        })
   # note that the working directory is important here, otherwise you will need to
   # provide a full path to the folder containing the data.
   file <- paste0(getwd(), "/", args[1]) 
