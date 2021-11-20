@@ -10,7 +10,7 @@ file <- paste0(getwd(), "/", args[1])
 # we load the data 
 mixtures <- read.csv2(file, dec = "." , sep = ",", colClasses = c('numeric','numeric'))
 # set where the file will be saved (note that the second argumetn is used to name the image file)
-png(filename = paste0("Saved_Files/MLA_Plots/plot_", args[2], ".png"))
+png(filename = paste0("/assets/plots/IsoplotR/plot_", args[2], ".png"))
 # then we generate the plot
 radialplot(mixture, k = 'min', bg ='cornflowerblue', transformation='log', sigdig=2,alpha=0.05)
 # save on disk

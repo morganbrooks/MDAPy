@@ -3753,7 +3753,7 @@ def radial_plots():
     import glob, os, json, subprocess
     
     # list all files on the temp folder
-    fs = glob.glob("Saved_Files/MLA_Plots/*.png")
+    fs = glob.glob("assets/plots/IsoplotR/*.png")
     
    
     
