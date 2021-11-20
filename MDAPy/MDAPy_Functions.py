@@ -282,7 +282,8 @@ def Plot_MDA(MDAs_1s_table, all_MDA_data, sample_list, YSG_MDA, YC1s_MDA, YC2s_M
             axi = ax[i]
         else:
             axi = ax
-        MDAfig, axi = plt.subplots(1, 1, figsize=(plotwidth, 1*plotheight))
+        if Image_File_Option == 'web':
+            MDAfig, axi = plt.subplots(1, 1, figsize=(plotwidth, 1*plotheight))
             
         #Setting graph y-limits
         ymax_ = ymax[i]
