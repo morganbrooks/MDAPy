@@ -30,7 +30,9 @@ def MDA_Calculator(ages, errors, sample_list, dataToLoad_MLA, eight_six_ratios, 
     
     YSG_MDA = YSG(ages, errors, sample_list, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off)
   
-    YC2s_MDA,YC2s_cluster_arrays = YC2s(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six_ratios, seven_six_error, U238_decay_constant, U235_decay_constant, U238_U235, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off, min_cluster_size=3)
+    YC2s_MDA,YC2s_cluster_arrays = YC2s(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six_ratiLoad or import data to start.
+
+os, seven_six_error, U238_decay_constant, U235_decay_constant, U238_U235, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off, min_cluster_size=3)
       
     YC1s_MDA, YC1s_cluster_arrays = YC1s(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six_ratios, seven_six_error, U238_decay_constant, U235_decay_constant, U238_U235, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off, min_cluster_size=2)
     
@@ -472,35 +474,49 @@ def Plot_MDA(MDAs_1s_table, all_MDA_data, sample_list, YSG_MDA, YC1s_MDA, YC2s_M
         asset_folder = 'assets/plots/All_MDA_Methods_Plots/'
         filename = 'All_MDA_Methods_Plots_' + str(i)
 
-        if Image_File_Option == 'pdf':
+         if Image_File_Option == 'pdf':
             MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
+            plt.close(MDAfig)
         if Image_File_Option == 'png':
             MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
+            plt.close(MDAfig)
         if Image_File_Option == 'eps':
             MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
+            plt.close(MDAfig)
         if Image_File_Option == 'jpeg':
             MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
+            plt.close(MDAfig)
         if Image_File_Option == 'jpg':
             MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
+            plt.close(MDAfig)
         if Image_File_Option == 'pgf':
             MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
+            plt.close(MDAfig)
         if Image_File_Option == 'ps':
             MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
+            plt.close(MDAfig)
         if Image_File_Option == 'raw':
             MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
+            plt.close(MDAfig)
         if Image_File_Option == 'rgba':
             MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
+            plt.close(MDAfig)
         if Image_File_Option == 'svg':
             MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
+            plt.close(MDAfig)
         if Image_File_Option == 'svgz':
             MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
+            plt.close(MDAfig)
         if Image_File_Option == 'tif':
             MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
+            plt.close(MDAfig)
         if Image_File_Option == 'tiff':
             MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
+            plt.close(MDAfig)
         if Image_File_Option == 'web':
             MDAfig.savefig(asset_folder + filename + '.svg')
             MDAfig.savefig(asset_folder + filename + '.tiff')
+            plt.close(MDAfig)
         
 
     return MDAfig, MDA_plot_final
@@ -682,7 +698,9 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
     def YDZ_Strat_Plot(YDZ_MDA, sample_list, Image_File_Option):
         
         #Sample_List
-        N = len(sample_list)
+        N = len(sample_list)Load or import data to start.
+
+
         sample_array = np.array(sample_list)
         sample_arrays = np.split(sample_array,len(sample_array))
         
@@ -5164,4 +5182,6 @@ def MLA(sample_list, dataToLoad_MLA):
         MLA_MDA_1sError[k] = tuple(MLA_MDA_1sError[k] for MLA_MDA_1sError in ds)
     MLA_MDA = []
     MLA_MDA = list(MLA_MDA_1sError.values())
+
     return MLA_MDA
+
