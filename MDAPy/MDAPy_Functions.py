@@ -473,35 +473,49 @@ def Plot_MDA(MDAs_1s_table, all_MDA_data, sample_list, YSG_MDA, YC1s_MDA, YC2s_M
         asset_folder = 'assets/plots/All_MDA_Methods_Plots/'
         filename = 'All_MDA_Methods_Plots_' + str(i)
 
-        if Image_File_Option == 'pdf':
+         if Image_File_Option == 'pdf':
             MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
+            plt.close(MDAfig)
         if Image_File_Option == 'png':
             MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
+            plt.close(MDAfig)
         if Image_File_Option == 'eps':
             MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
+            plt.close(MDAfig)
         if Image_File_Option == 'jpeg':
             MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
+            plt.close(MDAfig)
         if Image_File_Option == 'jpg':
             MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
+            plt.close(MDAfig)
         if Image_File_Option == 'pgf':
             MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
+            plt.close(MDAfig)
         if Image_File_Option == 'ps':
             MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
+            plt.close(MDAfig)
         if Image_File_Option == 'raw':
             MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
+            plt.close(MDAfig)
         if Image_File_Option == 'rgba':
             MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
+            plt.close(MDAfig)
         if Image_File_Option == 'svg':
             MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
+            plt.close(MDAfig)
         if Image_File_Option == 'svgz':
             MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
+            plt.close(MDAfig)
         if Image_File_Option == 'tif':
             MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
+            plt.close(MDAfig)
         if Image_File_Option == 'tiff':
             MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
+            plt.close(MDAfig)
         if Image_File_Option == 'web':
             MDAfig.savefig(asset_folder + filename + '.svg')
             MDAfig.savefig(asset_folder + filename + '.tiff')
+            plt.close(MDAfig)
         
 
     return MDAfig, MDA_plot_final
