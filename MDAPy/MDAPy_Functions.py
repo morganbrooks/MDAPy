@@ -30,7 +30,9 @@ def MDA_Calculator(ages, errors, sample_list, dataToLoad_MLA, eight_six_ratios, 
     
     YSG_MDA = YSG(ages, errors, sample_list, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off)
   
-    YC2s_MDA,YC2s_cluster_arrays = YC2s(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six_ratios, seven_six_error, U238_decay_constant, U235_decay_constant, U238_U235, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off, min_cluster_size=3)
+    YC2s_MDA,YC2s_cluster_arrays = YC2s(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six_ratiLoad or import data to start.
+
+os, seven_six_error, U238_decay_constant, U235_decay_constant, U238_U235, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off, min_cluster_size=3)
       
     YC1s_MDA, YC1s_cluster_arrays = YC1s(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six_ratios, seven_six_error, U238_decay_constant, U235_decay_constant, U238_U235, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off, min_cluster_size=2)
     
@@ -263,7 +265,6 @@ def Plot_MDA(MDAs_1s_table, all_MDA_data, sample_list, YSG_MDA, YC1s_MDA, YC2s_M
     MLA_error1s = MLA_array[:,1]
     MLA_MDAs_arrays = np.split(MLA_MDAs,len(MLA_MDAs))
     MLA_error1s_arrays = np.split(MLA_error1s,len(MLA_MDAs))
-    
     
     N = len(sample_arrays)
     
@@ -697,7 +698,9 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
     def YDZ_Strat_Plot(YDZ_MDA, sample_list, Image_File_Option):
         
         #Sample_List
-        N = len(sample_list)
+        N = len(sample_list)Load or import data to start.
+
+
         sample_array = np.array(sample_list)
         sample_arrays = np.split(sample_array,len(sample_array))
         
@@ -3368,7 +3371,6 @@ def Y3Za_outputs(ages, errors, Y3Za_MDA, Y3Za_cluster_arrays, sample_list, plotw
     
     return Y3Za_MDA, Y3Za_Table_
 
-
 def Tau_outputs(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six_ratios, seven_six_error, U238_decay_constant, U235_decay_constant, U238_U235, Data_Type, best_age_cut_off, plotwidth, plotheight, Image_File_Option, min_cluster_size=3, thres=0.01, minDist=1, xdif=1, x1=0, x2=4000):
  #Tau calculation code below (with modifications) obtained from detritalPy_v1.3: @authors: glennrsharman, jonathanpsharman, zoltansylvester 
  #Tau plotting code author: morganbrooks 
@@ -3502,7 +3504,6 @@ def Tau_outputs(ages, errors, sample_list, eight_six_ratios, eight_six_error, se
     
     
     return Tau, Tau_Table_
-
 
 def YSP_outputs(ages, errors, sample_list, YSP_MDA, YSP_cluster, plotwidth, plotheight, age_addition_set_max_plot, Image_File_Option, min_cluster_size=2, MSWD_threshold=1):
 #YSP plotting code author: morganbrooks 
@@ -3734,11 +3735,12 @@ def MLA_outputs(sample_list, dataToLoad):
     samples = json.dumps(sample_list)
     # we call the RScript using subprocess and send the path to the file containing the data and a string 
     # with a name for the file to be saved on the temporary folder.
-    output = subprocess.check_output(["Rscript", 'R_Scripts/IsoPlotR.R', dataToLoad[0], samples], universal_newlines=True)
-    output2 = subprocess.check_output(["Rscript", 'R_Scripts/IsoPlotR2.R', dataToLoad[0], samples], universal_newlines=True)
+    output = subprocess.check_output(["Rscript", 'R_Scripts/IsoPlotR.R', dataToLoad[0], samples])
+    results = json.loads(output)
+    # output2 = subprocess.check_output(["Rscript", 'R_Scripts/IsoPlotR2.R', dataToLoad[0], samples], universal_newlines=True)
     # then we convert the json returned to a dictionary by reading it as a json format
-    MDA_Values = json.loads(output)
-    Error_Values = json.loads(output2)
+    MDA_Values = {k:results[k][0] for k in results.keys()}
+    Error_Values = {k:results[k][1] for k in results.keys()}
     # Then we print the dictionary returned by R from the peakfit function
     
     # print("\n") # I just printed a line between the numbers, you can delete this line anytime
@@ -3837,7 +3839,6 @@ def loadDataExcel(dataToLoad, Data_Type, mainSheet = 'Samples', dataSheet = 'Dat
     analyses_df = pd.concat(obj4, sort=False)
 
     return main_df, main_byid_df, samples_df, analyses_df, Data_Type
-
 
 
 #Check that the Data Loaded Properly & Review Unique Samples: code by morganbrooks
@@ -5163,13 +5164,13 @@ def MLA(sample_list, dataToLoad_MLA):
     samples = json.dumps(sample_list)
     # we call the RScript using subprocess and send the path to the file containing the data and a string 
     # with a name for the file to be saved on the temporary folder.
-    output = subprocess.check_output(["Rscript", 'R_Scripts/IsoPlotR.R', dataToLoad_MLA[0], samples], universal_newlines=True)
-    output2 = subprocess.check_output(["Rscript", 'R_Scripts/IsoPlotR2.R', dataToLoad_MLA[0], samples], universal_newlines=True)
+    output = subprocess.check_output(["Rscript", 'R_Scripts/IsoPlotR.R', dataToLoad_MLA[0], samples])
+    results = json.loads(output)
+    # output2 = subprocess.check_output(["Rscript", 'R_Scripts/IsoPlotR2.R', dataToLoad[0], samples], universal_newlines=True)
     # then we convert the json returned to a dictionary by reading it as a json format
-    MDA_Values = json.loads(output)
-    Error_Values = json.loads(output2)
+    MDA_Values = {k:results[k][0] for k in results.keys()}
+    Error_Values = {k:results[k][1] for k in results.keys()}
     # Then we print the dictionary returned by R from the peakfit function
-    
     # print("\n") # I just printed a line between the numbers, you can delete this line anytime
     # or we can print the value for a given sample
     #print(peak_values['UK027'])
@@ -5181,5 +5182,6 @@ def MLA(sample_list, dataToLoad_MLA):
         MLA_MDA_1sError[k] = tuple(MLA_MDA_1sError[k] for MLA_MDA_1sError in ds)
     MLA_MDA = []
     MLA_MDA = list(MLA_MDA_1sError.values())
-    
+
     return MLA_MDA
+
