@@ -3719,7 +3719,6 @@ def MLA_outputs(sample_list, dataToLoad):
     # with a name for the file to be saved on the temporary folder.
     output = subprocess.check_output(["Rscript", 'R_Scripts/IsoPlotR.R', dataToLoad[0], samples])
     results = json.loads(output)
-    print(results)
     # output2 = subprocess.check_output(["Rscript", 'R_Scripts/IsoPlotR2.R', dataToLoad[0], samples], universal_newlines=True)
     # then we convert the json returned to a dictionary by reading it as a json format
     MDA_Values = {k:results[k][0] for k in results.keys()}
