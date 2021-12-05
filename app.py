@@ -37,7 +37,7 @@ def sampleSelector(df):
 
 dimensions = [html.H5('Age Plotting Dimensions'), html.Br(),
               html.P('For individual MDA plots with all ages plotted, this input controls the maximum age to be plotted to control how many measurements are shown on one plot. Input (Ma) will be added to the oldest age in the age clusters to give a max plotting age.'),
-              html.Div(children=[dcc.Input(id='age-plot-dimensions', value=4, type='number', className='col-sm-6',  min=1)], style={'width': '100%'}, className="row justify-content-end")]
+              html.Div(children=[dcc.Input(id='age-plot-dimensions', value=0, type='number', className='col-sm-6',  min=0)], style={'width': '100%'}, className="row justify-content-end")]
 
 summary = html.Div(id='summary-header', children=[
     html.Div(id='summary-data', className="col-sm-3 summary-cards",
@@ -341,7 +341,7 @@ def update_output(selection, contents, filename, clicked):
         return html.Div([
             html.Img(src=app.get_asset_url('img/empty.svg'),
                      className="col-sm-1 align-self-center", style={'width': "60%", 'height': "auto"}),
-        ], style={'text-align': 'center'}), json.dumps({}), [html.H5('Age Plotting Dimensions'), html.Br(), html.P('Load or import data to start.', style={'text-align': 'center'})], [html.H5('Select Samples to Plot'), html.Br(), html.P('Load or import data to start.', style={'text-align': 'center'}), html.Div(id='sample_selection')], [html.H5('Age Plotting Dimensions'), html.P('Load or import data to start.', style={'text-align': 'center'})]
+        ], style={'text-align': 'center'}), json.dumps({}), [html.H5('Data Upload Summary'), html.Br(), html.P('Load or import data to start.', style={'text-align': 'center'})], [html.H5('Select Samples to Plot'), html.Br(), html.P('Load or import data to start.', style={'text-align': 'center'}), html.Div(id='sample_selection')], [html.H5('Age Plotting Dimensions'), html.P('Load or import data to start.', style={'text-align': 'center'}), dcc.Input(id='age-plot-dimensions', value=0, type='number', className='col-sm-6',  min=0,style={'display': 'none'})]
 
 
 @app.callback(Output('computed-data-errors', 'data'),
@@ -361,12 +361,13 @@ def update_output(selection, contents, filename, clicked):
               Input('Sy_calibration_uncertainty_207_206', 'value'),
               Input('decay_constant_uncertainty_U238', 'value'),
               Input('decay_constant_uncertainty_U235', 'value'),
+              Input('age-plot-dimensions', 'value'),
               Input("mda_all_methods_and_plots", "n_clicks"),
               Input("mda_individual_method_and_plot", "n_clicks"),
               Input("mda_one_method_all_plots", "n_clicks"),
               prevent_initial_call=True)
-def pre_calculation(computed_data, sample_list, sigma, uncertainty, best_age_cut_off, U238_decay_constant, U235_decay_constant, U238_U235, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, button_method_1, button_method_2, button_method_3):
-
+def pre_calculation(computed_data, method, sample_list, sigma, uncertainty, best_age_cut_off, U238_decay_constant, U235_decay_constant, U238_U235, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, age_addition_set_max_plot, button_method_1, button_method_2, button_method_3):
+    
     df_errors = None
     summary_mda_table = html.Div()
     triggered = dash.callback_context.triggered[0]['prop_id'].split('.')[0]
