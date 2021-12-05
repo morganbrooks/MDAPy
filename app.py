@@ -37,7 +37,7 @@ def sampleSelector(df):
 
 dimensions = [html.H5('Age Plotting Dimensions'), html.Br(),
               html.P('For individual MDA plots with all ages plotted, this input controls the maximum age to be plotted to control how many measurements are shown on one plot. Input (Ma) will be added to the oldest age in the age clusters to give a max plotting age.'),
-              html.Div(children=[dcc.Input(id='age-plot-dimensions', value=0, type='number', className='col-sm-6',  min=0)], style={'width': '100%'}, className="row justify-content-end")]
+              html.Div(children=[dcc.Input(id='age-plot-dimensions', value=30, type='number', className='col-sm-6',  min=5)], style={'width': '100%'}, className="row justify-content-end")]
 
 summary = html.Div(id='summary-header', children=[
     html.Div(id='summary-data', className="col-sm-3 summary-cards",
