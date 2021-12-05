@@ -30,7 +30,9 @@ def MDA_Calculator(ages, errors, sample_list, dataToLoad_MLA, eight_six_ratios, 
     
     YSG_MDA = YSG(ages, errors, sample_list, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off)
   
-    YC2s_MDA,YC2s_cluster_arrays = YC2s(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six_ratios, seven_six_error, U238_decay_constant, U235_decay_constant, U238_U235, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off, min_cluster_size=3)
+    YC2s_MDA,YC2s_cluster_arrays = YC2s(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six_ratiLoad or import data to start.
+
+os, seven_six_error, U238_decay_constant, U235_decay_constant, U238_U235, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off, min_cluster_size=3)
       
     YC1s_MDA, YC1s_cluster_arrays = YC1s(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six_ratios, seven_six_error, U238_decay_constant, U235_decay_constant, U238_U235, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off, min_cluster_size=2)
     
