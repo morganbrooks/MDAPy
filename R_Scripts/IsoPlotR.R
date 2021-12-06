@@ -20,15 +20,16 @@ invisible({
   samples <- rjson::fromJSON(args[2])
   #
   peak_values <- sapply(samples, function(sample) {
-    png(filename = paste0(getwd(), "/assets/plots/IsoplotR/plot_", sample, ".png"))
     mixtures <- data %>% filter(Sample_ID == sample) %>% select(-Sample_ID)
     # then we generate the plot
+    png(filename = paste0(getwd(), "/assets/plots/IsoplotR/plot_", sample, ".png"))
     radialplot(as.data.frame(mixtures), k = 'min', bg = 'cornflowerblue', transformation='log', sigdig=2,alpha=0.05)
-    # If you don't want the sample name written on the picture, delete the line
-    # bellow
+    invisible(dev.off())
+    svg(filename = paste0(getwd(), "/assets/plots/IsoplotR/plot_", sample, ".svg"))
+    radialplot(as.data.frame(mixtures), k = 'min', bg = 'cornflowerblue', transformation='log', sigdig=2,alpha=0.05)
+    invisible(dev.off())
     #title(main = sample, adj = 1, line = 2)
     # save on disk
-    invisible(dev.off())
     # and calculate the parameter, returning it to python
    peakfit(as.data.frame(mixtures), k = 'min', sigdig = 2, alpha = 0.05)$peaks
     }, simplify = FALSE, USE.NAMES = TRUE)
