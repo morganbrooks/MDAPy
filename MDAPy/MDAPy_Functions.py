@@ -22,7 +22,9 @@ import peakutils
 from scipy import stats 
 from matplotlib.backends.backend_pdf import PdfPages
 from scipy import optimize
-
+import re
+import IPython.display as dp
+import glob, os, json, subprocess
 
 #Compiles all the MDA calculators into one step 
 
@@ -166,6 +168,10 @@ def Plot_MDA(MDAs_1s_table, all_MDA_data, sample_list, YSG_MDA, YC1s_MDA, YC2s_M
     MDA_plot_final = MDA_plot_merge[['Sample_ID','Y3Zo_MDA', 'Y3Zo_1sErrorM', 'Y3Zo_1sErrorP', 'Y3Zo_2sErrorM', 'Y3Zo_2sErrorP', 'YSP_MDA', 'YSP_1sErrorM', 'YSP_1sErrorP', 'YSP_2sErrorM', 'YSP_2sErrorP','Tau_MDA', 'Tau_1sErrorP','Tau_1sErrorM', 'Tau_2sErrorP', 'Tau_2sErrorM', 'Y3Za_MDA', 'Y3Za_1sErrorM','Y3Za_1sErrorP','Y3Za_2sErrorM', 'Y3Za_2sErrorP', 'YC2σ_MDA', 'YC2s_1sErrorP','YC2s_1sErrorM','YC2s_2sErrorP','YC2s_2sErrorM', 'YC1σ_MDA', 'YC1s_1sErrorP', 'YC1s_1sErrorM', 'YC1s_2sErrorM', 'YC1s_2sErrorP', 'YPP_MDA', 'YDZ_MDA', 'YDZ_1sErrorM', 'YDZ_1sErrorP', 'YDZ_2sErrorMi', 'YDZ_2sErrorPl', 'YSG_MDA', 'YSG_1sErrorP', 'YSG_1sErrorM','YSG_2sErrorM','YSG_2sErrorP', 'MLA_MDA', 'MLA_1sErrorM', 'MLA_1sErrorP', 'MLA_2sErrorM', 'MLA_2sErrorP']]
     
     MDA_plot_final.reset_index(inplace = True, drop = True)
+    
+    MDAs_Only = MDA_plot_merge[['Y3Zo_MDA', 'YSP_MDA', 'Tau_MDA', 'Y3Za_MDA', 'YC2σ_MDA', 'YC1σ_MDA', 'YPP_MDA', 'YDZ_MDA', 'YSG_MDA', 'MLA_MDA']]
+    
+    Errors_only = all_MDA_data[['Y3Zo_+/-1σ', 'YSP_+/-1σ', 'Tau_+/-1σ', 'Y3Za_+/-1σ',  'YC2σ_+/-1σ', 'YC1σ_+/-1σ','YDZ_+2σ', 'YDZ_-2σ', 'YSG_+/-1σ', 'MLA_+/-1σ']]
 
     #Arrange MDA data for each method into sets of arrays 
 
@@ -180,8 +186,14 @@ def Plot_MDA(MDAs_1s_table, all_MDA_data, sample_list, YSG_MDA, YC1s_MDA, YC2s_M
     sample_arrays = np.split(sample_array,len(sample_array))
 
     #Setting Graph Y-Limits 
-    sample_ymax = np.array(MDA_plot_final.max(axis = 1)+5)
-    sample_ymin = np.array(MDA_plot_final.min(axis = 1)-5)
+    MDAs_array_ = np.array(MDAs_Only)
+    MDAs_array_int = MDAs_array_.astype('int')
+    Errors_array = np.array(Errors_only)
+    Errors_array_int = Errors_array.astype('float')
+    y_space = ((Errors_array_int.max(axis=1)*2)+5)
+    
+    sample_ymax = (MDAs_array_int.max(axis = 1) +  y_space)
+    sample_ymin = (MDAs_array_int.min(axis = 1) -  y_space)
     ymax = np.split(sample_ymax,len(sample_ymax))
     ymin = np.split(sample_ymin,len(sample_ymin))
 
@@ -254,7 +266,6 @@ def Plot_MDA(MDAs_1s_table, all_MDA_data, sample_list, YSG_MDA, YC1s_MDA, YC2s_M
     MLA_MDAs_arrays = np.split(MLA_MDAs,len(MLA_MDAs))
     MLA_error1s_arrays = np.split(MLA_error1s,len(MLA_MDAs))
     
-    
     N = len(sample_arrays)
     
     MDA_methods = [" ","YSG","YDZ","YPP","YC1σ","YC2σ","Y3Za","Y3Zo","Tau","YSP", "MLA"," "]
@@ -272,14 +283,14 @@ def Plot_MDA(MDAs_1s_table, all_MDA_data, sample_list, YSG_MDA, YC1s_MDA, YC2s_M
             axi = ax[i]
         else:
             axi = ax
-        MDAfig, axi = plt.subplots(1, 1, figsize=(plotwidth, 1*plotheight))
+        if Image_File_Option == 'web':
+            MDAfig, axi = plt.subplots(1, 1, figsize=(plotwidth, 1*plotheight))
             
         #Setting graph y-limits
         ymax_ = ymax[i]
         ymin_ = ymin[i]
         yrange = int(ymax_[0])
- 
-        
+         
         #Sample_List 
         samples = sample_arrays[i]
         
@@ -458,40 +469,17 @@ def Plot_MDA(MDAs_1s_table, all_MDA_data, sample_list, YSG_MDA, YC1s_MDA, YC2s_M
         plt.margins(0.02)
         plt.subplots_adjust(bottom=0.15)
         MDAfig.tight_layout(pad=3)
-        
-        asset_folder = 'assets/plots/All_MDA_Methods_Plots/'
-        filename = 'All_MDA_Methods_Plots_' + str(i)
-
-        if Image_File_Option == 'pdf':
-            MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
-        if Image_File_Option == 'png':
-            MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
-        if Image_File_Option == 'eps':
-            MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
-        if Image_File_Option == 'jpeg':
-            MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
-        if Image_File_Option == 'jpg':
-            MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
-        if Image_File_Option == 'pgf':
-            MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
-        if Image_File_Option == 'ps':
-            MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
-        if Image_File_Option == 'raw':
-            MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
-        if Image_File_Option == 'rgba':
-            MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
-        if Image_File_Option == 'svg':
-            MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
-        if Image_File_Option == 'svgz':
-            MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
-        if Image_File_Option == 'tif':
-            MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
-        if Image_File_Option == 'tiff':
-            MDAfig.savefig(asset_folder + filename + '.' + Image_File_Option)
+                
         if Image_File_Option == 'web':
+            filename = 'All_MDA_Methods_Plots_' + str(i)
+            asset_folder = 'assets/plots/All_MDA_Methods_Plots/'
             MDAfig.savefig(asset_folder + filename + '.svg')
             MDAfig.savefig(asset_folder + filename + '.tiff')
-        
+            plt.close(MDAfig)   
+        else:
+            MDAfig.savefig('Saved_Files/All_MDA_Methods_Plots/All_MDA_Methods_Plots.' + Image_File_Option)   
+       
+    plt.close(MDAfig)        
 
     return MDAfig, MDA_plot_final
 
@@ -618,7 +606,7 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
         
         for i in range(N):
             YSGaxi.set_xticks(x_arrays)
-            #YSGaxi.set_xticklabels(YSG_sample_sort,rotation='vertical') 
+            YSGaxi.set_xticklabels(YSG_sample_sort,rotation='vertical') 
             
         YSGaxi.hlines(y=YSG_age_values, xmin=0, xmax=(0), color = 'midnightblue', lw=1, linewidth=3, label='MDA: YSG')
         YSGaxi.broken_barh([(0.15, 0)], (YSG_age_values,0), facecolors=('cornflowerblue'), label='1σ Error')
@@ -672,6 +660,7 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
         
         #Sample_List
         N = len(sample_list)
+
         sample_array = np.array(sample_list)
         sample_arrays = np.split(sample_array,len(sample_array))
         
@@ -692,7 +681,8 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
             YDZ_sorted.append([YDZ_Zipped[0][0],YDZ_Zipped[0][1],YDZ_Zipped[0][2],YDZ_Zipped[0][3]])
             YDZ_sorted.sort(reverse=True)
     
-        YDZ_sorted_array = np.array(YDZ_sorted)
+        YDZ_sorted_array = np.array(YDZ_sorted, dtype=object)
+        
         YDZ_MDA_sort = YDZ_sorted_array[:,0]        
         YDZ_error1sP_sort = YDZ_sorted_array[:,1]
         YDZ_error1sM_sort = YDZ_sorted_array[:,2]
@@ -962,7 +952,7 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
         
         for i in range(N):
             YC1saxi.set_xticks(x_arrays)
-            #YC1saxi.set_xticklabels(YC1s_sample_sort, rotation='vertical') 
+            YC1saxi.set_xticklabels(YC1s_sample_sort, rotation='vertical') 
         
         YC1saxi.hlines(y=YC1s_age_values, xmin=0, xmax=(0), color = 'midnightblue', lw=1, linewidth=3, label='MDA: YC1s')
         YC1saxi.broken_barh([(0.15, 0)], (YC1s_age_values,0), facecolors=('cornflowerblue'), label='1σ Error')
@@ -1797,7 +1787,7 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
         
         for i in range(N):
             YSPaxi.set_xticks(x_arrays)
-            #YSPaxi.set_xticklabels(YSP_sample_sort, rotation='vertical') 
+            YSPaxi.set_xticklabels(YSP_sample_sort, rotation='vertical') 
         
         YSPaxi.hlines(y=YSP_age_values, xmin=0, xmax=(0), color = 'midnightblue', lw=1, linewidth=3, label='MDA: YSP')
         YSPaxi.broken_barh([(0.15, 0)], (YSP_age_values,0), facecolors=('cornflowerblue'), label='1σ Error')
@@ -1840,7 +1830,6 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
             YSPfig.savefig('Saved_Files/Stratigraphic_Plots/YSP_All_Samples_Plot.tif')
         if Image_File_Option == 'tiff':
             YSPfig.savefig('Saved_Files/Stratigraphic_Plots/YSP_All_Samples_Plot.tif')
-
         
         return 
 
@@ -1884,9 +1873,7 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
         YPP_MDAs_sorted_arrays = np.split(YPP_MDA_sort,len(YPP_MDA_sort))
         YPP_sample_arrays = np.split(YPP_sample_sort,len(YPP_MDA_sort))
         YPP_Y_Max = np.array(YPP_MDA_sort, dtype='f')
-    
-
-        
+            
         YPPfig, YPPaxi = plt.subplots(figsize=(plotwidth, plotheight))
         width = []  
 
@@ -1956,9 +1943,7 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
             YPPfig.savefig('Saved_Files/Stratigraphic_Plots/YPP_All_Samples_Plot.tif')
         if Image_File_Option == 'tiff':
             YPPfig.savefig('Saved_Files/Stratigraphic_Plots/YPP_All_Samples_Plot.tif')
-        
-
-        
+                
         return 
 
     #MLA
@@ -2121,8 +2106,7 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
             MLAfig.savefig('Saved_Files/Stratigraphic_Plots/MLA_All_Samples_Plot.tif')
         if Image_File_Option == 'tiff':
             MLAfig.savefig('Saved_Files/Stratigraphic_Plots/MLA_All_Samples_Plot.tif')
-        
-        
+                
         return 
         
     if MDA_Method == "YSG":
@@ -2151,14 +2135,10 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
         
     return Plot
 
-
 #Functions for individual MDA method outputs 
 
-
 def YSG_outputs(ages, errors, plotwidth, plotheight, sample_list, YSG_MDA, age_addition_set_max_plot, Image_File_Option):
-#YC1s plotting code author: morganbrooks 
-
-
+    #YC1s plotting code author: morganbrooks 
     if not hasattr(ages[0], '__len__'):
         ages = [ages]
         errors = [errors]
@@ -2205,11 +2185,8 @@ def YSG_outputs(ages, errors, plotwidth, plotheight, sample_list, YSG_MDA, age_a
   
     width = []
         
-    for i in range(N):
-        
-        #Preparing the data to be plotted
-        
-        
+    for i in range(N):      
+        #Preparing the data to be plotted    
         #Setting up the age and error by sample: sorted by age
         YSG_age_error_1s_ = list(zip(ages[i],errors[i]))
         YSG_age_error_1s_.sort(key=lambda d: d[0])
@@ -2218,14 +2195,15 @@ def YSG_outputs(ages, errors, plotwidth, plotheight, sample_list, YSG_MDA, age_a
         YSG_ages = YSG_age_error_1s_sorted[:,0]
         YSG_error = YSG_age_error_1s_sorted[:,1]
         
-        YSG_age_error_1s = list(zip(YSG_ages,YSG_error,middle_x_array))
-    
+        YSG_age_error_1s = list(zip(YSG_ages,YSG_error,middle_x_array))    
         
         if N > 1:
             YSGax[i] = plt.subplot2grid((N,1),(i,0))
             YSGaxi = YSGax[i]
         else:
             YSGaxi = YSGax
+        if Image_File_Option == 'web': 
+            YSGfig, YSGaxi = plt.subplots(1,1, figsize=(plotwidth, 1*plotheight))
 
         #Sample_List 
         samples = sample_arrays[i]
@@ -2300,48 +2278,24 @@ def YSG_outputs(ages, errors, plotwidth, plotheight, sample_list, YSG_MDA, age_a
         YSGaxi.set_title(samples[0]) 
         YSGaxi.yaxis.grid(True)
         plt.legend(loc='lower right')
-        
-        
-        if Image_File_Option == 'pdf':
-            YSGfig.savefig('Saved_Files/Individual_MDA_Plots/YSG_Plots.pdf')
-        if Image_File_Option == 'png':
-            YSGfig.savefig('Saved_Files/Individual_MDA_Plots/YSG_Plots.png')
-        if Image_File_Option == 'eps':
-            YSGfig.savefig('Saved_Files/Individual_MDA_Plots/YSG_Plots.eps')
-        if Image_File_Option == 'jpeg':
-            YSGfig.savefig('Saved_Files/Individual_MDA_Plots/YSG_Plots.jpeg')
-        if Image_File_Option == 'jpg':
-            YSGfig.savefig('Saved_Files/Individual_MDA_Plots/YSG_Plots.jpg')
-        if Image_File_Option == 'pgf':
-            YSGfig.savefig('Saved_Files/Individual_MDA_Plots/YSG_Plots.pgf')
-        if Image_File_Option == 'ps':
-            YSGfig.savefig('Saved_Files/Individual_MDA_Plots/YSG_Plots.ps')
-        if Image_File_Option == 'raw':
-            YSGfig.savefig('Saved_Files/Individual_MDA_Plots/YSG_Plots.raw')
-        if Image_File_Option == 'rgba':
-            YSGfig.savefig('Saved_Files/Individual_MDA_Plots/YSG_Plots.rgba')
-        if Image_File_Option == 'svg':
-            YSGfig.savefig('Saved_Files/Individual_MDA_Plots/YSG_Plots.svg')
-        if Image_File_Option == 'svgz':
-            YSGfig.savefig('Saved_Files/Individual_MDA_Plots/YSG_Plots.svgz')
-        if Image_File_Option == 'tif':
-            YSGfig.savefig('Saved_Files/Individual_MDA_Plots/YSG_Plots.tif')
-        if Image_File_Option == 'tiff':
-            YSGfig.savefig('Saved_Files/Individual_MDA_Plots/YSG_Plots.tiff')
-         
 
+        if Image_File_Option == 'web':
+            asset_folder = 'assets/plots/Individual_MDA_Plots/'
+            filename = 'YSG_Plots_' + str(i)
+            YSGfig.savefig(asset_folder + filename + '.svg')
+            YSGfig.savefig(asset_folder + filename + '.tiff')
+            plt.close(YSGfig)   
+        else:
+            YSGfig.savefig('Saved_Files/Individual_MDA_Plots/YSG_Plots.' + Image_File_Option)
         YSGfig.tight_layout(pad=3)
 
-    
+    plt.close(YSGfig)    
     YSG_Table_ = pd.DataFrame(data=YSG_MDA, index=[sample_list], columns=['YSG_MDA (Ma)', 'YSG_+/-1σ'])
     
     return YSG_MDA, YSG_Table_
 
-
 def YDZ_outputs(YDZ_MDA, minAges, mode, ages, errors, sample_list, plotwidth, plotheight, Image_File_Option):
-
-# YDZ Code below (with modifications) obtained from detritalPy_v1.3: @authors: glennrsharman, jonathanpsharman, zoltansylvester
-
+    # YDZ Code below (with modifications) obtained from detritalPy_v1.3: @authors: glennrsharman, jonathanpsharman, zoltansylvester
     if not hasattr(ages[0], '__len__'):
         ages = [ages]
         errors = [errors]
@@ -2350,22 +2304,17 @@ def YDZ_outputs(YDZ_MDA, minAges, mode, ages, errors, sample_list, plotwidth, pl
     
     sample_array = np.array(sample_list)
     sample_arrays = np.split(sample_array,len(sample_array))
-
-    
-    
+       
     #YSGfig, YSGax = plt.subplots(N,1, figsize=(plotwidth, N*plotheight))
-    
-    
+        
     for i in range(N):
         
         YDZfig, axYDZ = plt.subplots(1,figsize=(plotwidth, plotheight)) 
-        
-
+      
         samples = sample_arrays[i]
 
         plus_error = np.percentile(minAges, 97.5)-mode
         minus_error = mode-np.percentile(minAges, 2.5)
-
         
         axYDZ.set_xlim(int(min(minAges))-1,int(max(minAges))+1,0.5)
            
@@ -2378,47 +2327,26 @@ def YDZ_outputs(YDZ_MDA, minAges, mode, ages, errors, sample_list, plotwidth, pl
         axYDZ.set_xlabel('Age (Ma)')
         YDZfig.tight_layout(pad=3)
         plt.legend(loc='upper left')
-        axYDZ.set_title(samples[0])
-        
-        
-    
-        if Image_File_Option == 'pdf':
-            YDZfig.savefig('Saved_Files/Individual_MDA_Plots/YDZ_Plots.pdf')
-        if Image_File_Option == 'png':
-            YDZfig.savefig('Saved_Files/Individual_MDA_Plots/YDZ_Plots.png')
-        if Image_File_Option == 'eps':
-            YDZfig.savefig('Saved_Files/Individual_MDA_Plots/YDZ_Plots.eps')
-        if Image_File_Option == 'jpeg':
-            YDZfig.savefig('Saved_Files/Individual_MDA_Plots/YDZ_Plots.jpeg')
-        if Image_File_Option == 'jpg':
-            YDZfig.savefig('Saved_Files/Individual_MDA_Plots/YDZ_Plots.jpg')
-        if Image_File_Option == 'pgf':
-            YDZfig.savefig('Saved_Files/Individual_MDA_Plots/YDZ_Plots.pgf')
-        if Image_File_Option == 'ps':
-            YDZfig.savefig('Saved_Files/Individual_MDA_Plots/YDZ_Plots.ps')
-        if Image_File_Option == 'raw':
-            YDZfig.savefig('Saved_Files/Individual_MDA_Plots/YDZ_Plots.raw')
-        if Image_File_Option == 'rgba':
-            YDZfig.savefig('Saved_Files/Individual_MDA_Plots/YDZ_Plots.rgba')
-        if Image_File_Option == 'svg':
-            YDZfig.savefig('Saved_Files/Individual_MDA_Plots/YDZ_Plots.svg')
-        if Image_File_Option == 'svgz':
-            YDZfig.savefig('Saved_Files/Individual_MDA_Plots/YDZ_Plots.svgz')
-        if Image_File_Option == 'tif':
-            YDZfig.savefig('Saved_Files/Individual_MDA_Plots/YDZ_Plots.tif')
-        if Image_File_Option == 'tiff':
-            YDZfig.savefig('Saved_Files/Individual_MDA_Plots/YDZ_Plots.tiff')         
+        axYDZ.set_title(samples[0])      
 
-       
+        if Image_File_Option == 'web':
+            asset_folder = 'assets/plots/Individual_MDA_Plots/'
+            filename = 'YDZ_Plots_' + str(i)
+            YDZfig.savefig(asset_folder + filename + '.svg')
+            YDZfig.savefig(asset_folder + filename + '.tiff')
+            plt.close(YDZfig)   
+        else:
+            YDZfig.savefig('Saved_Files/Individual_MDA_Plots/YDZ_Plots.' + Image_File_Option)
+    
+    plt.close(YDZfig)
     YDZ_Table_ = pd.DataFrame(data=YDZ_MDA, index=[sample_list], columns=['YDZ_MDA (Ma)', 'YDZ_+2σ', 'YDZ_-2σ'])
   
     return YDZ_MDA, YDZ_Table_
 
-
 def YPP_outputs(ages, errors, sample_list, plotwidth, plotheight, Image_File_Option, sigma=1, min_cluster_size=2, thres=0.01, minDist=1, xdif=0.1):
     
-# YPP calculation code below (with modifications) obtained from detritalPy_v1.3: @authors: glennrsharman, jonathanpsharman, zoltansylvester 
-# YPP plotting code author: morganbrooks 
+    # YPP calculation code below (with modifications) obtained from detritalPy_v1.3: @authors: glennrsharman, jonathanpsharman, zoltansylvester 
+    # YPP plotting code author: morganbrooks 
 
     # Check to see if ages is a list of arrays or just a single list of ages
     if not hasattr(ages[0], '__len__'):
@@ -2453,8 +2381,7 @@ def YPP_outputs(ages, errors, sample_list, plotwidth, plotheight, Image_File_Opt
             YPP_MDAs.append(np.round(np.min([x[0] for x in peakAgesGrainsFiltered]),1))
         else:
             YPP_MDAs.append(np.nan)
-        
-      
+              
         #peakAgeGraini = peakAgeGrain[i]
         
         #PDP Plots
@@ -2472,41 +2399,21 @@ def YPP_outputs(ages, errors, sample_list, plotwidth, plotheight, Image_File_Opt
         axYPP.axvline(YPP_MDAs[i],color='red', label='MDA:'+str(YPP_MDAs[i]))
         #axYPP.axvline(YPP_MDAs[i], color='red',label='Grains in Peak:'+str(peakAgeGraini))
         axYPP.set_title(samples[0])
-        plt.legend(loc='upper right')
-        
-        if Image_File_Option == 'pdf':
-            YPPfig.savefig('Saved_Files/Individual_MDA_Plots/YPP_Plots.pdf')
-        if Image_File_Option == 'png':
-            YPPfig.savefig('Saved_Files/Individual_MDA_Plots/YPP_Plots.png')
-        if Image_File_Option == 'eps':
-            YPPfig.savefig('Saved_Files/Individual_MDA_Plots/YPP_Plots.eps')
-        if Image_File_Option == 'jpeg':
-            YPPfig.savefig('Saved_Files/Individual_MDA_Plots/YPP_Plots.jpeg')
-        if Image_File_Option == 'jpg':
-            YPPfig.savefig('Saved_Files/Individual_MDA_Plots/YPP_Plots.jpg')
-        if Image_File_Option == 'pgf':
-            YPPfig.savefig('Saved_Files/Individual_MDA_Plots/YPP_Plots.pgf')
-        if Image_File_Option == 'ps':
-            YPPfig.savefig('Saved_Files/Individual_MDA_Plots/YPP_Plots.ps')
-        if Image_File_Option == 'raw':
-            YPPfig.savefig('Saved_Files/Individual_MDA_Plots/YPP_Plots.raw')
-        if Image_File_Option == 'rgba':
-            YPPfig.savefig('Saved_Files/Individual_MDA_Plots/YPP_Plots.rgba')
-        if Image_File_Option == 'svg':
-            YPPfig.savefig('Saved_Files/Individual_MDA_Plots/YPP_Plots.svg')
-        if Image_File_Option == 'svgz':
-            YPPfig.savefig('Saved_Files/Individual_MDA_Plots/YPP_Plots.svgz')
-        if Image_File_Option == 'tif':
-            YPPfig.savefig('Saved_Files/Individual_MDA_Plots/YPP_Plots.tif')
-        if Image_File_Option == 'tiff':
-            YPPfig.savefig('Saved_Files/Individual_MDA_Plots/YPP_Plots.tiff')         
+        plt.legend(loc='upper right')        
 
-        
-    
+        if Image_File_Option == 'web':
+            filename = 'YPP_Plots_' + str(i)
+            asset_folder = 'assets/plots/Individual_MDA_Plots/'
+            YPPfig.savefig(asset_folder + filename + '.svg')
+            YPPfig.savefig(asset_folder + filename + '.tiff')
+            plt.close(YPPfig)   
+        else:
+            YPPfig.savefig('Saved_Files/Individual_MDA_Plots/YPP_Plots.' + Image_File_Option)   
+       
+    plt.close(YPPfig)
     YPP_Table_ = pd.DataFrame(data=YPP_MDAs, index=[sample_list], columns=['YPP_MDA (Ma)'])
     
     return YPP_MDAs, YPP_Table_
-
 
 def YC1s_outputs(ages, errors, sample_list, YC1s_MDA, YC1s_cluster_arrays, plotwidth, plotheight, age_addition_set_max_plot, Image_File_Option, min_cluster_size=2):
 # YC1s plotting code author: morganbrooks 
@@ -2569,10 +2476,8 @@ def YC1s_outputs(ages, errors, sample_list, YC1s_MDA, YC1s_cluster_arrays, plotw
     YC1s_age_error_1s = []
     
     
-    for i in range(N):
-        
-        #Preparing the data to be plotted
-        
+    for i in range(N):        
+        #Preparing the data to be plotted        
         #Setting up the age and error by sample: sorted by age
         YC1s_age_error_1s_ = list(zip(ages[i],errors[i]))
         YC1s_age_error_1s_.sort(key=lambda d: d[0])
@@ -2588,6 +2493,8 @@ def YC1s_outputs(ages, errors, sample_list, YC1s_MDA, YC1s_cluster_arrays, plotw
             YC1saxi = YC1sax[i]
         else:
             YC1saxi = YC1sax
+        if Image_File_Option == 'web': 
+            YC1sfig, YC1saxi = plt.subplots(1,1, figsize=(plotwidth, 1*plotheight))
 
         #Sample_List 
         samples = sample_arrays[i]
@@ -2683,35 +2590,17 @@ def YC1s_outputs(ages, errors, sample_list, YC1s_MDA, YC1s_cluster_arrays, plotw
         YC1saxi.yaxis.grid(True)
         plt.legend(loc='lower right')
         YC1sfig.tight_layout(pad=3)
-        
-        if Image_File_Option == 'pdf':
-            YC1sfig.savefig('Saved_Files/Individual_MDA_Plots/YC1s_Plots.pdf')
-        if Image_File_Option == 'png':
-            YC1sfig.savefig('Saved_Files/Individual_MDA_Plots/YC1s_Plots.png')
-        if Image_File_Option == 'eps':
-            YC1sfig.savefig('Saved_Files/Individual_MDA_Plots/YC1s_Plots.eps')
-        if Image_File_Option == 'jpeg':
-            YC1sfig.savefig('Saved_Files/Individual_MDA_Plots/YC1s_Plots.jpeg')
-        if Image_File_Option == 'jpg':
-            YC1sfig.savefig('Saved_Files/Individual_MDA_Plots/YC1s_Plots.jpg')
-        if Image_File_Option == 'pgf':
-            YC1sfig.savefig('Saved_Files/Individual_MDA_Plots/YC1s_Plots.pgf')
-        if Image_File_Option == 'ps':
-            YC1sfig.savefig('Saved_Files/Individual_MDA_Plots/YC1s_Plots.ps')
-        if Image_File_Option == 'raw':
-            YC1sfig.savefig('Saved_Files/Individual_MDA_Plots/YC1s_Plots.raw')
-        if Image_File_Option == 'rgba':
-            YC1sfig.savefig('Saved_Files/Individual_MDA_Plots/YC1s_Plots.rgba')
-        if Image_File_Option == 'svg':
-            YC1sfig.savefig('Saved_Files/Individual_MDA_Plots/YC1s_Plots.svg')
-        if Image_File_Option == 'svgz':
-            YC1sfig.savefig('Saved_Files/Individual_MDA_Plots/YC1s_Plots.svgz')
-        if Image_File_Option == 'tif':
-            YC1sfig.savefig('Saved_Files/Individual_MDA_Plots/YC1s_Plots.tif')
-        if Image_File_Option == 'tiff':
-            YC1sfig.savefig('Saved_Files/Individual_MDA_Plots/YC1s_Plots.tiff')         
 
+        if Image_File_Option == 'web':
+            filename = 'YC1s_Plots_' + str(i)
+            asset_folder = 'assets/plots/Individual_MDA_Plots/'
+            YC1sfig.savefig(asset_folder + filename + '.svg')
+            YC1sfig.savefig(asset_folder + filename + '.tiff')
+            plt.close(YC1sfig)   
+        else:
+            YC1sfig.savefig('Saved_Files/Individual_MDA_Plots/YC1s_Plots.' + Image_File_Option)  
     
+    plt.close(YC1sfig)
     YC1s_Table_= pd.DataFrame(data=YC1s_MDA, index=[sample_list], columns=['YC1σ_MDA (Ma)', 'YC1σ_+/-1σ', 'YC1σ_MSWD', 'YC1σ_Grains'])
     
     return YC1s_MDA, YC1s_Table_
@@ -2796,6 +2685,8 @@ def YC2s_outputs(ages, errors, sample_list, YC2s_MDA, YC2s_cluster_arrays, plotw
             YC2saxi = YC2sax[i]
         else:
             YC2saxi = YC2sax
+        if Image_File_Option == 'web': 
+            YC2sfig, YC2saxi = plt.subplots(1,1, figsize=(plotwidth, 1*plotheight))
 
         #Sample_List 
         samples = sample_arrays[i]
@@ -2893,43 +2784,22 @@ def YC2s_outputs(ages, errors, sample_list, YC2s_MDA, YC2s_cluster_arrays, plotw
         plt.legend(loc='lower right')
         YC2sfig.tight_layout(pad=2)
         
-        if Image_File_Option == 'pdf':
-            YC2sfig.savefig('Saved_Files/Individual_MDA_Plots/YC2s_Plots.pdf')
-        if Image_File_Option == 'png':
-            YC2sfig.savefig('Saved_Files/Individual_MDA_Plots/YC2s_Plots.png')
-        if Image_File_Option == 'eps':
-            YC2sfig.savefig('Saved_Files/Individual_MDA_Plots/YC2s_Plots.eps')
-        if Image_File_Option == 'jpeg':
-            YC2sfig.savefig('Saved_Files/Individual_MDA_Plots/YC2s_Plots.jpeg')
-        if Image_File_Option == 'jpg':
-            YC2sfig.savefig('Saved_Files/Individual_MDA_Plots/YC2s_Plots.jpg')
-        if Image_File_Option == 'pgf':
-            YC2sfig.savefig('Saved_Files/Individual_MDA_Plots/YC2s_Plots.pgf')
-        if Image_File_Option == 'ps':
-            YC2sfig.savefig('Saved_Files/Individual_MDA_Plots/YC2s_Plots.ps')
-        if Image_File_Option == 'raw':
-            YC2sfig.savefig('Saved_Files/Individual_MDA_Plots/YC2s_Plots.raw')
-        if Image_File_Option == 'rgba':
-            YC2sfig.savefig('Saved_Files/Individual_MDA_Plots/YC2s_Plots.rgba')
-        if Image_File_Option == 'svg':
-            YC2sfig.savefig('Saved_Files/Individual_MDA_Plots/YC2s_Plots.svg')
-        if Image_File_Option == 'svgz':
-            YC2sfig.savefig('Saved_Files/Individual_MDA_Plots/YC2s_Plots.svgz')
-        if Image_File_Option == 'tif':
-            YC2sfig.savefig('Saved_Files/Individual_MDA_Plots/YC2s_Plots.tif')
-        if Image_File_Option == 'tiff':
-            YC2sfig.savefig('Saved_Files/Individual_MDA_Plots/YC2s_Plots.tiff')         
+        if Image_File_Option == 'web':
+            filename = 'YC2s_Plots_' + str(i)
+            asset_folder = 'assets/plots/Individual_MDA_Plots/'
+            YC2sfig.savefig(asset_folder + filename + '.svg')
+            YC2sfig.savefig(asset_folder + filename + '.tiff')
+            plt.close(YC2sfig)   
+        else:
+            YC2sfig.savefig('Saved_Files/Individual_MDA_Plots/YC2s_Plots.' + Image_File_Option)  
 
-      
-    
+    plt.close(YC2sfig)
     YC2s_Table_ = pd.DataFrame(data=YC2s_MDA, index=[sample_list], columns=['YC2σ_MDA (Ma)', 'YC2σ_+/-1s', 'YC2σ_MSWD', 'YC2σ_Grains'])
     
     return YC2s_MDA, YC2s_Table_
 
 def Y3Zo_outputs(ages, errors, sample_list, Y3Zo_MDA, Y3Zo_cluster_arrays, plotwidth, plotheight, age_addition_set_max_plot, Image_File_Option, min_cluster_size=3):
-# Y3Zos plotting code author: morganbrooks 
-
-    
+    # Y3Zos plotting code author: morganbrooks     
     # Check to see if ages is a list of arrays or just a single list of ages
     if not hasattr(ages[0], '__len__'):
         ages = [ages]
@@ -3004,6 +2874,8 @@ def Y3Zo_outputs(ages, errors, sample_list, Y3Zo_MDA, Y3Zo_cluster_arrays, plotw
             Y3Zoaxi = Y3Zoax[i]
         else:
             Y3Zoaxi = Y3Zoax
+        if Image_File_Option == 'web': 
+            Y3Zofig, Y3Zoaxi = plt.subplots(1,1, figsize=(plotwidth, 1*plotheight))
 
         #Sample_List 
         samples = sample_arrays[i]
@@ -3099,36 +2971,17 @@ def Y3Zo_outputs(ages, errors, sample_list, Y3Zo_MDA, Y3Zo_cluster_arrays, plotw
         Y3Zoaxi.yaxis.grid(True)
         plt.legend(loc='lower right')
         Y3Zofig.tight_layout(pad=3)
-        
-        if Image_File_Option == 'pdf':
-            Y3Zofig.savefig('Saved_Files/Individual_MDA_Plots/Y3Zo_Plots.pdf')
-        if Image_File_Option == 'png':
-            Y3Zofig.savefig('Saved_Files/Individual_MDA_Plots/Y3Zo_Plots.png')
-        if Image_File_Option == 'eps':
-            Y3Zofig.savefig('Saved_Files/Individual_MDA_Plots/Y3Zo_Plots.eps')
-        if Image_File_Option == 'jpeg':
-            Y3Zofig.savefig('Saved_Files/Individual_MDA_Plots/Y3Zo_Plots.jpeg')
-        if Image_File_Option == 'jpg':
-            Y3Zofig.savefig('Saved_Files/Individual_MDA_Plots/Y3Zo_Plots.jpg')
-        if Image_File_Option == 'pgf':
-            Y3Zofig.savefig('Saved_Files/Individual_MDA_Plots/Y3Zo_Plots.pgf')
-        if Image_File_Option == 'ps':
-            Y3Zofig.savefig('Saved_Files/Individual_MDA_Plots/Y3Zo_Plots.ps')
-        if Image_File_Option == 'raw':
-            Y3Zofig.savefig('Saved_Files/Individual_MDA_Plots/Y3Zo_Plots.raw')
-        if Image_File_Option == 'rgba':
-            Y3Zofig.savefig('Saved_Files/Individual_MDA_Plots/Y3Zo_Plots.rgba')
-        if Image_File_Option == 'svg':
-            Y3Zofig.savefig('Saved_Files/Individual_MDA_Plots/Y3Zo_Plots.svg')
-        if Image_File_Option == 'svgz':
-            Y3Zofig.savefig('Saved_Files/Individual_MDA_Plots/Y3Zo_Plots.svgz')
-        if Image_File_Option == 'tif':
-            Y3Zofig.savefig('Saved_Files/Individual_MDA_Plots/Y3Zo_Plots.tif')
-        if Image_File_Option == 'tiff':
-            Y3Zofig.savefig('Saved_Files/Individual_MDA_Plots/Y3Zo_Plots.tiff')         
-
-        
+ 
+        if Image_File_Option == 'web':
+            filename = 'Y3Zo_Plots_' + str(i)
+            asset_folder = 'assets/plots/Individual_MDA_Plots/'
+            Y3Zofig.savefig(asset_folder + filename + '.svg')
+            Y3Zofig.savefig(asset_folder + filename + '.tiff')
+            plt.close(Y3Zofig)   
+        else:
+            Y3Zofig.savefig('Saved_Files/Individual_MDA_Plots/Y3Zo_Plots.' + Image_File_Option)  
     
+    plt.close(Y3Zofig)
     Y3Zo_Table_ = pd.DataFrame(data=Y3Zo_MDA, index=[sample_list], columns=['Y3Zo_MDA (Ma)', 'Y3Zo_+/-1σ', 'Y3Zo_MSWD','Y3Zo_Grains'])
     
     return Y3Zo_MDA, Y3Zo_Table_
@@ -3193,10 +3046,8 @@ def Y3Za_outputs(ages, errors, Y3Za_MDA, Y3Za_cluster_arrays, sample_list, plotw
     cluster_age_plus_error = []
     width = []
     
-    for i in range(N):
-        
-        #Preparing the data to be plotted
-        
+    for i in range(N):        
+        #Preparing the data to be plotted        
         #Setting up the age and error by sample: sorted by age
         Y3Za_age_error_1s_ = list(zip(ages[i],errors[i]))
         Y3Za_age_error_1s_.sort(key=lambda d: d[0])
@@ -3212,6 +3063,8 @@ def Y3Za_outputs(ages, errors, Y3Za_MDA, Y3Za_cluster_arrays, sample_list, plotw
             Y3Zaaxi = Y3Zaax[i]
         else:
             Y3Zaaxi = Y3Zaax
+        if Image_File_Option == 'web': 
+            Y3Zafig, Y3Zaaxi = plt.subplots(1,1, figsize=(plotwidth, 1*plotheight))
 
         #Sample_List 
         samples = sample_arrays[i]
@@ -3308,39 +3161,20 @@ def Y3Za_outputs(ages, errors, Y3Za_MDA, Y3Za_cluster_arrays, sample_list, plotw
         Y3Zaaxi.yaxis.grid(True)
         plt.legend(loc='lower right')
         Y3Zafig.tight_layout(pad=1)
-        
-        if Image_File_Option == 'pdf':
-            Y3Zafig.savefig('Saved_Files/Individual_MDA_Plots/Y3Za_Plots.pdf')
-        if Image_File_Option == 'png':
-            Y3Zafig.savefig('Saved_Files/Individual_MDA_Plots/Y3Za_Plots.png')
-        if Image_File_Option == 'eps':
-            Y3Zafig.savefig('Saved_Files/Individual_MDA_Plots/Y3Za_Plots.eps')
-        if Image_File_Option == 'jpeg':
-            Y3Zafig.savefig('Saved_Files/Individual_MDA_Plots/Y3Za_Plots.jpeg')
-        if Image_File_Option == 'jpg':
-            Y3Zafig.savefig('Saved_Files/Individual_MDA_Plots/Y3Za_Plots.jpg')
-        if Image_File_Option == 'pgf':
-            Y3Zafig.savefig('Saved_Files/Individual_MDA_Plots/Y3Za_Plots.pgf')
-        if Image_File_Option == 'ps':
-            Y3Zafig.savefig('Saved_Files/Individual_MDA_Plots/Y3Za_Plots.ps')
-        if Image_File_Option == 'raw':
-            Y3Zafig.savefig('Saved_Files/Individual_MDA_Plots/Y3Za_Plots.raw')
-        if Image_File_Option == 'rgba':
-            Y3Zafig.savefig('Saved_Files/Individual_MDA_Plots/Y3Za_Plots.rgba')
-        if Image_File_Option == 'svg':
-            Y3Zafig.savefig('Saved_Files/Individual_MDA_Plots/Y3Za_Plots.svg')
-        if Image_File_Option == 'svgz':
-            Y3Zafig.savefig('Saved_Files/Individual_MDA_Plots/Y3Za_Plots.svgz')
-        if Image_File_Option == 'tif':
-            Y3Zafig.savefig('Saved_Files/Individual_MDA_Plots/Y3Za_Plots.tif')
-        if Image_File_Option == 'tiff':
-            Y3Zafig.savefig('Saved_Files/Individual_MDA_Plots/Y3Za_Plots.tiff')         
-
+ 
+        if Image_File_Option == 'web':
+            filename = 'Y3Za_Plots_' + str(i)
+            asset_folder = 'assets/plots/Individual_MDA_Plots/'
+            Y3Zafig.savefig(asset_folder + filename + '.svg')
+            Y3Zafig.savefig(asset_folder + filename + '.tiff')
+            plt.close(Y3Zafig)   
+        else:
+            Y3Zafig.savefig('Saved_Files/Individual_MDA_Plots/Y3Za_Plots.' + Image_File_Option)  
     
+    plt.close(Y3Zafig)    
     Y3Za_Table_ = pd.DataFrame(data=Y3Za_MDA, index=[sample_list], columns=['Y3Za_MDA (Ma)', 'Y3Za_+/-1σ', 'Y3Za_MSWD','Y3Za_Grains'])
     
     return Y3Za_MDA, Y3Za_Table_
-
 
 def Tau_outputs(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six_ratios, seven_six_error, U238_decay_constant, U235_decay_constant, U238_U235, Data_Type, best_age_cut_off, plotwidth, plotheight, Image_File_Option, min_cluster_size=3, thres=0.01, minDist=1, xdif=1, x1=0, x2=4000):
  #Tau calculation code below (with modifications) obtained from detritalPy_v1.3: @authors: glennrsharman, jonathanpsharman, zoltansylvester 
@@ -3423,8 +3257,7 @@ def Tau_outputs(ages, errors, sample_list, eight_six_ratios, eight_six_error, se
         sample_arrays = np.split(sample_array,len(sample_array))
         N = len(sample_list)
      
-        samples = sample_arrays[i]
-        
+        samples = sample_arrays[i]        
        
         Taufig, Tauax = plt.subplots(1,figsize=(plotwidth, plotheight,))
         Tauax.plot(PDP_age, PDP[i])
@@ -3441,45 +3274,24 @@ def Tau_outputs(ages, errors, sample_list, eight_six_ratios, eight_six_error, se
             
         Tauax.axvline(Tau[i][0],color='black', linestyle='dotted', label="MDA: "+str(round(Tau[i][0],2))+"+/- "+str(round(Tau[i][1],2)))
         plt.legend(loc='upper right')
-        
-        if Image_File_Option == 'pdf':
-            Taufig.savefig('Saved_Files/Individual_MDA_Plots/Tau_Plots.pdf')
-        if Image_File_Option == 'png':
-            Taufig.savefig('Saved_Files/Individual_MDA_Plots/Tau_Plots.png')
-        if Image_File_Option == 'eps':
-            Taufig.savefig('Saved_Files/Individual_MDA_Plots/Tau_Plots.eps')
-        if Image_File_Option == 'jpeg':
-            Taufig.savefig('Saved_Files/Individual_MDA_Plots/Tau_Plots.jpeg')
-        if Image_File_Option == 'jpg':
-            Taufig.savefig('Saved_Files/Individual_MDA_Plots/Tau_Plots.jpg')
-        if Image_File_Option == 'pgf':
-            Taufig.savefig('Saved_Files/Individual_MDA_Plots/Tau_Plots.pgf')
-        if Image_File_Option == 'ps':
-            Taufig.savefig('Saved_Files/Individual_MDA_Plots/Tau_Plots.ps')
-        if Image_File_Option == 'raw':
-            Taufig.savefig('Saved_Files/Individual_MDA_Plots/Tau_Plots.raw')
-        if Image_File_Option == 'rgba':
-            Taufig.savefig('Saved_Files/Individual_MDA_Plots/Tau_Plots.rgba')
-        if Image_File_Option == 'svg':
-            Taufig.savefig('Saved_Files/Individual_MDA_Plots/Tau_Plots.svg')
-        if Image_File_Option == 'svgz':
-            Taufig.savefig('Saved_Files/Individual_MDA_Plots/Tau_Plots.svgz')
-        if Image_File_Option == 'tif':
-            Taufig.savefig('Saved_Files/Individual_MDA_Plots/Tau_Plots.tif')
-        if Image_File_Option == 'tiff':
-            Taufig.savefig('Saved_Files/Individual_MDA_Plots/Tau_Plots.tiff')         
-
-            
-        
+ 
+        if Image_File_Option == 'web':
+            filename = 'Tau_Plots_' + str(i)
+            asset_folder = 'assets/plots/Individual_MDA_Plots/'
+            Taufig.savefig(asset_folder + filename + '.svg')
+            Taufig.savefig(asset_folder + filename + '.tiff')
+            plt.close(Taufig)   
+        else:
+            Taufig.savefig('Saved_Files/Individual_MDA_Plots/Tau_Plots.' + Image_File_Option)  
+    
+    plt.close(Taufig)
     Tau_Table_ = pd.DataFrame(data=Tau, index=[sample_list], columns=['Tau_MDA (Ma)', 'Tau_+/-1σ', 'Tau_MSWD','Grains'])
     
     
     return Tau, Tau_Table_
 
-
 def YSP_outputs(ages, errors, sample_list, YSP_MDA, YSP_cluster, plotwidth, plotheight, age_addition_set_max_plot, Image_File_Option, min_cluster_size=2, MSWD_threshold=1):
-#YSP plotting code author: morganbrooks 
-
+    #YSP plotting code author: morganbrooks 
     # Check to see if ages is a list of arrays or just a single list of ages
     if not hasattr(ages[0], '__len__'):
         ages = [ages]
@@ -3553,6 +3365,8 @@ def YSP_outputs(ages, errors, sample_list, YSP_MDA, YSP_cluster, plotwidth, plot
             YSPaxi = YSPax[i]
         else:
             YSPaxi = YSPax
+        if Image_File_Option == 'web': 
+            YSPfig, YSPaxi = plt.subplots(1,1, figsize=(plotwidth, 1*plotheight))
 
         #Sample_List 
         samples = sample_arrays[i]
@@ -3572,13 +3386,11 @@ def YSP_outputs(ages, errors, sample_list, YSP_MDA, YSP_cluster, plotwidth, plot
         YSP_error1s_i = errors[i]
         YSP_error2s_i = errors[i]*2
         YSP_ages_i = ages[i]
-      
-        
+              
         YSP_cluster_age_arrays_split_i = YSP_cluster[i]
         YSP_max_cluster = np.max(YSP_cluster_age_arrays_split_i)
-        
-        
-        for s, t, u in YSP_cluster_age_arrays_split_i:
+                
+        for s, t, u, v, w in YSP_cluster_age_arrays_split_i:
             clust_age = s
             clust_error = t
             cluster_age_and_error = s+t
@@ -3588,7 +3400,6 @@ def YSP_outputs(ages, errors, sample_list, YSP_MDA, YSP_cluster, plotwidth, plot
         
         C = cluster_age_plus_error[-L:]
        
-
         #Set up plotting parameters
         plotting_max = YSP_max_cluster + age_addition_set_max_plot
         plotted_ages = np.count_nonzero(YSP_ages_i < plotting_max)
@@ -3651,54 +3462,29 @@ def YSP_outputs(ages, errors, sample_list, YSP_MDA, YSP_cluster, plotwidth, plot
         YSPaxi.yaxis.grid(True)
         plt.legend(loc='lower right')
         YSPfig.tight_layout(pad=1)
-        
-        if Image_File_Option == 'pdf':
-            YSPfig.savefig('Saved_Files/Individual_MDA_Plots/YSP_Plots.pdf')
-        if Image_File_Option == 'png':
-            YSPfig.savefig('Saved_Files/Individual_MDA_Plots/YSP_Plots.png')
-        if Image_File_Option == 'eps':
-            YSPfig.savefig('Saved_Files/Individual_MDA_Plots/YSP_Plots.eps')
-        if Image_File_Option == 'jpeg':
-            YSPfig.savefig('Saved_Files/Individual_MDA_Plots/YSP_Plots.jpeg')
-        if Image_File_Option == 'jpg':
-            YSPfig.savefig('Saved_Files/Individual_MDA_Plots/YSP_Plots.jpg')
-        if Image_File_Option == 'pgf':
-            YSPfig.savefig('Saved_Files/Individual_MDA_Plots/YSP_Plots.pgf')
-        if Image_File_Option == 'ps':
-            YSPfig.savefig('Saved_Files/Individual_MDA_Plots/YSP_Plots.ps')
-        if Image_File_Option == 'raw':
-            YSPfig.savefig('Saved_Files/Individual_MDA_Plots/YSP_Plots.raw')
-        if Image_File_Option == 'rgba':
-            YSPfig.savefig('Saved_Files/Individual_MDA_Plots/YSP_Plots.rgba')
-        if Image_File_Option == 'svg':
-            YSPfig.savefig('Saved_Files/Individual_MDA_Plots/YSP_Plots.svg')
-        if Image_File_Option == 'svgz':
-            YSPfig.savefig('Saved_Files/Individual_MDA_Plots/YSP_Plots.svgz')
-        if Image_File_Option == 'tif':
-            YSPfig.savefig('Saved_Files/Individual_MDA_Plots/YSP_Plots.tif')
-        if Image_File_Option == 'tiff':
-            YSPfig.savefig('Saved_Files/Individual_MDA_Plots/YSP_Plots.tiff')         
-
-
+ 
+        if Image_File_Option == 'web':
+            filename = 'YSP_Plots_' + str(i)
+            asset_folder = 'assets/plots/Individual_MDA_Plots/'
+            YSPfig.savefig(asset_folder + filename + '.svg')
+            YSPfig.savefig(asset_folder + filename + '.tiff')
+            plt.close(YSPfig)   
+        else:
+            YSPfig.savefig('Saved_Files/Individual_MDA_Plots/YSP_Plots.' + Image_File_Option)  
     
+    plt.close(YSPfig)
     YSP_Table_ = pd.DataFrame(data=YSP_MDA, index=[sample_list], columns=['YSP_MDA (Ma)', 'YSP_+/-1σ', 'YSP_MSWD','YSP_Grains'])
-
     
     return YSP_MDA, YSP_Table_ 
 
 #MLA calculation code (not present) is sourced from IsoplotR: @authors: Pieter Vermeesch: Reference: Vermeesch, P., 2018, IsoplotR: a free and open toolbox for geochronology. Geoscience Frontiers, v.9, p.1479-1493, doi: 10.1016/j.gsf.2018.04.001.
 #MLA import code written by Morgan Brooks 
 
-
-def MLA_outputs(sample_list, dataToLoad):
+def MLA_outputs(sample_list, dataToLoad, web=False):
     
     # Lets delete all files that are inside the temp folder
     # The solution is a mix of python, R and markdown to manage the files, plot and display of pictures here on jupyter.
-    import glob, os, json, subprocess
-    #
-    files = glob.glob("Saved_Files/MLA_Plots/*.png")
-    
-    
+    files = glob.glob("Saved_Files/MLA_Plots/*.png")    
     #
     for f in files:
         os.remove(f)
@@ -3707,11 +3493,12 @@ def MLA_outputs(sample_list, dataToLoad):
     samples = json.dumps(sample_list)
     # we call the RScript using subprocess and send the path to the file containing the data and a string 
     # with a name for the file to be saved on the temporary folder.
-    output = subprocess.check_output(["Rscript", 'R_Scripts/IsoPlotR.R', dataToLoad[0], samples], universal_newlines=True)
-    output2 = subprocess.check_output(["Rscript", 'R_Scripts/IsoPlotR2.R', dataToLoad[0], samples], universal_newlines=True)
+    output = subprocess.check_output(["Rscript", 'R_Scripts/IsoPlotR.R', dataToLoad[0], samples])
+    results = json.loads(output)
+    # output2 = subprocess.check_output(["Rscript", 'R_Scripts/IsoPlotR2.R', dataToLoad[0], samples], universal_newlines=True)
     # then we convert the json returned to a dictionary by reading it as a json format
-    MDA_Values = json.loads(output)
-    Error_Values = json.loads(output2)
+    MDA_Values = {k:results[k][0] for k in results.keys()}
+    Error_Values = {k:results[k][1] for k in results.keys()}
     # Then we print the dictionary returned by R from the peakfit function
     
     # print("\n") # I just printed a line between the numbers, you can delete this line anytime
@@ -3727,23 +3514,17 @@ def MLA_outputs(sample_list, dataToLoad):
     MLA_Table = pd.DataFrame.from_dict(MLA_MDA_1sError,orient='index').reset_index()
     pd.options.display.float_format = "{:,.2f}".format
     MLA_Table.columns = [' ', 'MLA_MDA (Ma)', 'MLA_+/-1σ']
-    display(MLA_Table)
     
-    Radial_Plots = radial_plots()
-    
-    return 
+    if web:
+        return MLA_Table
+    else:
+        return radial_plots()
 
 
 def radial_plots():
-    import re
-    import IPython.display as dp
-    import glob, os, json, subprocess
     
     # list all files on the temp folder
-    fs = glob.glob("Saved_Files/MLA_Plots/*.png")
-    
-   
-    
+    fs = glob.glob("assets/plots/IsoplotR/*.png")     
 
     # And we list and import all files contained within the temp folder.
     # as we deleted the files from the previous analysis, onle the ones generated at this session are shown
@@ -3812,7 +3593,6 @@ def loadDataExcel(dataToLoad, Data_Type, mainSheet = 'Samples', dataSheet = 'Dat
     return main_df, main_byid_df, samples_df, analyses_df, Data_Type
 
 
-
 #Check that the Data Loaded Properly & Review Unique Samples: code by morganbrooks
 
 
@@ -3854,7 +3634,6 @@ def check_data_loading(df, Data_Type):
 #Convert the excel data to an array of ages and errors 
 #A portion of the code was obtained from detritalPy_v1.3: @authors: glennrsharman, jonathanpsharman, zoltansylvester
 #Morgan Brooks edits have been made to include a an array of 6/8 ratios 7/6 ratios, option for percent or absolute and sigma 1/2. Calculates ages and uncertainties from ratios.
-
     
 def sampleToData(sample_list, main_byid_df, sigma, Data_Type, uncertainty, best_age_cut_off, U238_decay_constant, U235_decay_constant,U238_U235,excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235):
     
@@ -4165,9 +3944,6 @@ def sampleToData(sample_list, main_byid_df, sigma, Data_Type, uncertainty, best_
 
     return  ages, errors, eight_six_ratios, eight_six_error, seven_six_ratios, seven_six_error, numGrains, labels, sample_list, best_age_cut_off, dataToLoad_MLA, U238_decay_constant,U235_decay_constant,U238_U235,excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235
 
-    
-    
-    
 #Function to find the youngest clusters that overlap 
 
 #1 First half of Code obtained from detritalPy_v1.3: @authors: glennrsharman, jonathanpsharman, zoltansylvester
@@ -4361,9 +4137,7 @@ def peakAgesGrains(peakAges, ages, errors, sig=2):
                     c = c+1
             peakAgeGrain[i][j] = c
     return peakAgeGrain   
-            
-
-
+           
 #age calcuation for ratios after cluster formed with ages 
 #code written by Morgan Brooks 
     
@@ -5127,7 +4901,7 @@ def MLA(sample_list, dataToLoad_MLA):
     # The solution is a mix of python, R and markdown to manage the files, plot and display of pictures here on jupyter.
     import glob, os, json, subprocess
     #
-    files = glob.glob("Saved_Files/MLA_Plots/*.png")
+    files = glob.glob("assets/plots/IsoplotR/*.png")
     #
     for f in files:
         os.remove(f)
@@ -5136,13 +4910,13 @@ def MLA(sample_list, dataToLoad_MLA):
     samples = json.dumps(sample_list)
     # we call the RScript using subprocess and send the path to the file containing the data and a string 
     # with a name for the file to be saved on the temporary folder.
-    output = subprocess.check_output(["Rscript", 'R_Scripts/IsoPlotR.R', dataToLoad_MLA[0], samples], universal_newlines=True)
-    output2 = subprocess.check_output(["Rscript", 'R_Scripts/IsoPlotR2.R', dataToLoad_MLA[0], samples], universal_newlines=True)
+    output = subprocess.check_output(["Rscript", 'R_Scripts/IsoPlotR.R', dataToLoad_MLA[0], samples])
+    results = json.loads(output)
+    # output2 = subprocess.check_output(["Rscript", 'R_Scripts/IsoPlotR2.R', dataToLoad[0], samples], universal_newlines=True)
     # then we convert the json returned to a dictionary by reading it as a json format
-    MDA_Values = json.loads(output)
-    Error_Values = json.loads(output2)
+    MDA_Values = {k:results[k][0] for k in results.keys()}
+    Error_Values = {k:results[k][1] for k in results.keys()}
     # Then we print the dictionary returned by R from the peakfit function
-    
     # print("\n") # I just printed a line between the numbers, you can delete this line anytime
     # or we can print the value for a given sample
     #print(peak_values['UK027'])
@@ -5154,5 +4928,6 @@ def MLA(sample_list, dataToLoad_MLA):
         MLA_MDA_1sError[k] = tuple(MLA_MDA_1sError[k] for MLA_MDA_1sError in ds)
     MLA_MDA = []
     MLA_MDA = list(MLA_MDA_1sError.values())
-    
+
     return MLA_MDA
+
