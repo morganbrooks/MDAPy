@@ -491,9 +491,7 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
         ages = [ages]
         errors = [errors]
 
-
     #Plotting    
-    
     #YSG
     def YSG_Strat_Plot(YSG_MDA, sample_list, Image_File_Option):
         
@@ -622,39 +620,18 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
         YSGaxi.set_title('YSG MDA: All Samples') 
         plt.legend(loc='upper left')
         
-        
-        if Image_File_Option == 'pdf':
-            YSGfig.savefig('Saved_Files/Stratigraphic_Plots/YSG_All_Samples_Plot.pdf')
-        if Image_File_Option == 'png':
-            YSGfig.savefig('Saved_Files/Stratigraphic_Plots/YSG_All_Samples_Plot.png')
-        if Image_File_Option == 'eps':
-            YSGfig.savefig('Saved_Files/Stratigraphic_Plots/YSG_All_Samples_Plot.eps')
-        if Image_File_Option == 'jpeg':
-            YSGfig.savefig('Saved_Files/Stratigraphic_Plots/YSG_All_Samples_Plot.jpeg')
-        if Image_File_Option == 'jpg':
-            YSGfig.savefig('Saved_Files/Stratigraphic_Plots/YSG_All_Samples_Plot.jpg')
-        if Image_File_Option == 'pgf':
-            YSGfig.savefig('Saved_Files/Stratigraphic_Plots/YSG_All_Samples_Plot.pgf')
-        if Image_File_Option == 'ps':
-            YSGfig.savefig('Saved_Files/Stratigraphic_Plots/YSG_All_Samples_Plot.ps')
-        if Image_File_Option == 'raw':
-            YSGfig.savefig('Saved_Files/Stratigraphic_Plots/YSG_All_Samples_Plot.raw')
-        if Image_File_Option == 'rgba':
-            YSGfig.savefig('Saved_Files/Stratigraphic_Plots/YSG_All_Samples_Plot.rgba')
-        if Image_File_Option == 'svg':
-            YSGfig.savefig('Saved_Files/Stratigraphic_Plots/YSG_All_Samples_Plot.svg')
-        if Image_File_Option == 'svgz':
-            YSGfig.savefig('Saved_Files/Stratigraphic_Plots/YSG_All_Samples_Plot.svgz')
-        if Image_File_Option == 'tif':
-            YSGfig.savefig('Saved_Files/Stratigraphic_Plots/YSG_All_Samples_Plot.tif')
-        if Image_File_Option == 'tiff':
-            YSGfig.savefig('Saved_Files/Stratigraphic_Plots/YSG_All_Samples_Plot.tiff')
-        
-        
-        
+        if Image_File_Option == 'web':
+            filename = 'YSG_All_Samples_Plot'
+            asset_folder = 'assets/plots/Stratigraphic_Plots/'
+            YSGfig.savefig(asset_folder + filename + '.svg')
+            YSGfig.savefig(asset_folder + filename + '.tiff')
+        else:
+            YSGfig.savefig('Saved_Files/Stratigraphic_Plots/YSG_All_Samples_Plot.' + Image_File_Option)  
+                
+        plt.close(YSGfig)
+
         return YSGfig
        
-
     #YDZ
     def YDZ_Strat_Plot(YDZ_MDA, sample_list, Image_File_Option):
         
@@ -709,11 +686,8 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
             middle_x_array = np.array(middle)
             x_arrays = np.split(middle_x_array,len(sample_list))
 
-
-
         YDZfig, YDZaxi = plt.subplots(figsize=(plotwidth, plotheight))
-        
-        
+                
         for i in range(N):
 
             samples = YDZ_sample_arrays[i]
@@ -787,8 +761,7 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
         YDZaxi.hlines(y=YDZ_age_values, xmin=0, xmax=(0), color = 'midnightblue', lw=1, linewidth=3, label='MDA: YDZ')
         YDZaxi.broken_barh([(0.15, 0)], (YDZ_age_values,0), facecolors=('cornflowerblue'), label='1σ Error')
         YDZaxi.broken_barh([(0.15, 0)], (YDZ_age_values,0), facecolors=('lightsteelblue'), label='2σ Error')
-        
-    
+            
         YDZaxi.set_ylabel('Age'+" " +'(Ma)', labelpad=25)
         YDZaxi.yaxis.grid(True)
         
@@ -802,35 +775,17 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
        
         plt.legend(loc='upper left')
    
+        if Image_File_Option == 'web':
+            filename = 'YDZ_All_Samples_Plot'
+            asset_folder = 'assets/plots/Stratigraphic_Plots/'
+            YDZfig.savefig(asset_folder + filename + '.svg')
+            YDZfig.savefig(asset_folder + filename + '.tiff')
+        else:
+            YDZfig.savefig('Saved_Files/Stratigraphic_Plots/YDZ_All_Samples_Plot.' + Image_File_Option)  
+                
+        plt.close(YDZfig)
         
-        if Image_File_Option == 'pdf':
-            YDZfig.savefig('Saved_Files/Stratigraphic_Plots/YDZ_All_Samples_Plot.pdf')
-        if Image_File_Option == 'png':
-            YDZfig.savefig('Saved_Files/Stratigraphic_Plots/YDZ_All_Samples_Plot.png')
-        if Image_File_Option == 'eps':
-            YDZfig.savefig('Saved_Files/Stratigraphic_Plots/YDZ_All_Samples_Plot.eps')
-        if Image_File_Option == 'jpeg':
-            YDZfig.savefig('Saved_Files/Stratigraphic_Plots/YDZ_All_Samples_Plot.jpeg')
-        if Image_File_Option == 'jpg':
-            YDZfig.savefig('Saved_Files/Stratigraphic_Plots/YDZ_All_Samples_Plot.jpg')
-        if Image_File_Option == 'pgf':
-            YDZfig.savefig('Saved_Files/Stratigraphic_Plots/YDZ_All_Samples_Plot.pgf')
-        if Image_File_Option == 'ps':
-            YDZfig.savefig('Saved_Files/Stratigraphic_Plots/YDZ_All_Samples_Plot.ps')
-        if Image_File_Option == 'raw':
-            YDZfig.savefig('Saved_Files/Stratigraphic_Plots/YDZ_All_Samples_Plot.raw')
-        if Image_File_Option == 'rgba':
-            YDZfig.savefig('Saved_Files/Stratigraphic_Plots/YDZ_All_Samples_Plot.rgba')
-        if Image_File_Option == 'svg':
-            YDZfig.savefig('Saved_Files/Stratigraphic_Plots/YDZ_All_Samples_Plot.svg')
-        if Image_File_Option == 'svgz':
-            YDZfig.savefig('Saved_Files/Stratigraphic_Plots/YDZ_All_Samples_Plot.svgz')
-        if Image_File_Option == 'tif':
-            YDZfig.savefig('Saved_Files/Stratigraphic_Plots/YDZ_All_Samples_Plot.tif')
-        if Image_File_Option == 'tiff':
-            YDZfig.savefig('Saved_Files/Stratigraphic_Plots/YDZ_All_Samples_Plot.tif')
-        
-        return 
+        return YDZfig
         
     #YC1s
     def YC1s_Strat_Plot(YC1s_MDA, sample_list, Image_File_Option):
@@ -879,7 +834,6 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
         YC1s_error_sorted_arrays = np.split(YC1s_error_sort,len(YC1s_MDA_sort))
         YC1s_sample_arrays = np.split(YC1s_sample_sort,len(YC1s_MDA_sort))
         YC1s_Y_Max = np.array(YC1s_MDA_sort, dtype='f')
-
         
         YC1sfig, YC1saxi = plt.subplots(figsize=(plotwidth, plotheight))
         width = []  
@@ -960,47 +914,28 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
 
         YC1saxi.yaxis.grid(True)
        
-        #YC1saxi.set_yticks(np.arange(round(YC1s_Y_Max[-1]-10),round(YC1s_sorted[0][0]+10), 2))
-        
-        
+        # YC1saxi.set_yticks(np.arange(round(YC1s_Y_Max[-1]-10),round(YC1s_sorted[0][0]+10), 2))
+                
         plt.gca().invert_yaxis()
         YC1saxi.set_ylabel('Age'+" " +'(Ma)',labelpad=25)
         YC1saxi.set_xlabel('Samples', labelpad=25)
         
         YC1saxi.set_title('YC1σ MDA: All Samples') 
         plt.legend(loc='upper left')
-        
-        if Image_File_Option == 'pdf':
-            YC1sfig.savefig('Saved_Files/Stratigraphic_Plots/YC1s_All_Samples_Plot.pdf')
-        if Image_File_Option == 'png':
-            YC1sfig.savefig('Saved_Files/Stratigraphic_Plots/YC1s_All_Samples_Plot.png')
-        if Image_File_Option == 'eps':
-            YC1sfig.savefig('Saved_Files/Stratigraphic_Plots/YC1s_All_Samples_Plot.eps')
-        if Image_File_Option == 'jpeg':
-            YC1sfig.savefig('Saved_Files/Stratigraphic_Plots/YC1s_All_Samples_Plot.jpeg')
-        if Image_File_Option == 'jpg':
-            YC1sfig.savefig('Saved_Files/Stratigraphic_Plots/YC1s_All_Samples_Plot.jpg')
-        if Image_File_Option == 'pgf':
-            YC1sfig.savefig('Saved_Files/Stratigraphic_Plots/YC1s_All_Samples_Plot.pgf')
-        if Image_File_Option == 'ps':
-            YC1sfig.savefig('Saved_Files/Stratigraphic_Plots/YC1s_All_Samples_Plot.ps')
-        if Image_File_Option == 'raw':
-            YC1sfig.savefig('Saved_Files/Stratigraphic_Plots/YC1s_All_Samples_Plot.raw')
-        if Image_File_Option == 'rgba':
-            YC1sfig.savefig('Saved_Files/Stratigraphic_Plots/YC1s_All_Samples_Plot.rgba')
-        if Image_File_Option == 'svg':
-            YC1sfig.savefig('Saved_Files/Stratigraphic_Plots/YC1s_All_Samples_Plot.svg')
-        if Image_File_Option == 'svgz':
-            YC1sfig.savefig('Saved_Files/Stratigraphic_Plots/YC1s_All_Samples_Plot.svgz')
-        if Image_File_Option == 'tif':
-            YC1sfig.savefig('Saved_Files/Stratigraphic_Plots/YC1s_All_Samples_Plot.tif')
-        if Image_File_Option == 'tiff':
-            YC1sfig.savefig('Saved_Files/Stratigraphic_Plots/YC1s_All_Samples_Plot.tif')
-         
 
+        if Image_File_Option == 'web':
+            filename = 'YC1s_All_Samples_Plot'
+            asset_folder = 'assets/plots/Stratigraphic_Plots/'
+            YC1sfig.savefig(asset_folder + filename + '.svg')
+            YC1sfig.savefig(asset_folder + filename + '.tiff')
+        else:
+            YC1sfig.savefig('Saved_Files/Stratigraphic_Plots/YC1s_All_Samples_Plot.' + Image_File_Option)  
+                
+        plt.close(YC1sfig)
         
-        return 
+        return YC1sfig
     
+    #YC2s
     def YC2s_Strat_Plot(YC2s_MDA, sample_list, Image_File_Option):
         
         #Sample_List
@@ -1050,7 +985,6 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
         YC2s_error_sorted_arrays = np.split(YC2s_error_sort,len(YC2s_MDA_sort))
         YC2s_sample_arrays = np.split(YC2s_sample_sort,len(YC2s_MDA_sort))
         YC2s_Y_Max = np.array(YC2s_MDA_sort, dtype='f')
-
 
         for i in range(N):
 
@@ -1138,36 +1072,17 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
         YC2saxi.set_title('YC2σ MDA: All Samples') 
         plt.legend(loc='upper left')
         
-  
-        if Image_File_Option == 'pdf':
-            YC2sfig.savefig('Saved_Files/Stratigraphic_Plots/YC2s_All_Samples_Plot.pdf')
-        if Image_File_Option == 'png':
-            YC2sfig.savefig('Saved_Files/Stratigraphic_Plots/YC2s_All_Samples_Plot.png')
-        if Image_File_Option == 'eps':
-            YC2sfig.savefig('Saved_Files/Stratigraphic_Plots/YC2s_All_Samples_Plot.eps')
-        if Image_File_Option == 'jpeg':
-            YC2sfig.savefig('Saved_Files/Stratigraphic_Plots/YC2s_All_Samples_Plot.jpeg')
-        if Image_File_Option == 'jpg':
-            YC2sfig.savefig('Saved_Files/Stratigraphic_Plots/YC2s_All_Samples_Plot.jpg')
-        if Image_File_Option == 'pgf':
-            YC2sfig.savefig('Saved_Files/Stratigraphic_Plots/YC2s_All_Samples_Plot.pgf')
-        if Image_File_Option == 'ps':
-            YC2sfig.savefig('Saved_Files/Stratigraphic_Plots/YC2s_All_Samples_Plot.ps')
-        if Image_File_Option == 'raw':
-            YC2sfig.savefig('Saved_Files/Stratigraphic_Plots/YC2s_All_Samples_Plot.raw')
-        if Image_File_Option == 'rgba':
-            YC2sfig.savefig('Saved_Files/Stratigraphic_Plots/YC2s_All_Samples_Plot.rgba')
-        if Image_File_Option == 'svg':
-            YC2sfig.savefig('Saved_Files/Stratigraphic_Plots/YC2s_All_Samples_Plot.svg')
-        if Image_File_Option == 'svgz':
-            YC2sfig.savefig('Saved_Files/Stratigraphic_Plots/YC2s_All_Samples_Plot.svgz')
-        if Image_File_Option == 'tif':
-            YC2sfig.savefig('Saved_Files/Stratigraphic_Plots/YC2s_All_Samples_Plot.tif')
-        if Image_File_Option == 'tiff':
-            YC2sfig.savefig('Saved_Files/Stratigraphic_Plots/YC2s_All_Samples_Plot.tif')
-
+        if Image_File_Option == 'web':
+            filename = 'YC2s_All_Samples_Plot'
+            asset_folder = 'assets/plots/Stratigraphic_Plots/'
+            YC2sfig.savefig(asset_folder + filename + '.svg')
+            YC2sfig.savefig(asset_folder + filename + '.tiff')
+        else:
+            YC2sfig.savefig('Saved_Files/Stratigraphic_Plots/YC2s_All_Samples_Plot.' + Image_File_Option)  
+                
+        plt.close(YC2sfig)
         
-        return 
+        return YC2sfig
     
     #Y3Zo
     def Y3Zo_Strat_Plot(Y3Zo_MDA, sample_list, Image_File_Option):
@@ -1303,37 +1218,18 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
         
         Y3Zoaxi.set_title('Y3Zo MDA: All Samples') 
         plt.legend(loc='upper left')
-        
-        if Image_File_Option == 'pdf':
-            Y3Zofig.savefig('Saved_Files/Stratigraphic_Plots/Y3Zo_All_Samples_Plot.pdf')
-        if Image_File_Option == 'png':
-            Y3Zofig.savefig('Saved_Files/Stratigraphic_Plots/Y3Zo_All_Samples_Plot.png')
-        if Image_File_Option == 'eps':
-            Y3Zofig.savefig('Saved_Files/Stratigraphic_Plots/Y3Zo_All_Samples_Plot.eps')
-        if Image_File_Option == 'jpeg':
-            Y3Zofig.savefig('Saved_Files/Stratigraphic_Plots/Y3Zo_All_Samples_Plot.jpeg')
-        if Image_File_Option == 'jpg':
-            Y3Zofig.savefig('Saved_Files/Stratigraphic_Plots/Y3Zo_All_Samples_Plot.jpg')
-        if Image_File_Option == 'pgf':
-            Y3Zofig.savefig('Saved_Files/Stratigraphic_Plots/Y3Zo_All_Samples_Plot.pgf')
-        if Image_File_Option == 'ps':
-            Y3Zofig.savefig('Saved_Files/Stratigraphic_Plots/Y3Zo_All_Samples_Plot.ps')
-        if Image_File_Option == 'raw':
-            Y3Zofig.savefig('Saved_Files/Stratigraphic_Plots/Y3Zo_All_Samples_Plot.raw')
-        if Image_File_Option == 'rgba':
-            Y3Zofig.savefig('Saved_Files/Stratigraphic_Plots/Y3Zo_All_Samples_Plot.rgba')
-        if Image_File_Option == 'svg':
-            Y3Zofig.savefig('Saved_Files/Stratigraphic_Plots/Y3Zo_All_Samples_Plot.svg')
-        if Image_File_Option == 'svgz':
-            Y3Zofig.savefig('Saved_Files/Stratigraphic_Plots/Y3Zo_All_Samples_Plot.svgz')
-        if Image_File_Option == 'tif':
-            Y3Zofig.savefig('Saved_Files/Stratigraphic_Plots/Y3Zo_All_Samples_Plot.tif')
-        if Image_File_Option == 'tiff':
-            Y3Zofig.savefig('Saved_Files/Stratigraphic_Plots/Y3Zo_All_Samples_Plot.tif')
-        
 
+        if Image_File_Option == 'web':
+            filename = 'Y3Zo_All_Samples_Plot'
+            asset_folder = 'assets/plots/Stratigraphic_Plots/'
+            Y3Zofig.savefig(asset_folder + filename + '.svg')
+            Y3Zofig.savefig(asset_folder + filename + '.tiff')
+        else:
+            Y3Zofig.savefig('Saved_Files/Stratigraphic_Plots/Y3Zo_All_Samples_Plot.' + Image_File_Option)  
+                
+        plt.close(Y3Zofig)
         
-        return 
+        return Y3Zofig
         
     #Tau
     def Tau_Strat_Plot(Tau_MDA, sample_list, Image_File_Option):
@@ -1470,39 +1366,19 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
         
         Tauaxi.set_title('Tau MDA: All Samples') 
         plt.legend(loc='upper left')
-        
-        if Image_File_Option == 'pdf':
-            Taufig.savefig('Saved_Files/Stratigraphic_Plots/Tau_All_Samples_Plot.pdf')
-        if Image_File_Option == 'png':
-            Taufig.savefig('Saved_Files/Stratigraphic_Plots/Tau_All_Samples_Plot.png')
-        if Image_File_Option == 'eps':
-            Taufig.savefig('Saved_Files/Stratigraphic_Plots/Tau_All_Samples_Plot.eps')
-        if Image_File_Option == 'jpeg':
-            Taufig.savefig('Saved_Files/Stratigraphic_Plots/Tau_All_Samples_Plot.jpeg')
-        if Image_File_Option == 'jpg':
-            Taufig.savefig('Saved_Files/Stratigraphic_Plots/Tau_All_Samples_Plot.jpg')
-        if Image_File_Option == 'pgf':
-            Taufig.savefig('Saved_Files/Stratigraphic_Plots/Tau_All_Samples_Plot.pgf')
-        if Image_File_Option == 'ps':
-            Taufig.savefig('Saved_Files/Stratigraphic_Plots/Tau_All_Samples_Plot.ps')
-        if Image_File_Option == 'raw':
-            Taufig.savefig('Saved_Files/Stratigraphic_Plots/Tau_All_Samples_Plot.raw')
-        if Image_File_Option == 'rgba':
-            Taufig.savefig('Saved_Files/Stratigraphic_Plots/Tau_All_Samples_Plot.rgba')
-        if Image_File_Option == 'svg':
-            Taufig.savefig('Saved_Files/Stratigraphic_Plots/Tau_All_Samples_Plot.svg')
-        if Image_File_Option == 'svgz':
-            Taufig.savefig('Saved_Files/Stratigraphic_Plots/Tau_All_Samples_Plot.svgz')
-        if Image_File_Option == 'tif':
-            Taufig.savefig('Saved_Files/Stratigraphic_Plots/Tau_All_Samples_Plot.tif')
-        if Image_File_Option == 'tiff':
-            Taufig.savefig('Saved_Files/Stratigraphic_Plots/Tau_All_Samples_Plot.tif')
-        
 
+        if Image_File_Option == 'web':
+            filename = 'Tau_All_Samples_Plot'
+            asset_folder = 'assets/plots/Stratigraphic_Plots/'
+            Taufig.savefig(asset_folder + filename + '.svg')
+            Taufig.savefig(asset_folder + filename + '.tiff')
+        else:
+            Taufig.savefig('Saved_Files/Stratigraphic_Plots/Tau_All_Samples_Plot.' + Image_File_Option)  
+                
+        plt.close(Taufig)
         
-        return 
+        return Taufig
 
-    
     #Y3Za
     def Y3Za_Strat_Plot(Y3Za_MDA, sample_list, Image_File_Option):
         
@@ -1637,37 +1513,18 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
         
         Y3Zaaxi.set_title('Y3Za MDA: All Samples') 
         plt.legend(loc='upper left')
-        
-        if Image_File_Option == 'pdf':
-            Y3Zafig.savefig('Saved_Files/Stratigraphic_Plots/Y3Za_All_Samples_Plot.pdf')
-        if Image_File_Option == 'png':
-            Y3Zafig.savefig('Saved_Files/Stratigraphic_Plots/Y3Za_All_Samples_Plot.png')
-        if Image_File_Option == 'eps':
-            Y3Zafig.savefig('Saved_Files/Stratigraphic_Plots/Y3Za_All_Samples_Plot.eps')
-        if Image_File_Option == 'jpeg':
-            Y3Zafig.savefig('Saved_Files/Stratigraphic_Plots/Y3Za_All_Samples_Plot.jpeg')
-        if Image_File_Option == 'jpg':
-            Y3Zafig.savefig('Saved_Files/Stratigraphic_Plots/Y3Za_All_Samples_Plot.jpg')
-        if Image_File_Option == 'pgf':
-            Y3Zafig.savefig('Saved_Files/Stratigraphic_Plots/Y3Za_All_Samples_Plot.pgf')
-        if Image_File_Option == 'ps':
-            Y3Zafig.savefig('Saved_Files/Stratigraphic_Plots/Y3Za_All_Samples_Plot.ps')
-        if Image_File_Option == 'raw':
-            Y3Zafig.savefig('Saved_Files/Stratigraphic_Plots/Y3Za_All_Samples_Plot.raw')
-        if Image_File_Option == 'rgba':
-            Y3Zafig.savefig('Saved_Files/Stratigraphic_Plots/Y3Za_All_Samples_Plot.rgba')
-        if Image_File_Option == 'svg':
-            Y3Zafig.savefig('Saved_Files/Stratigraphic_Plots/Y3Za_All_Samples_Plot.svg')
-        if Image_File_Option == 'svgz':
-            Y3Zafig.savefig('Saved_Files/Stratigraphic_Plots/Y3Za_All_Samples_Plot.svgz')
-        if Image_File_Option == 'tif':
-            Y3Zafig.savefig('Saved_Files/Stratigraphic_Plots/Y3Za_All_Samples_Plot.tif')
-        if Image_File_Option == 'tiff':
-            Y3Zafig.savefig('Saved_Files/Stratigraphic_Plots/Y3Za_All_Samples_Plot.tif')
-        
 
+        if Image_File_Option == 'web':
+            filename = 'Y3Za_All_Samples_Plot'
+            asset_folder = 'assets/plots/Stratigraphic_Plots/'
+            Y3Zafig.savefig(asset_folder + filename + '.svg')
+            Y3Zafig.savefig(asset_folder + filename + '.tiff')
+        else:
+            Y3Zafig.savefig('Saved_Files/Stratigraphic_Plots/Y3Za_All_Samples_Plot.' + Image_File_Option)  
+                
+        plt.close(Y3Zafig)
         
-        return 
+        return Y3Zafig
 
     #YSP
     def YSP_Strat_Plot(YSP_MDA, sample_list, Image_File_Option):
@@ -1803,35 +1660,18 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
         
         YSPaxi.set_title('YSP MDA: All Samples') 
         plt.legend(loc='upper left')
-        
-        if Image_File_Option == 'pdf':
-            YSPfig.savefig('Saved_Files/Stratigraphic_Plots/YSP_All_Samples_Plot.pdf')
-        if Image_File_Option == 'png':
-            YSPfig.savefig('Saved_Files/Stratigraphic_Plots/YSP_All_Samples_Plot.png')
-        if Image_File_Option == 'eps':
-            YSPfig.savefig('Saved_Files/Stratigraphic_Plots/YSP_All_Samples_Plot.eps')
-        if Image_File_Option == 'jpeg':
-            YSPfig.savefig('Saved_Files/Stratigraphic_Plots/YSP_All_Samples_Plot.jpeg')
-        if Image_File_Option == 'jpg':
-            YSPfig.savefig('Saved_Files/Stratigraphic_Plots/YSP_All_Samples_Plot.jpg')
-        if Image_File_Option == 'pgf':
-            YSPfig.savefig('Saved_Files/Stratigraphic_Plots/YSP_All_Samples_Plot.pgf')
-        if Image_File_Option == 'ps':
-            YSPfig.savefig('Saved_Files/Stratigraphic_Plots/YSP_All_Samples_Plot.ps')
-        if Image_File_Option == 'raw':
-            YSPfig.savefig('Saved_Files/Stratigraphic_Plots/YSP_All_Samples_Plot.raw')
-        if Image_File_Option == 'rgba':
-            YSPfig.savefig('Saved_Files/Stratigraphic_Plots/YSP_All_Samples_Plot.rgba')
-        if Image_File_Option == 'svg':
-            YSPfig.savefig('Saved_Files/Stratigraphic_Plots/YSP_All_Samples_Plot.svg')
-        if Image_File_Option == 'svgz':
-            YSPfig.savefig('Saved_Files/Stratigraphic_Plots/YSP_All_Samples_Plot.svgz')
-        if Image_File_Option == 'tif':
-            YSPfig.savefig('Saved_Files/Stratigraphic_Plots/YSP_All_Samples_Plot.tif')
-        if Image_File_Option == 'tiff':
-            YSPfig.savefig('Saved_Files/Stratigraphic_Plots/YSP_All_Samples_Plot.tif')
-        
-        return 
+
+        if Image_File_Option == 'web':
+            filename = 'YSP_All_Samples_Plot'
+            asset_folder = 'assets/plots/Stratigraphic_Plots/'
+            YSPfig.savefig(asset_folder + filename + '.svg')
+            YSPfig.savefig(asset_folder + filename + '.tiff')
+        else:
+            YSPfig.savefig('Saved_Files/Stratigraphic_Plots/YSP_All_Samples_Plot.' + Image_File_Option)  
+                
+        plt.close(YSPfig)
+
+        return YSPfig
 
     #YPP
     def YPP_Strat_Plot(YPP_MDA, sample_list, Image_File_Option):
@@ -1916,35 +1756,18 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
         
         YPPaxi.set_title('YPP MDA: All Samples') 
         plt.legend(loc='upper left')
-        
-        if Image_File_Option == 'pdf':
-            YPPfig.savefig('Saved_Files/Stratigraphic_Plots/YPP_All_Samples_Plot.pdf')
-        if Image_File_Option == 'png':
-            YPPfig.savefig('Saved_Files/Stratigraphic_Plots/YPP_All_Samples_Plot.png')
-        if Image_File_Option == 'eps':
-            YPPfig.savefig('Saved_Files/Stratigraphic_Plots/YPP_All_Samples_Plot.eps')
-        if Image_File_Option == 'jpeg':
-            YPPfig.savefig('Saved_Files/Stratigraphic_Plots/YPP_All_Samples_Plot.jpeg')
-        if Image_File_Option == 'jpg':
-            YPPfig.savefig('Saved_Files/Stratigraphic_Plots/YPP_All_Samples_Plot.jpg')
-        if Image_File_Option == 'pgf':
-            YPPfig.savefig('Saved_Files/Stratigraphic_Plots/YPP_All_Samples_Plot.pgf')
-        if Image_File_Option == 'ps':
-            YPPfig.savefig('Saved_Files/Stratigraphic_Plots/YPP_All_Samples_Plot.ps')
-        if Image_File_Option == 'raw':
-            YPPfig.savefig('Saved_Files/Stratigraphic_Plots/YPP_All_Samples_Plot.raw')
-        if Image_File_Option == 'rgba':
-            YPPfig.savefig('Saved_Files/Stratigraphic_Plots/YPP_All_Samples_Plot.rgba')
-        if Image_File_Option == 'svg':
-            YPPfig.savefig('Saved_Files/Stratigraphic_Plots/YPP_All_Samples_Plot.svg')
-        if Image_File_Option == 'svgz':
-            YPPfig.savefig('Saved_Files/Stratigraphic_Plots/YPP_All_Samples_Plot.svgz')
-        if Image_File_Option == 'tif':
-            YPPfig.savefig('Saved_Files/Stratigraphic_Plots/YPP_All_Samples_Plot.tif')
-        if Image_File_Option == 'tiff':
-            YPPfig.savefig('Saved_Files/Stratigraphic_Plots/YPP_All_Samples_Plot.tif')
+
+        if Image_File_Option == 'web':
+            filename = 'YPP_All_Samples_Plot'
+            asset_folder = 'assets/plots/Stratigraphic_Plots/'
+            YPPfig.savefig(asset_folder + filename + '.svg')
+            YPPfig.savefig(asset_folder + filename + '.tiff')
+        else:
+            YPPfig.savefig('Saved_Files/Stratigraphic_Plots/YPP_All_Samples_Plot.' + Image_File_Option)  
                 
-        return 
+        plt.close(YPPfig)
+                
+        return YPPfig
 
     #MLA
     def MLA_Strat_Plot(MLA_MDA, sample_list, Image_File_Option):
@@ -2080,34 +1903,17 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
         MLAaxi.set_title('MLA MDA: All Samples') 
         plt.legend(loc='upper left')
         
-        if Image_File_Option == 'pdf':
-            MLAfig.savefig('Saved_Files/Stratigraphic_Plots/MLA_All_Samples_Plot.pdf')
-        if Image_File_Option == 'png':
-            MLAfig.savefig('Saved_Files/Stratigraphic_Plots/MLA_All_Samples_Plot.png')
-        if Image_File_Option == 'eps':
-            MLAfig.savefig('Saved_Files/Stratigraphic_Plots/MLA_All_Samples_Plot.eps')
-        if Image_File_Option == 'jpeg':
-            MLAfig.savefig('Saved_Files/Stratigraphic_Plots/MLA_All_Samples_Plot.jpeg')
-        if Image_File_Option == 'jpg':
-            MLAfig.savefig('Saved_Files/Stratigraphic_Plots/MLA_All_Samples_Plot.jpg')
-        if Image_File_Option == 'pgf':
-            MLAfig.savefig('Saved_Files/Stratigraphic_Plots/MLA_All_Samples_Plot.pgf')
-        if Image_File_Option == 'ps':
-            MLAfig.savefig('Saved_Files/Stratigraphic_Plots/MLA_All_Samples_Plot.ps')
-        if Image_File_Option == 'raw':
-            MLAfig.savefig('Saved_Files/Stratigraphic_Plots/MLA_All_Samples_Plot.raw')
-        if Image_File_Option == 'rgba':
-            MLAfig.savefig('Saved_Files/Stratigraphic_Plots/MLA_All_Samples_Plot.rgba')
-        if Image_File_Option == 'svg':
-            MLAfig.savefig('Saved_Files/Stratigraphic_Plots/MLA_All_Samples_Plot.svg')
-        if Image_File_Option == 'svgz':
-            MLAfig.savefig('Saved_Files/Stratigraphic_Plots/MLA_All_Samples_Plot.svgz')
-        if Image_File_Option == 'tif':
-            MLAfig.savefig('Saved_Files/Stratigraphic_Plots/MLA_All_Samples_Plot.tif')
-        if Image_File_Option == 'tiff':
-            MLAfig.savefig('Saved_Files/Stratigraphic_Plots/MLA_All_Samples_Plot.tif')
+        if Image_File_Option == 'web':
+            filename = 'MLA_All_Samples_Plot' 
+            asset_folder = 'assets/plots/Stratigraphic_Plots/'
+            MLAfig.savefig(asset_folder + filename + '.svg')
+            MLAfig.savefig(asset_folder + filename + '.tiff')
+        else:
+            MLAfig.savefig('Saved_Files/Stratigraphic_Plots/MLA_All_Samples_Plot.' + Image_File_Option)  
                 
-        return 
+        plt.close(MLAfig)
+                
+        return MLAfig
         
     if MDA_Method == "YSG":
         Plot = YSG_Strat_Plot(YSG_MDA, sample_list, Image_File_Option)
@@ -2129,7 +1935,6 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
         Plot = YPP_Strat_Plot(YPP_MDA, sample_list, Image_File_Option)
     if MDA_Method == 'MLA':
         Plot = MLA_Strat_Plot(MLA_MDA, sample_list, Image_File_Option)
-        
     if MDA_Method == 'All':
         Plot = YSG_Strat_Plot(YSG_MDA, sample_list, Image_File_Option), YC1s_Strat_Plot(YC1s_MDA, sample_list, Image_File_Option), YC2s_Strat_Plot(YC2s_MDA, sample_list, Image_File_Option), YDZ_Strat_Plot(YDZ_MDA, sample_list, Image_File_Option), Y3Zo_Strat_Plot(Y3Zo_MDA, sample_list, Image_File_Option), Y3Za_Strat_Plot(Y3Za_MDA, sample_list, Image_File_Option), Tau_Strat_Plot(Tau_MDA, sample_list, Image_File_Option), YSP_Strat_Plot(YSP_MDA, sample_list, Image_File_Option), YPP_Strat_Plot(YPP_MDA, sample_list, Image_File_Option), MLA_Strat_Plot(MLA_MDA, sample_list, Image_File_Option)
         
