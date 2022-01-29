@@ -11,4 +11,5 @@ RUN R -e 'install.packages(c("remotes", "IsoplotR", "dplyr", "rjson", "openxlsx"
 RUN R -e 'renv::restore()'
 COPY requirements.txt ./requirements.txt
 RUN pip install -r requirements.txt
-CMD gunicorn -b 0.0.0.0:8080 app:server --timeout 900
+# CMD gunicorn -b 0.0.0.0:8080 app:server --timeout 900
+CMD exec gunicorn --bind :$PORT --log-level info --workers 1 --threads 8 --timeout 900 app:server
