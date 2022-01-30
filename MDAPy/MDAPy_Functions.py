@@ -3195,7 +3195,7 @@ def YSP_outputs(ages, errors, sample_list, YSP_MDA, YSP_cluster, plotwidth, plot
         YSP_cluster_age_arrays_split_i = YSP_cluster[i]
         YSP_max_cluster = np.max(YSP_cluster_age_arrays_split_i)
                 
-        for s, t, u, v, w in YSP_cluster_age_arrays_split_i:
+        for s, t, u in YSP_cluster_age_arrays_split_i:
             clust_age = s
             clust_error = t
             cluster_age_and_error = s+t
@@ -4495,7 +4495,7 @@ def Y3Za(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six
             if len(ages[i]) < 3: # Return nulls if the samples has less than 3 analyses
                 Y3Za.append([np.nan,np.nan,np.nan])
             else:
-                Y3Za_wo_systematic.append([Y3Za_WM, Y3Za_WMerr2s/2, Y3Za_WM_MSWD, len(Y3Za_cluster_arrays)])
+                Y3Za_wo_systematic.append([Y3Za_WM, Y3Za_WMerr2s/2, Y3Za_WM_MSWD, len(data_err1s_ageSort[:3])])
                 Y3Za_cluster_arrays.append(data_err1s_ageSort[:3])
                
     Y3Za = systematic_uncertainty_addition(Y3Za_wo_systematic, sample_list, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off)   
