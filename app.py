@@ -506,7 +506,7 @@ def pre_calculation(computed_data, method, sample_list, sigma, uncertainty, best
                 Tau_MDA, method_table = MDAFunc.Tau_outputs(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six_ratios, seven_six_error, U238_decay_constant, U235_decay_constant, U238_U235, Data_Type, best_age_cut_off, plotwidth, plotheight, Image_File_Option, min_cluster_size=3, thres=0.01, minDist=1, xdif=1, x1=0, x2=4000)
             elif method == 'YSP':
                 age_addition_set_max_plot = 20
-                YSP_MDA, method_table = MDAFunc.YSP_outputs(ages, errors, sample_list, YSP_MDA, YSP_cluster, plotwidth, plotheight, age_addition_set_max_plot, Image_File_Option, min_cluster_size=2, MSWD_threshold=1)
+                YSP_MDA, method_table = MDAFunc.YSP_outputs(Data_Type, ages, errors, sample_list, YSP_MDA, YSP_cluster, plotwidth, plotheight, age_addition_set_max_plot, Image_File_Option, min_cluster_size=2, MSWD_threshold=1)
             elif method == 'MLA':
                 folder_path = 'assets/plots/IsoplotR/'
                 files_web = glob.glob(folder_path + "*.svg") + glob.glob(folder_path + "*.png")
