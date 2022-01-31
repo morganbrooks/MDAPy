@@ -62,12 +62,9 @@ summary = html.Div(id='summary-header', children=[
 
 
 methods = html.Div(id='summary-methods', children=[
-    dbc.Button(id='mda_all_methods_and_plots', children=["Calculate All MDA Methods And Plot  ", html.I(
-        className='fas fa-exclamation-circle')], color="outline-primary", className="col-sm-3 button-method"),
-    dbc.Button(id='mda_individual_method_and_plot', children=["Calculate Individual MDAs And Plot  ", html.I(
-        className='fas fa-exclamation-circle')], color="outline-primary", className="col-sm-3 button-method"),
-    dbc.Button(id='mda_one_method_all_plots', children=["Plot All Samples With One MDA Method  ", html.I(
-        className='fas fa-exclamation-circle')], color="outline-primary", className="col-sm-3 button-method")
+    dbc.Button(id='mda_all_methods_and_plots', children=["Calculate All MDA Methods And Plot  "], color="outline-primary", className="col-sm-3 button-method"),
+    dbc.Button(id='mda_individual_method_and_plot', children=["Calculate One MDA Method And Plot  "], color="outline-primary", className="col-sm-3 button-method"),
+    dbc.Button(id='mda_one_method_all_plots', children=["Plot All Samples With One MDA Method  "], color="outline-primary", className="col-sm-3 button-method")
 ], className="row input-row justify-content-between")
 #
 accordion = html.Div(
@@ -86,10 +83,10 @@ accordion = html.Div(
                     methods,
                     html.Br(),
                     html.Div(children=[
-                        html.H4('MDA Method Summary Table', className="col-sm-6"), dbc.Button([html.I(
+                        html.H4('Calculated MDAs & Errors', className="col-sm-6"), dbc.Button([html.I(
                             className='fas fa-download'), " Export"], color="outline-primary", className="col-sm-1", disabled=True)
                     ], className="row justify-content-between"),
-                    html.P('All errors are quoted in absolute'),
+                    html.P('All errors are quoted in absolute values'),
                     html.Hr(),
                     dcc.Loading(
                         id="loading-summary-mda-table",
@@ -98,7 +95,7 @@ accordion = html.Div(
                     ),
                     html.Br(),
                     html.Div(children=[
-                        html.H4('MDA Method Comparison Plots', className="col-sm-6"), dbc.Button([html.I(
+                        html.H4('MDA Plots', className="col-sm-6"), dbc.Button([html.I(
                             className='fas fa-download'), " Export"], color="outline-primary", className="col-sm-1", disabled=True)
                     ], className="row input-row justify-content-between"),
                     html.Hr(),
@@ -122,7 +119,7 @@ app.layout = dbc.Container(fluid=True, children=[
 
     dbc.CardHeader(children=[
         html.A([html.Img(src=app.get_asset_url('img/logo.png'), className="col-sm-1 align-self-center",
-               style={'width': "auto", 'height': "50px"})], href='/', style={'width': 'auto'}),
+               style={'width': "auto", 'height': "90px"})], href='/', style={'width': 'auto'}),
         # <i class="fab fa-bootstrap"></i>
         html.Div(className="col-sm-9 align-self-center"),
         html.Div([dbc.Row([
@@ -137,11 +134,11 @@ app.layout = dbc.Container(fluid=True, children=[
     html.Div(children=[
         html.Div(children=[
             html.B('Input Data'), html.Br(), html.Br(),
-            html.Label('Select Dataset'),
+            html.Label('Select Dataset Type'),
             dcc.Dropdown(options=[{'label': u'Pb-U 206/238 & Pb-U 207/235', 'value': '238U/206Pb_&_207Pb/206Pb'},
-                                  {'label': u'Best Age & SX', 'value': 'Ages'}], value='Ages', id='dataset-dropdown'),
+                                  {'label': u'Best Age & σx', 'value': 'Ages'}], value='Ages', id='dataset-dropdown'),
             html.Br(),
-            html.Label('Select Method'),
+            html.Label('Select MDA Calculation Method'),
             dcc.Dropdown(options=[
                 {'label': u'YSG: Youngest Single Grain', 'value': 'YSG'},
                 {'label': u'YDZ: Youngest Detrital Zircon', 'value': 'YDZ'},
@@ -155,8 +152,8 @@ app.layout = dbc.Container(fluid=True, children=[
                 {'label': u'The MLA Method', 'value': 'MLA'},
                 {'label': u'All Methods', 'value': 'All'}], id = 'method-dropdown'),
             html.Br(),
-            html.Label('Select Sigma (sx)'),
-            dcc.RadioItems(options=[{'label': '1 sx', 'value': '1'}, {'label': '2 sx', 'value': '2'}],
+            html.Label('Select Sigma (σx)'),
+            dcc.RadioItems(options=[{'label': '1 σx', 'value': '1'}, {'label': '2 σx', 'value': '2'}],
                            id='radio_sigma', value='2', labelClassName='col-sm-6'),
             html.Br(),
             html.Label('Select Uncertainty Format'),
@@ -173,10 +170,13 @@ app.layout = dbc.Container(fluid=True, children=[
                 id='U235_decay_constant', value=9.8485, type='number', className='inputNumbers col-sm-2')], className="row input-row"),
             html.Div(children=[html.Label('U238/U235 Decay Constant', className='labelCte col-sm-7'), dcc.Input(
                 id='U238_U235', value=133.88, type='number', className='inputNumbers col-sm-2')], className="row input-row"),
+
             html.Br(),
+            html.B(
+                'Systematic Uncertainties'),
             html.P(
-                'Input 0 if systematic uncertainties not required in final uncertainty calculation'),
-            html.Br(),
+                'Input 0 if not required in final uncertainty calculation'),
+            
             html.Div(children=[
                 html.Label('Long Term Excess Variance: U-Pb 238/206',
                            className='labelCte col-sm-9'),
@@ -506,7 +506,7 @@ def pre_calculation(computed_data, method, sample_list, sigma, uncertainty, best
                 Tau_MDA, method_table = MDAFunc.Tau_outputs(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six_ratios, seven_six_error, U238_decay_constant, U235_decay_constant, U238_U235, Data_Type, best_age_cut_off, plotwidth, plotheight, Image_File_Option, min_cluster_size=3, thres=0.01, minDist=1, xdif=1, x1=0, x2=4000)
             elif method == 'YSP':
                 age_addition_set_max_plot = 20
-                YSP_MDA, method_table = MDAFunc.YSP_outputs(ages, errors, sample_list, YSP_MDA, YSP_cluster, plotwidth, plotheight, age_addition_set_max_plot, Image_File_Option, min_cluster_size=2, MSWD_threshold=1)
+                YSP_MDA, method_table = MDAFunc.YSP_outputs(Data_Type, ages, errors, sample_list, YSP_MDA, YSP_cluster, plotwidth, plotheight, age_addition_set_max_plot, Image_File_Option, min_cluster_size=2, MSWD_threshold=1)
             elif method == 'MLA':
                 folder_path = 'assets/plots/IsoplotR/'
                 files_web = glob.glob(folder_path + "*.svg") + glob.glob(folder_path + "*.png")
@@ -557,9 +557,9 @@ def clear_selection(clicks):
 def func(selection, download):
 
     if selection == 'Ages':
-        template_filename = "data/Data_Upload_Example_Data_Type_Ages.xlsx"
+        template_filename = "data/Data_Upload_Example_Template_Ages.xlsx"
     elif selection == '238U/206Pb_&_207Pb/206Pb':
-        template_filename = "data/Data_Upload_Example_Data_Type_Ratios.xlsx"
+        template_filename = "data/Data_Upload_Example_Template_Ratios.xlsx"
 
     return dcc.send_file(template_filename)
 
