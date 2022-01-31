@@ -2096,6 +2096,8 @@ def YSG_outputs(ages, errors, plotwidth, plotheight, sample_list, YSG_MDA, age_a
 
     plt.close(YSGfig)    
     YSG_Table_ = pd.DataFrame(data=YSG_MDA, index=[sample_list], columns=['YSG_MDA (Ma)', 'YSG_+/-1σ'])
+    YSG_Table_['Sample_ID'] = sample_list
+    YSG_Table_ = YSG_Table_[['Sample_ID', 'YSG_MDA (Ma)', 'YSG_+/-1σ']] 
     
     return YSG_MDA, YSG_Table_
 
@@ -2145,6 +2147,8 @@ def YDZ_outputs(YDZ_MDA, minAges, mode, ages, errors, sample_list, plotwidth, pl
     
     plt.close(YDZfig)
     YDZ_Table_ = pd.DataFrame(data=YDZ_MDA, index=[sample_list], columns=['YDZ_MDA (Ma)', 'YDZ_+2σ', 'YDZ_-2σ'])
+    YDZ_Table_['Sample_ID'] = sample_list
+    YDZ_Table_ = YDZ_Table_[['Sample_ID', 'YDZ_MDA (Ma)', 'YDZ_+2σ', 'YDZ_-2σ']] 
   
     return YDZ_MDA, YDZ_Table_
 
@@ -2217,6 +2221,8 @@ def YPP_outputs(ages, errors, sample_list, plotwidth, plotheight, Image_File_Opt
        
     plt.close(YPPfig)
     YPP_Table_ = pd.DataFrame(data=YPP_MDAs, index=[sample_list], columns=['YPP_MDA (Ma)'])
+    YPP_Table_['Sample_ID'] = sample_list
+    YPP_Table_ = YPP_Table_[['Sample_ID', 'YPP_MDA (Ma)']] 
     
     return YPP_MDAs, YPP_Table_
 
@@ -2407,6 +2413,8 @@ def YC1s_outputs(ages, errors, sample_list, YC1s_MDA, YC1s_cluster_arrays, plotw
     
     plt.close(YC1sfig)
     YC1s_Table_= pd.DataFrame(data=YC1s_MDA, index=[sample_list], columns=['YC1σ_MDA (Ma)', 'YC1σ_+/-1σ', 'YC1σ_MSWD', 'YC1σ_Grains'])
+    YC1s_Table_['Sample_ID'] = sample_list
+    YC1s_Table_ = YC1s_Table_[['Sample_ID', 'YC1σ_MDA (Ma)', 'YC1σ_+/-1σ', 'YC1σ_MSWD', 'YC1σ_Grains']] 
     
     return YC1s_MDA, YC1s_Table_
 
@@ -2600,6 +2608,8 @@ def YC2s_outputs(ages, errors, sample_list, YC2s_MDA, YC2s_cluster_arrays, plotw
 
     plt.close(YC2sfig)
     YC2s_Table_ = pd.DataFrame(data=YC2s_MDA, index=[sample_list], columns=['YC2σ_MDA (Ma)', 'YC2σ_+/-1s', 'YC2σ_MSWD', 'YC2σ_Grains'])
+    YC2s_Table_['Sample_ID'] = sample_list
+    YC2s_Table_ = YC2s_Table_[['Sample_ID', 'YC2σ_MDA (Ma)', 'YC2σ_+/-1s', 'YC2σ_MSWD', 'YC2σ_Grains']]
     
     return YC2s_MDA, YC2s_Table_
 
@@ -2788,6 +2798,8 @@ def Y3Zo_outputs(ages, errors, sample_list, Y3Zo_MDA, Y3Zo_cluster_arrays, plotw
     
     plt.close(Y3Zofig)
     Y3Zo_Table_ = pd.DataFrame(data=Y3Zo_MDA, index=[sample_list], columns=['Y3Zo_MDA (Ma)', 'Y3Zo_+/-1σ', 'Y3Zo_MSWD','Y3Zo_Grains'])
+    Y3Zo_Table_['Sample_ID'] = sample_list
+    Y3Zo_Table_ = Y3Zo_Table_[['Sample_ID', 'Y3Zo_MDA (Ma)', 'Y3Zo_+/-1σ', 'Y3Zo_MSWD','Y3Zo_Grains']] 
     
     return Y3Zo_MDA, Y3Zo_Table_
 
@@ -2978,6 +2990,9 @@ def Y3Za_outputs(ages, errors, Y3Za_MDA, Y3Za_cluster_arrays, sample_list, plotw
     
     plt.close(Y3Zafig)    
     Y3Za_Table_ = pd.DataFrame(data=Y3Za_MDA, index=[sample_list], columns=['Y3Za_MDA (Ma)', 'Y3Za_+/-1σ', 'Y3Za_MSWD','Y3Za_Grains'])
+    Y3Za_Table_['Sample_ID'] = sample_list
+    Y3Za_Table_ = Y3Za_Table_[['Sample_ID', 'Y3Za_MDA (Ma)', 'Y3Za_+/-1σ', 'Y3Za_MSWD','Y3Za_Grains']] 
+    
     
     return Y3Za_MDA, Y3Za_Table_
 
@@ -3091,11 +3106,15 @@ def Tau_outputs(ages, errors, sample_list, eight_six_ratios, eight_six_error, se
     
     plt.close(Taufig)
     Tau_Table_ = pd.DataFrame(data=Tau, index=[sample_list], columns=['Tau_MDA (Ma)', 'Tau_+/-1σ', 'Tau_MSWD','Grains'])
+    Tau_Table_['Sample_ID'] = sample_list
+    Tau_Table_ = Tau_Table_[['Sample_ID', 'Tau_MDA (Ma)', 'Tau_+/-1σ', 'Tau_MSWD','Grains']] 
+    
+
     
     
     return Tau, Tau_Table_
 
-def YSP_outputs(ages, errors, sample_list, YSP_MDA, YSP_cluster, plotwidth, plotheight, age_addition_set_max_plot, Image_File_Option, min_cluster_size=2, MSWD_threshold=1):
+def YSP_outputs(Data_Type, ages, errors, sample_list, YSP_MDA, YSP_cluster, plotwidth, plotheight, age_addition_set_max_plot, Image_File_Option, min_cluster_size=2, MSWD_threshold=1):
     #YSP plotting code author: morganbrooks 
     # Check to see if ages is a list of arrays or just a single list of ages
     if not hasattr(ages[0], '__len__'):
@@ -3195,11 +3214,19 @@ def YSP_outputs(ages, errors, sample_list, YSP_MDA, YSP_cluster, plotwidth, plot
         YSP_cluster_age_arrays_split_i = YSP_cluster[i]
         YSP_max_cluster = np.max(YSP_cluster_age_arrays_split_i)
                 
-        for s, t, u, v, w in YSP_cluster_age_arrays_split_i:
-            clust_age = s
-            clust_error = t
-            cluster_age_and_error = s+t
-            cluster_age_plus_error.append(cluster_age_and_error)
+        if Data_Type == '238U/206Pb_&_207Pb/206Pb':      
+            for s, t, u, v, w in YSP_cluster_age_arrays_split_i:
+                clust_age = s
+                clust_error = t
+                cluster_age_and_error = s+t
+                cluster_age_plus_error.append(cluster_age_and_error)
+
+        if Data_Type == 'Ages':      
+            for s, t, u in YSP_cluster_age_arrays_split_i:
+                clust_age = s
+                clust_error = t
+                cluster_age_and_error = s+t
+                cluster_age_plus_error.append(cluster_age_and_error)
        
         L = len(YSP_cluster_age_arrays_split_i)
         
@@ -3279,6 +3306,8 @@ def YSP_outputs(ages, errors, sample_list, YSP_MDA, YSP_cluster, plotwidth, plot
     
     plt.close(YSPfig)
     YSP_Table_ = pd.DataFrame(data=YSP_MDA, index=[sample_list], columns=['YSP_MDA (Ma)', 'YSP_+/-1σ', 'YSP_MSWD','YSP_Grains'])
+    YSP_Table_['Sample_ID'] = sample_list
+    YSP_Table_ = YSP_Table_[['Sample_ID','YSP_MDA (Ma)', 'YSP_+/-1σ', 'YSP_MSWD','YSP_Grains']] 
     
     return YSP_MDA, YSP_Table_ 
 
@@ -3318,7 +3347,7 @@ def MLA_outputs(sample_list, dataToLoad, web=False):
     
     MLA_Table = pd.DataFrame.from_dict(MLA_MDA_1sError,orient='index').reset_index()
     pd.options.display.float_format = "{:,.2f}".format
-    MLA_Table.columns = [' ', 'MLA_MDA (Ma)', 'MLA_+/-1σ']
+    MLA_Table.columns = ['Sample_ID', 'MLA_MDA (Ma)', 'MLA_+/-1σ']
     
     if web:
         return MLA_Table
@@ -4495,7 +4524,7 @@ def Y3Za(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six
             if len(ages[i]) < 3: # Return nulls if the samples has less than 3 analyses
                 Y3Za.append([np.nan,np.nan,np.nan])
             else:
-                Y3Za_wo_systematic.append([Y3Za_WM, Y3Za_WMerr2s/2, Y3Za_WM_MSWD, len(Y3Za_cluster_arrays)])
+                Y3Za_wo_systematic.append([Y3Za_WM, Y3Za_WMerr2s/2, Y3Za_WM_MSWD, len(data_err1s_ageSort[:3])])
                 Y3Za_cluster_arrays.append(data_err1s_ageSort[:3])
                
     Y3Za = systematic_uncertainty_addition(Y3Za_wo_systematic, sample_list, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off)   
