@@ -473,8 +473,8 @@ def Plot_MDA(MDAs_1s_table, all_MDA_data, sample_list, YSG_MDA, YC1s_MDA, YC2s_M
         if Image_File_Option == 'web':
             filename = 'All_MDA_Methods_Plots_' + str(i)
             asset_folder = 'assets/plots/All_MDA_Methods_Plots/'
-            MDAfig.savefig(asset_folder + filename + '.svg')
-            MDAfig.savefig(asset_folder + filename + '.tiff')
+            for fileformat in ['.svg', '.tiff', '.eps', '.png', '.pdf', '.jpeg']:
+                MDAfig.savefig(asset_folder + filename + fileformat)
             plt.close(MDAfig)   
         else:
             MDAfig.savefig('Saved_Files/All_MDA_Methods_Plots/All_MDA_Methods_Plots.' + Image_File_Option)   
@@ -623,8 +623,8 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
         if Image_File_Option == 'web':
             filename = 'YSG_All_Samples_Plot'
             asset_folder = 'assets/plots/Stratigraphic_Plots/'
-            YSGfig.savefig(asset_folder + filename + '.svg')
-            YSGfig.savefig(asset_folder + filename + '.tiff')
+            for fileformat in ['.svg', '.tiff', '.eps', '.png', '.pdf', '.jpeg']:
+                YSGfig.savefig(asset_folder + filename + fileformat)
         else:
             YSGfig.savefig('Saved_Files/Stratigraphic_Plots/YSG_All_Samples_Plot.' + Image_File_Option)  
                 
@@ -778,8 +778,8 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
         if Image_File_Option == 'web':
             filename = 'YDZ_All_Samples_Plot'
             asset_folder = 'assets/plots/Stratigraphic_Plots/'
-            YDZfig.savefig(asset_folder + filename + '.svg')
-            YDZfig.savefig(asset_folder + filename + '.tiff')
+            for fileformat in ['.svg', '.tiff', '.eps', '.png', '.pdf', '.jpeg']:
+                YDZfig.savefig(asset_folder + filename + fileformat)
         else:
             YDZfig.savefig('Saved_Files/Stratigraphic_Plots/YDZ_All_Samples_Plot.' + Image_File_Option)  
                 
@@ -926,8 +926,8 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
         if Image_File_Option == 'web':
             filename = 'YC1s_All_Samples_Plot'
             asset_folder = 'assets/plots/Stratigraphic_Plots/'
-            YC1sfig.savefig(asset_folder + filename + '.svg')
-            YC1sfig.savefig(asset_folder + filename + '.tiff')
+            for fileformat in ['.svg', '.tiff', '.eps', '.png', '.pdf', '.jpeg']:
+                YC1sfig.savefig(asset_folder + filename + fileformat)
         else:
             YC1sfig.savefig('Saved_Files/Stratigraphic_Plots/YC1s_All_Samples_Plot.' + Image_File_Option)  
                 
@@ -1075,8 +1075,8 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
         if Image_File_Option == 'web':
             filename = 'YC2s_All_Samples_Plot'
             asset_folder = 'assets/plots/Stratigraphic_Plots/'
-            YC2sfig.savefig(asset_folder + filename + '.svg')
-            YC2sfig.savefig(asset_folder + filename + '.tiff')
+            for fileformat in ['.svg', '.tiff', '.eps', '.png', '.pdf', '.jpeg']:
+                YC2sfig.savefig(asset_folder + filename + fileformat)
         else:
             YC2sfig.savefig('Saved_Files/Stratigraphic_Plots/YC2s_All_Samples_Plot.' + Image_File_Option)  
                 
@@ -1222,8 +1222,8 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
         if Image_File_Option == 'web':
             filename = 'Y3Zo_All_Samples_Plot'
             asset_folder = 'assets/plots/Stratigraphic_Plots/'
-            Y3Zofig.savefig(asset_folder + filename + '.svg')
-            Y3Zofig.savefig(asset_folder + filename + '.tiff')
+            for fileformat in ['.svg', '.tiff', '.eps', '.png', '.pdf', '.jpeg']:
+                Y3Zofig.savefig(asset_folder + filename + fileformat)
         else:
             Y3Zofig.savefig('Saved_Files/Stratigraphic_Plots/Y3Zo_All_Samples_Plot.' + Image_File_Option)  
                 
@@ -1370,8 +1370,8 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
         if Image_File_Option == 'web':
             filename = 'Tau_All_Samples_Plot'
             asset_folder = 'assets/plots/Stratigraphic_Plots/'
-            Taufig.savefig(asset_folder + filename + '.svg')
-            Taufig.savefig(asset_folder + filename + '.tiff')
+            for fileformat in ['.svg', '.tiff', '.eps', '.png', '.pdf', '.jpeg']:
+                Taufig.savefig(asset_folder + filename + fileformat)
         else:
             Taufig.savefig('Saved_Files/Stratigraphic_Plots/Tau_All_Samples_Plot.' + Image_File_Option)  
                 
@@ -1517,8 +1517,8 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
         if Image_File_Option == 'web':
             filename = 'Y3Za_All_Samples_Plot'
             asset_folder = 'assets/plots/Stratigraphic_Plots/'
-            Y3Zafig.savefig(asset_folder + filename + '.svg')
-            Y3Zafig.savefig(asset_folder + filename + '.tiff')
+            for fileformat in ['.svg', '.tiff', '.eps', '.png', '.pdf', '.jpeg']:
+                Y3Zafig.savefig(asset_folder + filename + fileformat)
         else:
             Y3Zafig.savefig('Saved_Files/Stratigraphic_Plots/Y3Za_All_Samples_Plot.' + Image_File_Option)  
                 
@@ -1664,8 +1664,8 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
         if Image_File_Option == 'web':
             filename = 'YSP_All_Samples_Plot'
             asset_folder = 'assets/plots/Stratigraphic_Plots/'
-            YSPfig.savefig(asset_folder + filename + '.svg')
-            YSPfig.savefig(asset_folder + filename + '.tiff')
+            for fileformat in ['.svg', '.tiff', '.eps', '.png', '.pdf', '.jpeg']:
+                YSPfig.savefig(asset_folder + filename + fileformat)
         else:
             YSPfig.savefig('Saved_Files/Stratigraphic_Plots/YSP_All_Samples_Plot.' + Image_File_Option)  
                 
@@ -1760,8 +1760,8 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
         if Image_File_Option == 'web':
             filename = 'YPP_All_Samples_Plot'
             asset_folder = 'assets/plots/Stratigraphic_Plots/'
-            YPPfig.savefig(asset_folder + filename + '.svg')
-            YPPfig.savefig(asset_folder + filename + '.tiff')
+            for fileformat in ['.svg', '.tiff', '.eps', '.png', '.pdf', '.jpeg']:
+                YPPfig.savefig(asset_folder + filename + fileformat)
         else:
             YPPfig.savefig('Saved_Files/Stratigraphic_Plots/YPP_All_Samples_Plot.' + Image_File_Option)  
                 
@@ -1906,8 +1906,8 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
         if Image_File_Option == 'web':
             filename = 'MLA_All_Samples_Plot' 
             asset_folder = 'assets/plots/Stratigraphic_Plots/'
-            MLAfig.savefig(asset_folder + filename + '.svg')
-            MLAfig.savefig(asset_folder + filename + '.tiff')
+            for fileformat in ['.svg', '.tiff', '.eps', '.png', '.pdf', '.jpeg']:
+                MLAfig.savefig(asset_folder + filename + fileformat)
         else:
             MLAfig.savefig('Saved_Files/Stratigraphic_Plots/MLA_All_Samples_Plot.' + Image_File_Option)  
                 
@@ -2087,8 +2087,8 @@ def YSG_outputs(ages, errors, plotwidth, plotheight, sample_list, YSG_MDA, age_a
         if Image_File_Option == 'web':
             asset_folder = 'assets/plots/Individual_MDA_Plots/'
             filename = 'YSG_Plots_' + str(i)
-            YSGfig.savefig(asset_folder + filename + '.svg')
-            YSGfig.savefig(asset_folder + filename + '.tiff')
+            for fileformat in ['.svg', '.tiff', '.eps', '.png', '.pdf', '.jpeg']:
+                YSGfig.savefig(asset_folder + filename + fileformat)
             plt.close(YSGfig)   
         else:
             YSGfig.savefig('Saved_Files/Individual_MDA_Plots/YSG_Plots.' + Image_File_Option)
@@ -2139,8 +2139,8 @@ def YDZ_outputs(YDZ_MDA, minAges, mode, ages, errors, sample_list, plotwidth, pl
         if Image_File_Option == 'web':
             asset_folder = 'assets/plots/Individual_MDA_Plots/'
             filename = 'YDZ_Plots_' + str(i)
-            YDZfig.savefig(asset_folder + filename + '.svg')
-            YDZfig.savefig(asset_folder + filename + '.tiff')
+            for fileformat in ['.svg', '.tiff', '.eps', '.png', '.pdf', '.jpeg']:
+                YDZfig.savefig(asset_folder + filename + fileformat)
             plt.close(YDZfig)   
         else:
             YDZfig.savefig('Saved_Files/Individual_MDA_Plots/YDZ_Plots.' + Image_File_Option)
@@ -2213,8 +2213,8 @@ def YPP_outputs(ages, errors, sample_list, plotwidth, plotheight, Image_File_Opt
         if Image_File_Option == 'web':
             filename = 'YPP_Plots_' + str(i)
             asset_folder = 'assets/plots/Individual_MDA_Plots/'
-            YPPfig.savefig(asset_folder + filename + '.svg')
-            YPPfig.savefig(asset_folder + filename + '.tiff')
+            for fileformat in ['.svg', '.tiff', '.eps', '.png', '.pdf', '.jpeg']:
+                YPPfig.savefig(asset_folder + filename + fileformat)
             plt.close(YPPfig)   
         else:
             YPPfig.savefig('Saved_Files/Individual_MDA_Plots/YPP_Plots.' + Image_File_Option)   
@@ -2405,8 +2405,8 @@ def YC1s_outputs(ages, errors, sample_list, YC1s_MDA, YC1s_cluster_arrays, plotw
         if Image_File_Option == 'web':
             filename = 'YC1s_Plots_' + str(i)
             asset_folder = 'assets/plots/Individual_MDA_Plots/'
-            YC1sfig.savefig(asset_folder + filename + '.svg')
-            YC1sfig.savefig(asset_folder + filename + '.tiff')
+            for fileformat in ['.svg', '.tiff', '.eps', '.png', '.pdf', '.jpeg']:
+                YC1sfig.savefig(asset_folder + filename + fileformat)
             plt.close(YC1sfig)   
         else:
             YC1sfig.savefig('Saved_Files/Individual_MDA_Plots/YC1s_Plots.' + Image_File_Option)  
@@ -2600,8 +2600,8 @@ def YC2s_outputs(ages, errors, sample_list, YC2s_MDA, YC2s_cluster_arrays, plotw
         if Image_File_Option == 'web':
             filename = 'YC2s_Plots_' + str(i)
             asset_folder = 'assets/plots/Individual_MDA_Plots/'
-            YC2sfig.savefig(asset_folder + filename + '.svg')
-            YC2sfig.savefig(asset_folder + filename + '.tiff')
+            for fileformat in ['.svg', '.tiff', '.eps', '.png', '.pdf', '.jpeg']:
+                YC2sfig.savefig(asset_folder + filename + fileformat)
             plt.close(YC2sfig)   
         else:
             YC2sfig.savefig('Saved_Files/Individual_MDA_Plots/YC2s_Plots.' + Image_File_Option)  
@@ -2790,8 +2790,8 @@ def Y3Zo_outputs(ages, errors, sample_list, Y3Zo_MDA, Y3Zo_cluster_arrays, plotw
         if Image_File_Option == 'web':
             filename = 'Y3Zo_Plots_' + str(i)
             asset_folder = 'assets/plots/Individual_MDA_Plots/'
-            Y3Zofig.savefig(asset_folder + filename + '.svg')
-            Y3Zofig.savefig(asset_folder + filename + '.tiff')
+            for fileformat in ['.svg', '.tiff', '.eps', '.png', '.pdf', '.jpeg']:
+                Y3Zofig.savefig(asset_folder + filename + fileformat)
             plt.close(Y3Zofig)   
         else:
             Y3Zofig.savefig('Saved_Files/Individual_MDA_Plots/Y3Zo_Plots.' + Image_File_Option)  
@@ -2982,8 +2982,8 @@ def Y3Za_outputs(ages, errors, Y3Za_MDA, Y3Za_cluster_arrays, sample_list, plotw
         if Image_File_Option == 'web':
             filename = 'Y3Za_Plots_' + str(i)
             asset_folder = 'assets/plots/Individual_MDA_Plots/'
-            Y3Zafig.savefig(asset_folder + filename + '.svg')
-            Y3Zafig.savefig(asset_folder + filename + '.tiff')
+            for fileformat in ['.svg', '.tiff', '.eps', '.png', '.pdf', '.jpeg']:
+                Y3Zafig.savefig(asset_folder + filename + fileformat)
             plt.close(Y3Zafig)   
         else:
             Y3Zafig.savefig('Saved_Files/Individual_MDA_Plots/Y3Za_Plots.' + Image_File_Option)  
@@ -3098,8 +3098,8 @@ def Tau_outputs(ages, errors, sample_list, eight_six_ratios, eight_six_error, se
         if Image_File_Option == 'web':
             filename = 'Tau_Plots_' + str(i)
             asset_folder = 'assets/plots/Individual_MDA_Plots/'
-            Taufig.savefig(asset_folder + filename + '.svg')
-            Taufig.savefig(asset_folder + filename + '.tiff')
+            for fileformat in ['.svg', '.tiff', '.eps', '.png', '.pdf', '.jpeg']:
+                Taufig.savefig(asset_folder + filename + fileformat)
             plt.close(Taufig)   
         else:
             Taufig.savefig('Saved_Files/Individual_MDA_Plots/Tau_Plots.' + Image_File_Option)  
@@ -3298,8 +3298,8 @@ def YSP_outputs(Data_Type, ages, errors, sample_list, YSP_MDA, YSP_cluster, plot
         if Image_File_Option == 'web':
             filename = 'YSP_Plots_' + str(i)
             asset_folder = 'assets/plots/Individual_MDA_Plots/'
-            YSPfig.savefig(asset_folder + filename + '.svg')
-            YSPfig.savefig(asset_folder + filename + '.tiff')
+            for fileformat in ['.svg', '.tiff', '.eps', '.png', '.pdf', '.jpeg']:
+                YSPfig.savefig(asset_folder + filename + fileformat)
             plt.close(YSPfig)   
         else:
             YSPfig.savefig('Saved_Files/Individual_MDA_Plots/YSP_Plots.' + Image_File_Option)  
