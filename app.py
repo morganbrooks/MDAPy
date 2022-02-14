@@ -47,7 +47,7 @@ def sampleSelector(df):
 
 dimensions = [html.H5('Age Plotting Dimensions'), html.Br(),
               html.P('For individual MDA plots with all ages plotted, this input controls the maximum age to be plotted to control how many measurements are shown on one plot. Input (Ma) will be added to the oldest age in the age clusters to give a max plotting age.'),
-              html.Div(children=[dcc.Input(id='age-plot-dimensions', value=30, type='number', className='col-sm-6',  min=5)], style={'width': '100%'}, className="row justify-content-end")]
+              html.Div(children=[dcc.Input(id='age-plot-dimensions', value=30, type='number', required=True, className='col-sm-6',  min=5)], style={'width': '100%'}, className="row justify-content-end")]
 
 summary = html.Div(id='summary-header', children=[
     html.Div(id='summary-data', className="col-sm-3 summary-cards",
@@ -96,11 +96,12 @@ accordion = html.Div(
                         html.Div(children=[dcc.Dropdown(options=[
                             {'label': u'EPS', 'value': '.eps'},
                             {'label': u'JPEG', 'value': '.jpeg'},
+                            {'label': u'PDF', 'value': '.pdf'},
                             {'label': u'PNG', 'value': '.png'},
                             {'label': u'SVG', 'value': '.svg'},
                             {'label': u'TIFF', 'value': '.tiff'}
                             ], placeholder="Select a plot format", value='.tiff', id='filetype-dropdown'),
-                        dbc.Button([html.I(className='fas fa-download'), " Export"], color="outline-primary", id="btn-download-plot", disabled=True),
+                        dbc.Button([html.I(className='fas fa-download'), " Export"], color="outline-primary", id="btn-download-plot", disabled=True, className="col-sm-2"),
                         dcc.Download(id="download-plot")], className="col-sm-1", style= {'display': "contents"}),
                     ], className="row input-row justify-content-between"),
                     html.Hr(),
@@ -158,8 +159,9 @@ app.layout = dbc.Container(fluid=True, children=[
                 {'label': u'All Methods', 'value': 'All'}], id = 'method-dropdown'),
             html.Br(),
             html.Label('Sigma (σx) in Dataset'),
-            dcc.RadioItems(options=[{'label': '1 σx', 'value': 1}, {'label': '2 σx', 'value': 2}],
-                           id='radio_sigma', value=2, labelClassName='col-sm-6'),
+            dcc.RadioItems(options=[{'label': '1 σx', 'value': 1},
+                                    {'label': '2 σx', 'value': 2}],
+                           value=2, id='radio_sigma', labelClassName='col-sm-6'),
             html.Br(),
             html.Label('Uncertainty Format in Dataset'),
             dcc.RadioItems(options=[{'label': 'Percent (%)', 'value': 'percent'},
@@ -167,60 +169,76 @@ app.layout = dbc.Container(fluid=True, children=[
                            value='percent', id='radio_uncertainty',
                            labelClassName='col-sm-6'),
             html.Br(),
-            html.Div(children=[html.Label('Best Age Cut Off', className='labelCte col-sm-7'), dcc.Input(
-                id='best_age_cut_off', value=1500, type='number', className='inputNumbers col-sm-2')], className="row input-row"),
-            html.Div(children=[html.Label('U238 Decay Constant (10⁻¹⁰)', className='labelCte col-sm-7'), dcc.Input(
-                id='U238_decay_constant', value=1.55125, type='number', className='inputNumbers col-sm-2')], className="row input-row"),
-            html.Div(children=[html.Label('U235 Decay Constant (10⁻¹⁰)', className='labelCte col-sm-7'), dcc.Input(
-                id='U235_decay_constant', value=9.8485, type='number', className='inputNumbers col-sm-2')], className="row input-row"),
-            html.Div(children=[html.Label('U238/U235', className='labelCte col-sm-7'), dcc.Input(
-                id='U238_U235', value=137.818, type='number', className='inputNumbers col-sm-2')], className="row input-row"),
+            html.Div(children=[
+                html.Label('Best Age Cut Off', className='labelCte col-sm-7'),
+                dcc.Input(id='best_age_cut_off', value=1500, min=0, required=True,
+                          type='number', className='inputNumbers col-sm-2')],
+                className="row input-row"),
+            html.Div(children=[
+                html.Label('U238 Decay Constant (10⁻¹⁰)', className='labelCte col-sm-7'),
+                dcc.Input(id='U238_decay_constant', value=1.55125, min=0, required=True,
+                          type='number', className='inputNumbers col-sm-2')],
+                className="row input-row"),
+            html.Div(children=[
+                html.Label('U235 Decay Constant (10⁻¹⁰)', className='labelCte col-sm-7'),
+                dcc.Input(id='U235_decay_constant', value=9.8485, min=0, required=True,
+                          type='number', className='inputNumbers col-sm-2')],
+                className="row input-row"),
+            html.Div(children=[
+                html.Label('U238/U235', className='labelCte col-sm-7'),
+                dcc.Input(id='U238_U235', value=137.818, min=0, required=True,
+                          type='number', className='inputNumbers col-sm-2')],
+                className="row input-row"),
 
             html.Br(),
-            html.B(
-                'Systematic Uncertainties (%)'),
-            html.P(
-                'Input 0 if not required in final MDA uncertainty calculation. Only applies to: YC1σ,YC2σ,YSG,Y3Za,Y3Zo,YSP,Tau'),
+            html.B('Systematic Uncertainties (%)'),
+            html.P('Input 0 if not required in final MDA uncertainty calculation. Only applies to: YC1σ,YC2σ,YSG,Y3Za,Y3Zo,YSP,Tau'),
             
             html.Div(children=[
                 html.Label('Long Term Excess Variance: U-Pb 238/206',
                            className='labelCte col-sm-9'),
                 dcc.Input(id='excess_variance_206_238', value=1.2,
-                          type='number', className='inputCte col-sm-2',  min=0)
+                          min=0, required=True, type='number',
+                          className='inputCte col-sm-2')
             ], className="row input-row"),
             html.Div(children=[
                 html.Label('Long Term Excess Variance: Pb-Pb 207/206',
                            className='labelCte col-sm-9'),
                 dcc.Input(id='excess_variance_207_206', value=0.7,
-                          type='number', className='inputCte col-sm-2',  min=0)
+                          min=0, required=True, type='number',
+                          className='inputCte col-sm-2')
             ], className="row input-row"),
 
             html.Div(children=[
                 html.Label('Sy Calibration Uncertainty U-Pb 238/206',
                            className='labelCte col-sm-9'),
                 dcc.Input(id='Sy_calibration_uncertainty_206_238', value=0.6,
-                          type='number', className='inputCte col-sm-2',  min=0)
+                          min=0, required=True, type='number',
+                          className='inputCte col-sm-2')
             ], className="row input-row"),
 
             html.Div(children=[
                 html.Label('Sy Calibration Uncertainty Pb-Pb 207/206',
                            className='labelCte col-sm-9'),
                 dcc.Input(id='Sy_calibration_uncertainty_207_206', value=0.1,
-                          type='number', className='inputCte col-sm-2',  min=0)
+                          min=0, required=True, type='number',
+                          className='inputCte col-sm-2')
             ], className="row input-row"),
 
             html.Div(children=[
                 html.Label('Decay Constant Uncertainty U 238',
                            className='labelCte col-sm-9'),
                 dcc.Input(id='decay_constant_uncertainty_U238', value=0.16,
-                          type='number', className='inputCte col-sm-2',  min=0)
+                          min=0, required=True, type='number',
+                          className='inputCte col-sm-2')
             ], className="row input-row"),
 
             html.Div(children=[
                 html.Label('Decay Constant Uncertainty U 235',
                            className='labelCte col-sm-9'),
                 dcc.Input(id='decay_constant_uncertainty_U235', value=0.2,
-                          type='number', className='inputCte col-sm-2',  min=0)
+                          min=0, required=True, type='number',
+                          className='inputCte col-sm-2')
             ], className="row input-row"), html.Br(),
 
             dbc.Button("Load Sample Data", color="primary",
@@ -400,8 +418,12 @@ def download_plot(clicked, idx, file_format, items):
         o = dcc.send_file(file[1:].replace('.svg', file_format)), False, False
     else:
         if 'plot_placeholder' not in items[0]['src']:
-            o = None, False, False
+            if file_format is None:
+                o = None, True, False
+            else:
+                o = None, False, False
         else:
+            print(file_format)
             o = None, True, True
     return o
 
@@ -576,7 +598,7 @@ def clear_selection(clicks):
     if clicks is not None:
         return "", "", ""
     else:
-        return "", "percent", "2"
+        return "", "percent", 2
 
 
 @app.callback(
