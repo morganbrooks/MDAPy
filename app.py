@@ -423,7 +423,6 @@ def download_plot(clicked, idx, file_format, items):
             else:
                 o = None, False, False
         else:
-            print(file_format)
             o = None, True, True
     return o
 
