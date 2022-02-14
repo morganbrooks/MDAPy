@@ -35,9 +35,8 @@ plotwidth = 8
 plotheight = 5
 pd.options.display.float_format = "{:,.2f}".format
 
-carousel = dbc.Carousel(
+carousel = dbc.Carousel(id="CarouselPlot", 
     items=[{"key": "1", "src": "assets/img/plot_placeholder.svg"}])
-
 
 def sampleSelector(df):
     checklist_options = [{'label': 'Sample ' + i, 'value': i} for i in df]
@@ -45,7 +44,6 @@ def sampleSelector(df):
     selector = dcc.Checklist(id='sample_selection', options=checklist_options, value=[df[0]],
                              labelStyle={'display': 'inline-block', 'margin-bottom': '0.5rem', 'font-size': '1.15rem'}, labelClassName='col-sm-6')
     return selector
-
 
 dimensions = [html.H5('Age Plotting Dimensions'), html.Br(),
               html.P('For individual MDA plots with all ages plotted, this input controls the maximum age to be plotted to control how many measurements are shown on one plot. Input (Ma) will be added to the oldest age in the age clusters to give a max plotting age.'),
@@ -59,7 +57,6 @@ summary = html.Div(id='summary-header', children=[
     html.Div(id='plotting-dimensions',
              className="col-sm-3 summary-cards", style={'height': '100%'}),
 ], className="row input-row justify-content-between", style={'height': '275px'})
-
 
 methods = html.Div(id='summary-methods', children=[
     dbc.Button(id='mda_all_methods_and_plots', children=["Calculate All MDA Methods And Plot  "], color="outline-primary", className="col-sm-3 button-method"),
@@ -83,8 +80,8 @@ accordion = html.Div(
                     methods,
                     html.Br(),
                     html.Div(children=[
-                        html.H4('Calculated MDAs & Uncertainties', className="col-sm-6"), dbc.Button([html.I(
-                            className='fas fa-download'), " Export"], color="outline-primary", className="col-sm-1", disabled=True)
+                        html.H4('Calculated MDAs & Uncertainties', className="col-sm-6"),
+                         dbc.Button([html.I(className='fas fa-download'), " Export"], color="outline-primary", className="col-sm-1", disabled=True)
                     ], className="row justify-content-between"),
                     html.P('All uncertainties are quoted in absolute values'),
                     html.Hr(),
@@ -95,8 +92,16 @@ accordion = html.Div(
                     ),
                     html.Br(),
                     html.Div(children=[
-                        html.H4('MDA Plots', className="col-sm-6"), dbc.Button([html.I(
-                            className='fas fa-download'), " Export"], color="outline-primary", className="col-sm-1", disabled=True)
+                        html.H4('MDA Plots', className="col-sm-6"),
+                        html.Div(children=[dcc.Dropdown(options=[
+                            {'label': u'EPS', 'value': '.eps'},
+                            {'label': u'JPEG', 'value': '.jpeg'},
+                            {'label': u'PNG', 'value': '.png'},
+                            {'label': u'SVG', 'value': '.svg'},
+                            {'label': u'TIFF', 'value': '.tiff'}
+                            ], placeholder="Select a plot format", value='.tiff', id='filetype-dropdown'),
+                        dbc.Button([html.I(className='fas fa-download'), " Export"], color="outline-primary", id="btn-download-plot", disabled=True),
+                        dcc.Download(id="download-plot")], className="col-sm-1", style= {'display': "contents"}),
                     ], className="row input-row justify-content-between"),
                     html.Hr(),
                     dcc.Loading(
@@ -374,6 +379,32 @@ def update_output(selection, contents, filename, clicked):
         ], style={'text-align': 'center'}), json.dumps({}), [html.H5('Data Upload Summary'), html.Br(), html.P('Load or import data to start.', style={'text-align': 'center'})], [html.H5('Select Samples to Plot'), html.Br(), html.P('Load or import data to start.', style={'text-align': 'center'}), html.Div(id='sample_selection')], [html.H5('Age Plotting Dimensions'), html.P('Load or import data to start.', style={'text-align': 'center'}), dcc.Input(id='age-plot-dimensions', value=0, type='number', className='col-sm-6',  min=0,style={'display': 'none'})]
 
 
+@app.callback(
+    Output("download-plot", "data"),
+    Output('btn-download-plot', 'disabled'),
+    Output('filetype-dropdown', 'disabled'),
+    Input("btn-download-plot", "n_clicks"),
+    Input("CarouselPlot", "active_index"),
+    Input("filetype-dropdown", "value"),
+    Input("CarouselPlot", "items"),
+    prevent_initial_call=True,
+)
+def download_plot(clicked, idx, file_format, items):
+
+    triggered = dash.callback_context.triggered[0]['prop_id'].split('.')[0]
+
+    if triggered == "btn-download-plot":
+        if idx is None:
+            idx = 0
+        file = items[idx]['src']
+        o = dcc.send_file(file[1:].replace('.svg', file_format)), False, False
+    else:
+        if 'plot_placeholder' not in items[0]['src']:
+            o = None, False, False
+        else:
+            o = None, True, True
+    return o
+
 @app.callback(Output('computed-data-errors', 'data'),
               Output('summary-mda-text', 'children'),
               Output('summary-mda-table', 'children'),
@@ -473,7 +504,7 @@ def pre_calculation(computed_data, method, sample_list, sigma, uncertainty, best
             files = [file for file in os.listdir(
                 os.getcwd() + folder_path) if file.endswith(".svg")]
 
-            carousel2 = dbc.Carousel(items=[{"key": str(pos+1), "src": folder_path+img} for pos, img in enumerate(files)],
+            carousel2 = dbc.Carousel(id="CarouselPlot", items=[{"key": str(pos+1), "src": folder_path+img} for pos, img in enumerate(files)],
                                      controls=True, indicators=True, variant="dark")
 
             return df_errors, method_text, mda_table, carousel2
@@ -516,7 +547,7 @@ def pre_calculation(computed_data, method, sample_list, sigma, uncertainty, best
             
             dashtable = dash_table.DataTable(id='datatable-mda', columns=[{"name": i, "id": i, "type": "numeric", 'format': Format(scheme=Scheme.fixed, precision=2)} for i in method_table.columns], data=method_table.to_dict('records'), page_action="native", page_size=5, style_cell={'textAlign': 'center'}, style_table={'overflowX': 'auto'})
             files = [file for file in os.listdir(os.getcwd() + "/" + folder_path) if file.endswith(".svg")]
-            carousel2 = dbc.Carousel(items=[{"key": str(pos+1), "src": folder_path+img} for pos, img in enumerate(files)], controls=True, indicators=True, variant="dark")
+            carousel2 = dbc.Carousel(id="CarouselPlot", items=[{"key": str(pos+1), "src": folder_path+img} for pos, img in enumerate(files)], controls=True, indicators=True, variant="dark")
 
             return df_errors, method_text, dashtable, carousel2
         elif triggered == 'mda_one_method_all_plots':
@@ -530,7 +561,7 @@ def pre_calculation(computed_data, method, sample_list, sigma, uncertainty, best
             MDAFunc.MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau_MDA, YSP_MDA, YPP_MDA, MLA_MDA, ages, errors, sample_list, Image_File_Option, plotwidth, plotheight, method)
 
             files = [file for file in os.listdir(os.getcwd() + "/" + folder_path) if file.endswith(".svg")]
-            carousel2 = dbc.Carousel(items=[{"key": str(pos+1), "src": folder_path+img} for pos, img in enumerate(files)], controls=True, indicators=True, variant="dark")
+            carousel2 = dbc.Carousel(id="CarouselPlot", items=[{"key": str(pos+1), "src": folder_path+img} for pos, img in enumerate(files)], controls=True, indicators=True, variant="dark")
             return df_errors, method_text, dashtable, carousel2
 
     return df_errors, method_text, summary_mda_table, carousel

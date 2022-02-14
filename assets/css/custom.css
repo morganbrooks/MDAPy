@@ -266,3 +266,11 @@ input[type="checkbox"] { /* change "blue" browser chrome to yellow */
 .tab--selected {
     border-top: 2px solid #2e93a4 !important;
 }
+
+#filetype-dropdown {
+    width: 15em;
+}
+
+.accordion {
+    font-size: 1.25rem;
+}
