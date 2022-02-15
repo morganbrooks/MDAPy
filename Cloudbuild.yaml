@@ -1,0 +1,7 @@
+steps:
+- name: gcr.io/cloud-builders/docker
+  args: ['build', '-t', 'gcr.io/loglines-morgan/mdapy:${SHORT_SHA}', '.']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ["push", "gcr.io/loglines-morgan/mdapy"]
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['run', 'deploy', 'mdapy', '--image', 'gcr.io/loglines-morgan/mdapy:${SHORT_SHA}', '--region', 'us-central1', '--platform', 'managed', '--timeout', '900', '--concurrency', '80', '--cpu', '4', '--memory', '4096Mi', '--max-instances', '10', '--allow-unauthenticated']  
