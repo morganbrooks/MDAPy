@@ -22,14 +22,21 @@ method_description = {
 'YSG': """The youngest single grain (YSG) as described in in Dickinson and Gehrels (2009), uses the youngest single detrital zircon grain age and uncertainty measured within the sample as the MDA. If the YSG has a 1σ uncertainty >10 Ma and overlaps with the second-youngest date, then the later is substituted for greater precision. The uncertainty of the youngest grain is used as the uncertainty of the MDA (Dickinson and Gehrels, 2009). Following Sharman et al. (2018), MDAPy takes an array of grain ages and the associated uncertainties, adds 1σ uncertainty to each age measurement, sorts them in ascending order and selects the first grain on the list as the youngest single grain and MDA. When done this way, older, less uncertain grains may be selected over younger more uncertain ones, as the older grain with a smaller added uncertainty could end up being younger once the 1σ uncertainties are added. If values are provided for systematic uncertainties, they are added to the YSG MDA uncertainties.""",
 'YDZ': """The youngest detrital zircon (YDZ) (Dickinson and Gehrels, 2009) is based on an algorithm originally developed in Isoplot (a Visual Basic add-in for Microsoft Excel) (Ludwig, 2012). In MDAPy, the YDZ algorithm is written in Python but follows the same methods of Ludwig (2012), where a Monte Carlo simulation is applied on the youngest sub-sample of ages. The simulation is applied as follows: Starts with an array of ages and associated uncertainties for each sample. Ages are then sorted, and a sub-sample of all grains within 5σ of the youngest grain. The simulation runs and each iteration consists of taking the sub-sample of the youngest ages and adjusting them by a random amount of their corresponding uncertainties. From this new random array of ages, the youngest grain is selected. The simulation is repeated 10,000 times and the result is 10,000 of the youngest ages from each simulation. The 10,000 youngest ages are then plotted on a histogram and the mode is selected as the best estimate of the youngest detrital zircon and the MDA of the sample. The upper uncertainty (P97.5) and lower uncertainty (P2.5), which are the ages where only 2.5% of dates are older or younger, define the 2σ uncertainties at 95% confidence. In general, the distribution is asymmetric which results in unequal upper and lower uncertainties. The resulting plots in MDAPy display frequency histograms of the distribution of the 10,000 youngest ages derived from the Monte Carlo simulation for each sample. Due to the nature of this calculation method: systematic uncertainties are not added to the final MDA uncertainties.""",
 'YPP': """The youngest graphical peak (YPP) method from Dickinson and Gehrels (2009), is derived from the youngest graphical peak (mode) on an age probability density plot (PDP) which consists of two or more grains that overlap within 2σ uncertainty. There is no uncertainty for MDAs calculated using this method. """,
-'YC1σ': """The youngest grain cluster at 1σ uncertainty (YC1σ), is calculated using the weighted mean age, weighted by the square of the age uncertainty (Dickinson and Gehrels, 2009). The grain cluster used within the weighted mean age calculation consists of the youngest two or more grains that overlap within 1σ uncertainty. The uncertainty of the YC1σ MDA is calculated as the standard error of the calculated weighted mean age. If values are provided for systematic uncertainties, they are added to the YC1σ MDA uncertainties.""",
-' YC2σ ': """The youngest grain cluster at 2σ uncertainty (YC2σ), is calculated using the weighted mean age, weighted by the square of the age uncertainty (Dickinson and Gehrels, 2009). The grain cluster used within the weighted mean age calculation consists of the youngest three or more grains that overlap within 2σ uncertainty. The uncertainty of the YC2σ MDA is calculated as the standard error of the calculated weighted mean age.""",
+'YC1s': """The youngest grain cluster at 1σ uncertainty (YC1σ), is calculated using the weighted mean age, weighted by the square of the age uncertainty (Dickinson and Gehrels, 2009). The grain cluster used within the weighted mean age calculation consists of the youngest two or more grains that overlap within 1σ uncertainty. The uncertainty of the YC1σ MDA is calculated as the standard error of the calculated weighted mean age. If values are provided for systematic uncertainties, they are added to the YC1σ MDA uncertainties.""",
+'YC2s': """The youngest grain cluster at 2σ uncertainty (YC2σ), is calculated using the weighted mean age, weighted by the square of the age uncertainty (Dickinson and Gehrels, 2009). The grain cluster used within the weighted mean age calculation consists of the youngest three or more grains that overlap within 2σ uncertainty. The uncertainty of the YC2σ MDA is calculated as the standard error of the calculated weighted mean age.""",
 'Y3Zo': """The youngest three zircons at 2σ uncertainty (Y3Zo) method calculates an MDA using the weighted mean age of the youngest three zircons that overlap within 2σ uncertainty, weighted by the square of the age uncertainty (Ross et al., 2017). The uncertainty of the Y3Zo MDA is calculated as the standard error of the calculated weighted mean age.""",
 'Y3Za': """The youngest three zircons (Y3Za) method calculates an MDA using the weighted mean age of the youngest three zircons, weighted by the square of the age uncertainty (Zhang et al., 2016). The uncertainty of the Y3Za MDA is calculated as the standard error of the calculated weighted mean age.""",
 'Tau': """The Tau (𝜏) method calculates an MDA using the weighted mean age, weighted by the square of the age uncertainty, of all dates that fall between the probability minima (troughs) of the youngest peak composed of three or more grains on a probability density plot (Barbeau et al., 2009). The uncertainty of the  𝜏  MDA is calculated as the standard error of the calculated weighted mean age.""",
 'YSP': """The youngest statistical population (YSP) method from Coutts et al 2019, calculates an MDA from the weighted mean age, weighted by the square of the age uncertainty, of the youngest two or more grains that produce a MSWD of ~ 1. A MSWD ~1 signals that the dispersion of the age measurements is proportional to the uncertainty of the measurements, and it is reasonable to assume that the grains may be the same true age (Wendt and Carl, 1991). In MDAPy, the sub-sample of grains used in the MDA calculation is selected through a stepwise process. To begin, grains are sorted by age and the MSWD of the two youngest grains is calculated. If the MSWD < 1, more grains are added until the MSWD > 1. The MDA is then calculated from the weighted mean age of this sub-sample of grains. The uncertainty of the MDA is calculated as the standard error of the calculated weighted mean age. """,
 'MLA': """The maximum likelihood age (MLA) method developed in Vermeesch (2021), uses a maximum likelihood model that was originally developed for estimating minimum age populations in fission track thermochronology by Galbraith and Laslett (1993). The MDA calculated is the age of the minimum population, based on an error model for analytical uncertainties. The results of the MLA method are visualised on radial plots, which show ages (radial axis) versus error (x-axis) (Galbraith, 1988, 1990), with the angular position of each data point representing the date, and its horizontal distance from the origin representing the precision. Due to the nature of this calculation method: systematic uncertainties are not added to the final MDA uncertainties.  The algorithm used to calculate the MLA MDAs and the associated radial plots was developed by Vermeesch (2021) within an open source software package called IsoplotR (Vermeesch, 2018) ."""
 }
+
+method_title = {
+    'YSG': 'Youngest Single Grain', 'YDZ': 'Youngest Detrital Zircon', 'YPP': 'YPP: Youngest Graphical Peak',
+    'YC1s': 'YC1σ (2+): Youngest Grain Cluster at 1σ', 'YC2s': 'YC2σ (3+): Youngest Grain Cluster at 2σ',
+    'Y3Zo': 'Y3Zo: Youngest Three Zircons at 2σ (Y3Zo)', 'Y3Za': 'Y3Za: Youngest Three Zircons (Y3Za)',
+    'Tau': 'Tau: Tau Method', 'YSP': 'YSP: Youngest Statistical Population', 'MLA': 'MLA: Maximum Likelihood Age',
+    }
 
 plotwidth = 8
 plotheight = 5
@@ -45,17 +52,17 @@ def sampleSelector(df):
                              labelStyle={'display': 'inline-block', 'margin-bottom': '0.5rem', 'font-size': '1.15rem'}, labelClassName='col-sm-6')
     return selector
 
-dimensions = [html.H5('Age Plotting Dimensions'), html.Br(),
-              html.P('For individual MDA plots with all ages plotted, this input controls the maximum age to be plotted to control how many measurements are shown on one plot. Input (Ma) will be added to the oldest age in the age clusters to give a max plotting age.'),
-              html.Div(children=[dcc.Input(id='age-plot-dimensions', value=30, type='number', required=True, className='col-sm-6',  min=5)], style={'width': '100%'}, className="row justify-content-end")]
+dimensions = [html.H5('Age Plotting Dimensions'),
+              html.Div(children=[html.P('For individual MDA plots with all ages plotted, this input controls the maximum age to be plotted to control how many measurements are shown on one plot. Input (Ma) will be added to the oldest age in the age clusters to give a max plotting age.'),
+                                 dcc.Input(id='age-plot-dimensions', value=30, type='number', required=True, className='col-12',  min=5)], style={'width': '100%'}, className="row justify-content-end"),]
 
 summary = html.Div(id='summary-header', children=[
-    html.Div(id='summary-data', className="col-sm-3 summary-cards",
+    html.Div(id='summary-data', className="col-xs-12 col-sm-3 summary-cards",
              style={'height': '100%'}),
-    html.Div(id='sample-selector', className="col-sm-3 summary-cards",
+    html.Div(id='sample-selector', className="col-xs-12 col-sm-3 summary-cards",
              style={'height': '100%'}),
     html.Div(id='plotting-dimensions',
-             className="col-sm-3 summary-cards", style={'height': '100%'}),
+             className="col-xs-12 col-sm-3 summary-cards", style={'height': '100%'}),
 ], className="row input-row justify-content-between", style={'height': '275px'})
 
 methods = html.Div(id='summary-methods', children=[
@@ -79,16 +86,22 @@ accordion = html.Div(
                     html.Br(),
                     methods,
                     html.Br(),
+                    dcc.Loading(
+                        id="loading-summary-mda-text",
+                        type="default",
+                        children=[html.H4(id='summary-mda-title'), html.Div(id='summary-mda-text'), html.Br()],
+                    ),
+                    html.Hr(),
                     html.Div(children=[
-                        html.H4('Calculated MDAs & Uncertainties', className="col-sm-6"),
-                         dbc.Button([html.I(className='fas fa-download'), " Export"], color="outline-primary", className="col-sm-1", disabled=True)
+                        html.H4('Calculated MDAs & Uncertainties', className="col-12 col-md-6"),
+                         dbc.Button([html.I(className='fas fa-download'), " Export"], color="outline-primary", className="col-12 col-xxl-1", disabled=True)
                     ], className="row justify-content-between"),
                     html.P('All uncertainties are quoted in absolute values'),
                     html.Hr(),
                     dcc.Loading(
                         id="loading-summary-mda-table",
                         type="default",
-                        children=[html.Div(id='summary-mda-text'), html.Br(), html.Br(), html.Div(id='summary-mda-table')],
+                        children=[html.Br(), html.Div(id='summary-mda-table')],
                     ),
                     html.Br(),
                     html.Div(children=[
@@ -115,7 +128,7 @@ accordion = html.Div(
                 title="Run Analysis",
             ),
         ],
-    ), className='col-sm-9 workbench'
+    ), className='col-12 col-lg-9 workbench'
 )
 
 app = dash.Dash(__name__, external_stylesheets=[
@@ -127,14 +140,14 @@ app.layout = dbc.Container(fluid=True, children=[
         html.A([html.Img(src=app.get_asset_url('img/logo.png'), className="col-sm-1 align-self-center",
                style={'width': "auto", 'height': "90px"})], href='/', style={'width': 'auto'}),
         # <i class="fab fa-bootstrap"></i>
-        html.Div(className="col-sm-9 align-self-center"),
+        html.Div(className="col-12 col-xxl-8 align-self-center"),
         html.Div([dbc.Row([
             dbc.Button([html.I(className='fa fa-undo'), " Reset Form"],
                        color="outline-primary", id="data-reset", className="col-sm-5"),
             html.Div(className="col-sm-1"),
             dbc.Button([html.I(className='far fa-question-circle'), " Help"],
                        color="outline-primary", id="data-help", className="col-sm-5")
-        ])], className="col-sm-2 align-self-center")],
+        ])], className="col-12 col-xxl-2 align-self-center")],
         className='row dashHeader justify-content-between'),
 
     html.Div(children=[
@@ -158,7 +171,7 @@ app.layout = dbc.Container(fluid=True, children=[
                 {'label': u'MLA: Maximum Likelihood Age', 'value': 'MLA'},
                 {'label': u'All Methods', 'value': 'All'}], id = 'method-dropdown'),
             html.Br(),
-            html.Label('Sigma (σx) in Dataset'),
+            html.Label('Sigma (σx) in Dataset (default is 1σx)'),
             dcc.RadioItems(options=[{'label': '1 σx', 'value': 1},
                                     {'label': '2 σx', 'value': 2}],
                            value=2, id='radio_sigma', labelClassName='col-sm-6'),
@@ -249,7 +262,7 @@ app.layout = dbc.Container(fluid=True, children=[
                        id="btn-download-template", className="mb-3 col-sm-11"),
             dcc.Download(id="download-template")
 
-        ], className='col-sm-2 settings-menu'),
+        ], className='col-12 col-lg-3 settings-menu'),
         accordion,
     ], className='row justify-content-between'),
     html.Br(),
@@ -330,7 +343,7 @@ def MDATabLoader(template_path, selection):
               Input('computed-data', 'data'))
 def buttons(selection, method, summary):
 
-    if (selection == '') or (selection is None):
+    if (((selection == '') or (selection is None)) and ((method == '') or (method is None))):
         B1, B2, B3, B7, B8 = True, True, True, True, True
     else:
         B1, B2, B3, B7, B8 = False, False, False, False, False
@@ -343,7 +356,7 @@ def buttons(selection, method, summary):
             B4, B5, B6 = False, True, False
         else:
             B4, B5, B6 = False, False, False
-
+    
     return B1, B2, B3, B4, B5, B6, B7, B8
 
 
@@ -427,6 +440,7 @@ def download_plot(clicked, idx, file_format, items):
     return o
 
 @app.callback(Output('computed-data-errors', 'data'),
+              Output('summary-mda-title', 'children'),
               Output('summary-mda-text', 'children'),
               Output('summary-mda-table', 'children'),
               Output('plot-carousel', 'children'),
@@ -455,6 +469,7 @@ def pre_calculation(computed_data, method, sample_list, sigma, uncertainty, best
     df_errors = None
     summary_mda_table = html.Div()
     Image_File_Option = 'web'
+    method_title_text = ''
     plotwidth = 10
     plotheight = 7
     method_text = None
@@ -528,7 +543,7 @@ def pre_calculation(computed_data, method, sample_list, sigma, uncertainty, best
             carousel2 = dbc.Carousel(id="CarouselPlot", items=[{"key": str(pos+1), "src": folder_path+img} for pos, img in enumerate(files)],
                                      controls=True, indicators=True, variant="dark")
 
-            return df_errors, method_text, mda_table, carousel2
+            return df_errors, method_title_text, method_text, mda_table, carousel2
         elif triggered == 'mda_individual_method_and_plot':
             folder_path = 'assets/plots/Individual_MDA_Plots/'
             files = glob.glob(folder_path+"*")
@@ -536,7 +551,8 @@ def pre_calculation(computed_data, method, sample_list, sigma, uncertainty, best
                 os.remove(f)
             
             method_text = method_description[method]
-            
+            method_title_text = method_title[method]
+
             if method == 'YSG':
                 YSG_MDA, method_table = MDAFunc.YSG_outputs(ages, errors, plotwidth, plotheight, sample_list, YSG_MDA, age_addition_set_max_plot, Image_File_Option)
             elif method == 'YDZ':
@@ -570,7 +586,7 @@ def pre_calculation(computed_data, method, sample_list, sigma, uncertainty, best
             files = [file for file in os.listdir(os.getcwd() + "/" + folder_path) if file.endswith(".svg")]
             carousel2 = dbc.Carousel(id="CarouselPlot", items=[{"key": str(pos+1), "src": folder_path+img} for pos, img in enumerate(files)], controls=True, indicators=True, variant="dark")
 
-            return df_errors, method_text, dashtable, carousel2
+            return df_errors, method_title_text, method_text, dashtable, carousel2
         elif triggered == 'mda_one_method_all_plots':
             folder_path = 'assets/plots/Stratigraphic_Plots/'
             files = glob.glob(folder_path+"*")
@@ -585,19 +601,20 @@ def pre_calculation(computed_data, method, sample_list, sigma, uncertainty, best
             carousel2 = dbc.Carousel(id="CarouselPlot", items=[{"key": str(pos+1), "src": folder_path+img} for pos, img in enumerate(files)], controls=True, indicators=True, variant="dark")
             return df_errors, method_text, dashtable, carousel2
 
-    return df_errors, method_text, summary_mda_table, carousel
+    return df_errors, method_title_text, method_text, summary_mda_table, carousel
 
 
 @app.callback(
     Output('dataset-dropdown', 'value'),
+    Output('method-dropdown', 'value'),
     Output('radio_uncertainty', 'value'),
     Output('radio_sigma', 'value'),
     Input("data-reset", "n_clicks"))
 def clear_selection(clicks):
     if clicks is not None:
-        return "", "", ""
+        return "", "", "", ""
     else:
-        return "", "percent", 2
+        return "", "", "percent", 2
 
 
 @app.callback(
