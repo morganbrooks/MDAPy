@@ -29,10 +29,10 @@ html, body {
     border: 1px solid rgba(0,0,0,.125);
     background-color: #FFFFFF;
     margin-top: 20px;
-    margin-left: 20px;
+    /* margin-left: 5px; */
     padding: 20px;
     border-radius: 6px;
-    min-width: 400px;
+    /* min-width: 400px; */
     height: 100%;
 }
 
@@ -44,7 +44,7 @@ html, body {
     /* border: 1px solid rgba(0,0,0,.125); */
     /* background-color: #FFFFFF; */
     margin-top: 20px;
-    margin-right: 20px;
+    /* margin-right: 20px; */
     /* padding-top: 25px; */
     /* padding-left: 25px; */
     border-radius: 6px;
