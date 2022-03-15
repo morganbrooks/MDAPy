@@ -428,7 +428,7 @@ def download_plot(clicked, idx, file_format, items):
         if idx is None:
             idx = 0
         file = items[idx]['src']
-        o = dcc.send_file(file[1:].replace('.svg', file_format)), False, False
+        o = dcc.send_file(file[0:].replace('.svg', file_format)), False, False
     else:
         if 'plot_placeholder' not in items[0]['src']:
             if file_format is None:
@@ -491,9 +491,10 @@ def pre_calculation(computed_data, method, sample_list, sigma, uncertainty, best
             ages, errors, eight_six_ratios, eight_six_error, seven_six_ratios, seven_six_error, numGrains, labels, sample_list, best_age_cut_off, dataToLoad_MLA, U238_decay_constant, U235_decay_constant, U238_U235, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235 = MDAFunc.sampleToData(
                 sample_list, main_byid_df, sigma, Data_Type, uncertainty, best_age_cut_off, U238_decay_constant, U235_decay_constant, U238_U235, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235)
 
-            U238_decay_constant, U235_decay_constant, U238_U235, YSG_MDA, YC1s_MDA, YC1s_cluster_arrays, YC2s_MDA, YC2s_cluster_arrays, YDZ_MDA, minAges, mode, Y3Zo_MDA, Y3Zo_cluster_arrays, Y3Za_MDA, Y3Za_cluster_arrays, Tau_MDA, Tau_Grains, PDP_age, PDP, plot_max, ages_errors1s_filtered, tauMethod_WM, tauMethod_WM_err2s, YSP_MDA, YSP_cluster, YPP_MDA, MLA_MDA = MDAFunc.MDA_Calculator(
-                ages, errors, sample_list, dataToLoad_MLA, eight_six_ratios, eight_six_error, seven_six_ratios, seven_six_error, U238_decay_constant, U235_decay_constant, U238_U235, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off)
-                
+             
+            U238_decay_constant, U235_decay_constant, U238_U235, YSG_MDA, YC1s_MDA, YC1s_cluster_arrays, YC2s_MDA, YC2s_cluster_arrays, YDZ_MDA, minAges, mode, Y3Zo_MDA, Y3Zo_cluster_arrays, Y3Za_MDA, Y3Za_cluster_arrays, Tau_MDA, Tau_Grains, Tau_PDP_age, Tau_PDP,ages_errors1s_filtered, YSP_MDA, YSP_cluster, YPP_MDA, MLA_MDA = MDAFunc.MDA_Calculator(ages, errors, sample_list, dataToLoad_MLA, eight_six_ratios, eight_six_error, seven_six_ratios, seven_six_error, U238_decay_constant, U235_decay_constant,U238_U235, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off)
+
+
         if triggered == 'mda_all_methods_and_plots':
             folder_path = '/assets/plots/All_MDA_Methods_Plots/'
             
@@ -556,7 +557,7 @@ def pre_calculation(computed_data, method, sample_list, sigma, uncertainty, best
             if method == 'YSG':
                 YSG_MDA, method_table = MDAFunc.YSG_outputs(ages, errors, plotwidth, plotheight, sample_list, YSG_MDA, age_addition_set_max_plot, Image_File_Option)
             elif method == 'YDZ':
-                YDZ_MDAs, method_table = MDAFunc.YDZ_outputs(YDZ_MDA, minAges, mode, ages, errors, sample_list, plotwidth, plotheight, Image_File_Option)
+                YDZfig, YDZ_MDAs, method_table = MDAFunc.YDZ_outputs(ages, errors, sample_list, plotwidth, plotheight, Image_File_Option,iterations=10000, bins=25)
             elif method == 'YPP':
                 YPP_MDAs, method_table = MDAFunc.YPP_outputs(ages, errors, sample_list, plotwidth, plotheight, Image_File_Option, sigma=1, min_cluster_size=2, thres=0.01, minDist=1, xdif=0.1)
             elif method == 'YC1s':
@@ -571,7 +572,7 @@ def pre_calculation(computed_data, method, sample_list, sigma, uncertainty, best
                 age_addition_set_max_plot = 10
                 Y3Za_MDA, method_table = MDAFunc.Y3Za_outputs(ages, errors, Y3Za_MDA, Y3Za_cluster_arrays, sample_list, plotwidth, plotheight, age_addition_set_max_plot, Image_File_Option)
             elif method == 'Tau':
-                Tau_MDA, method_table = MDAFunc.Tau_outputs(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six_ratios, seven_six_error, U238_decay_constant, U235_decay_constant, U238_U235, Data_Type, best_age_cut_off, plotwidth, plotheight, Image_File_Option, min_cluster_size=3, thres=0.01, minDist=1, xdif=1, x1=0, x2=4000)
+                Tau_MDA, method_table = MDAFunc.Tau_outputs(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six_ratios, seven_six_error, U238_decay_constant, U235_decay_constant, U238_U235, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off, plotwidth, plotheight, Image_File_Option, min_cluster_size=3, thres=0.01, minDist=1, xdif=1, x1=0, x2=4000)
             elif method == 'YSP':
                 age_addition_set_max_plot = 20
                 YSP_MDA, method_table = MDAFunc.YSP_outputs(Data_Type, ages, errors, sample_list, YSP_MDA, YSP_cluster, plotwidth, plotheight, age_addition_set_max_plot, Image_File_Option, min_cluster_size=2, MSWD_threshold=1)

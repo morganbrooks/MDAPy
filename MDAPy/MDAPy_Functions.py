@@ -29,9 +29,8 @@ import glob, os, json, subprocess
 #Compiles all the MDA calculators into one step 
 
 def MDA_Calculator(ages, errors, sample_list, dataToLoad_MLA, eight_six_ratios, eight_six_error, seven_six_ratios, seven_six_error, U238_decay_constant, U235_decay_constant, U238_U235,excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off):
+    YSG_MDA = YSG(ages, errors, sample_list,  eight_six_ratios, eight_six_error, seven_six_ratios, seven_six_error, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, U238_decay_constant, U235_decay_constant, U238_U235, Data_Type, best_age_cut_off)
     
-    YSG_MDA = YSG(ages, errors, sample_list, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off)
-  
     YC2s_MDA,YC2s_cluster_arrays = YC2s(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six_ratios, seven_six_error, U238_decay_constant, U235_decay_constant, U238_U235, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off, min_cluster_size=3)
       
     YC1s_MDA, YC1s_cluster_arrays = YC1s(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six_ratios, seven_six_error, U238_decay_constant, U235_decay_constant, U238_U235, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off, min_cluster_size=2)
@@ -42,16 +41,17 @@ def MDA_Calculator(ages, errors, sample_list, dataToLoad_MLA, eight_six_ratios, 
     
     Y3Za_MDA, Y3Za_cluster_arrays = Y3Za(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six_ratios, seven_six_error, U238_decay_constant, U235_decay_constant, U238_U235, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off)
     
-    Tau_MDA, Tau_Grains, PDP_age, PDP, plot_max, ages_errors1s_filtered, tauMethod_WM,tauMethod_WM_err2s = tau(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six_ratios, seven_six_error, U238_decay_constant, U235_decay_constant, U238_U235, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off, min_cluster_size=3, thres=0.01, minDist=1, xdif=1, x1=0, x2=4000)
+    Tau_MDA, Tau_Grains, Tau_PDP_age, Tau_PDP,ages_errors1s_filtered = tau(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six_ratios, seven_six_error, U238_decay_constant, U235_decay_constant, U238_U235, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off, min_cluster_size=3, thres=0.01, minDist=1, xdif=1, x1=0, x2=4000)
     
     YSP_MDA, YSP_cluster = YSP(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six_ratios, seven_six_error, U238_decay_constant, U235_decay_constant, U238_U235, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off, min_cluster_size=2, MSWD_threshold=1)
-    
+        
     YPP_MDA = YPP(ages, errors, min_cluster_size=2, thres=0.01, minDist=1, xdif=0.1)
     
     MLA_MDA = MLA(sample_list, dataToLoad_MLA)
     
-    return U238_decay_constant, U235_decay_constant, U238_U235, YSG_MDA, YC1s_MDA, YC1s_cluster_arrays, YC2s_MDA, YC2s_cluster_arrays, YDZ_MDA, minAges, mode, Y3Zo_MDA, Y3Zo_cluster_arrays, Y3Za_MDA, Y3Za_cluster_arrays, Tau_MDA, Tau_Grains, PDP_age, PDP,plot_max, ages_errors1s_filtered, tauMethod_WM, tauMethod_WM_err2s, YSP_MDA, YSP_cluster, YPP_MDA, MLA_MDA
+    return U238_decay_constant, U235_decay_constant, U238_U235, YSG_MDA, YC1s_MDA, YC1s_cluster_arrays, YC2s_MDA, YC2s_cluster_arrays, YDZ_MDA, minAges, mode, Y3Zo_MDA, Y3Zo_cluster_arrays, Y3Za_MDA, Y3Za_cluster_arrays, Tau_MDA, Tau_Grains, Tau_PDP_age, Tau_PDP,ages_errors1s_filtered, YSP_MDA, YSP_cluster, YPP_MDA, MLA_MDA
 
+         
             
 #Creates an Output table of all the MDA data (MDAs, errors...etc) and saves it to an excel file in the Data folder. Also creates a table of only the MDA data
 
@@ -2086,7 +2086,7 @@ def YSG_outputs(ages, errors, plotwidth, plotheight, sample_list, YSG_MDA, age_a
 
         if Image_File_Option == 'web':
             asset_folder = 'assets/plots/Individual_MDA_Plots/'
-            filename = 'YSG_Plots_' + str(i)
+            filename = 'YSG_Plots_' + str(samples[0])
             for fileformat in ['.svg', '.tiff', '.eps', '.png', '.pdf', '.jpeg']:
                 YSGfig.savefig(asset_folder + filename + fileformat)
             plt.close(YSGfig)   
@@ -2101,56 +2101,85 @@ def YSG_outputs(ages, errors, plotwidth, plotheight, sample_list, YSG_MDA, age_a
     
     return YSG_MDA, YSG_Table_
 
-def YDZ_outputs(YDZ_MDA, minAges, mode, ages, errors, sample_list, plotwidth, plotheight, Image_File_Option):
-    # YDZ Code below (with modifications) obtained from detritalPy_v1.3: @authors: glennrsharman, jonathanpsharman, zoltansylvester
+def YDZ_outputs(ages, errors, sample_list, plotwidth, plotheight, Image_File_Option,iterations=10000, bins=25):
+
+# YDZ Code below (with modifications) obtained from detritalPy_v1.3: @authors: glennrsharman, jonathanpsharman, zoltansylvester
+
     if not hasattr(ages[0], '__len__'):
         ages = [ages]
         errors = [errors]
-    
-    N = len(sample_list)
+
+    YDZ_MDAs = []
     
     sample_array = np.array(sample_list)
     sample_arrays = np.split(sample_array,len(sample_array))
-       
-    #YSGfig, YSGax = plt.subplots(N,1, figsize=(plotwidth, N*plotheight))
-        
+    N = len(sample_list)
+    
+
     for i in range(N):
-        
-        YDZfig, axYDZ = plt.subplots(1,figsize=(plotwidth, plotheight)) 
-      
         samples = sample_arrays[i]
 
+        data_err1s = list(zip(ages[i], errors[i]))
+        
+       # Identify the youngest analysis
+        YSG_age, YSG_err1s = YSG_for_YDZ(ages[i], errors[i])[0]
+
+        ageCutoff = YSG_age + YSG_err1s*5 # 5 for 5-sigma
+
+        # Identify all analyses within 5 sigma of the youngest analysis
+        data_err1s.sort(key=lambda d: d[0]) # Sort based on age
+        filtered = list(filter(lambda x: x[0] < ageCutoff, data_err1s)) # Filter out ages too old
+
+        minAges = []
+        mode = []
+        for i in range(10000):
+            newAge_Ma = []
+            for analysis in filtered:
+                newAge_Ma.append(np.random.normal(loc = analysis[0], scale=analysis[1]))
+            minAges.append(min(newAge_Ma))
+    
+        # Find the mode of the minimum ages
+        binIndex, binAge = np.histogram(minAges, bins=25)
+        binMaxIndex = np.argmax(binIndex)
+        binMaxAge = binAge[binMaxIndex]
+        mode = binMaxAge + (binAge[binMaxIndex+1] - binMaxAge)/2
         plus_error = np.percentile(minAges, 97.5)-mode
         minus_error = mode-np.percentile(minAges, 2.5)
-        
+
+        YDZ_MDAs.append([mode, np.percentile(minAges, 97.5)-mode, mode-np.percentile(minAges, 2.5)])
+
+        YDZfig, axYDZ = plt.subplots(1,figsize=(plotwidth, plotheight))
         axYDZ.set_xlim(int(min(minAges))-1,int(max(minAges))+1,0.5)
            
         axYDZ.hist(minAges, bins=25)
         axYDZ.axvline(mode,color='red', linewidth=3,label='MDA:'+str(round(mode,2)))
             
-        axYDZ.axvline(np.percentile(minAges,2.5),linestyle='--',color='black', label='2σ Error: - '+str(round(minus_error,2)))
-        axYDZ.axvline(np.percentile(minAges,97.5),linestyle='dashdot',color='black', label='2σ Error: + '+str(round(plus_error,2)))
+        axYDZ.axvline(np.percentile(minAges,2.5),linestyle='--',color='black', label='2s Error: - '+str(round(minus_error,2)))
+        axYDZ.axvline(np.percentile(minAges,97.5),linestyle='dashdot',color='black', label='2s Error: + '+str(round(plus_error,2)))
             
+           
         axYDZ.set_xlabel('Age (Ma)')
         YDZfig.tight_layout(pad=3)
         plt.legend(loc='upper left')
-        axYDZ.set_title(samples[0])      
-
+        axYDZ.set_title(samples[0])
+        
         if Image_File_Option == 'web':
             asset_folder = 'assets/plots/Individual_MDA_Plots/'
-            filename = 'YDZ_Plots_' + str(i)
-            for fileformat in ['.svg', '.tiff', '.eps', '.png', '.pdf', '.jpeg']:
+            filename = 'YDZ_Plots_' + str(samples[0])
+            for fileformat in ['.svg', '.tiff', '.png', '.eps','.pdf', '.jpeg']:
                 YDZfig.savefig(asset_folder + filename + fileformat)
             plt.close(YDZfig)   
         else:
             YDZfig.savefig('Saved_Files/Individual_MDA_Plots/YDZ_Plots.' + Image_File_Option)
     
+
     plt.close(YDZfig)
-    YDZ_Table_ = pd.DataFrame(data=YDZ_MDA, index=[sample_list], columns=['YDZ_MDA (Ma)', 'YDZ_+2σ', 'YDZ_-2σ'])
+    
+    YDZ_Table_ = pd.DataFrame(data=YDZ_MDAs, index=[sample_list], columns=['YDZ_MDA (Ma)', 'YDZ_+2σ', 'YDZ_-2σ'])
     YDZ_Table_['Sample_ID'] = sample_list
     YDZ_Table_ = YDZ_Table_[['Sample_ID', 'YDZ_MDA (Ma)', 'YDZ_+2σ', 'YDZ_-2σ']] 
   
-    return YDZ_MDA, YDZ_Table_
+    return YDZfig, YDZ_MDAs, YDZ_Table_
 
 def YPP_outputs(ages, errors, sample_list, plotwidth, plotheight, Image_File_Option, sigma=1, min_cluster_size=2, thres=0.01, minDist=1, xdif=0.1):
     
@@ -2211,7 +2240,7 @@ def YPP_outputs(ages, errors, sample_list, plotwidth, plotheight, Image_File_Opt
         plt.legend(loc='upper right')        
 
         if Image_File_Option == 'web':
-            filename = 'YPP_Plots_' + str(i)
+            filename = 'YPP_Plots_' + str(samples[0])
             asset_folder = 'assets/plots/Individual_MDA_Plots/'
             for fileformat in ['.svg', '.tiff', '.eps', '.png', '.pdf', '.jpeg']:
                 YPPfig.savefig(asset_folder + filename + fileformat)
@@ -2403,7 +2432,7 @@ def YC1s_outputs(ages, errors, sample_list, YC1s_MDA, YC1s_cluster_arrays, plotw
         YC1sfig.tight_layout(pad=3)
 
         if Image_File_Option == 'web':
-            filename = 'YC1s_Plots_' + str(i)
+            filename = 'YC1s_Plots_' + str(samples[0])
             asset_folder = 'assets/plots/Individual_MDA_Plots/'
             for fileformat in ['.svg', '.tiff', '.eps', '.png', '.pdf', '.jpeg']:
                 YC1sfig.savefig(asset_folder + filename + fileformat)
@@ -2598,7 +2627,7 @@ def YC2s_outputs(ages, errors, sample_list, YC2s_MDA, YC2s_cluster_arrays, plotw
         YC2sfig.tight_layout(pad=2)
         
         if Image_File_Option == 'web':
-            filename = 'YC2s_Plots_' + str(i)
+            filename = 'YC2s_Plots_' + str(samples[0])
             asset_folder = 'assets/plots/Individual_MDA_Plots/'
             for fileformat in ['.svg', '.tiff', '.eps', '.png', '.pdf', '.jpeg']:
                 YC2sfig.savefig(asset_folder + filename + fileformat)
@@ -2788,7 +2817,7 @@ def Y3Zo_outputs(ages, errors, sample_list, Y3Zo_MDA, Y3Zo_cluster_arrays, plotw
         Y3Zofig.tight_layout(pad=3)
  
         if Image_File_Option == 'web':
-            filename = 'Y3Zo_Plots_' + str(i)
+            filename = 'Y3Zo_Plots_' + str(samples[0])
             asset_folder = 'assets/plots/Individual_MDA_Plots/'
             for fileformat in ['.svg', '.tiff', '.eps', '.png', '.pdf', '.jpeg']:
                 Y3Zofig.savefig(asset_folder + filename + fileformat)
@@ -2980,7 +3009,7 @@ def Y3Za_outputs(ages, errors, Y3Za_MDA, Y3Za_cluster_arrays, sample_list, plotw
         Y3Zafig.tight_layout(pad=1)
  
         if Image_File_Option == 'web':
-            filename = 'Y3Za_Plots_' + str(i)
+            filename = 'Y3Za_Plots_' + str(samples[0])
             asset_folder = 'assets/plots/Individual_MDA_Plots/'
             for fileformat in ['.svg', '.tiff', '.eps', '.png', '.pdf', '.jpeg']:
                 Y3Zafig.savefig(asset_folder + filename + fileformat)
@@ -2996,10 +3025,10 @@ def Y3Za_outputs(ages, errors, Y3Za_MDA, Y3Za_cluster_arrays, sample_list, plotw
     
     return Y3Za_MDA, Y3Za_Table_
 
-def Tau_outputs(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six_ratios, seven_six_error, U238_decay_constant, U235_decay_constant, U238_U235, Data_Type, best_age_cut_off, plotwidth, plotheight, Image_File_Option, min_cluster_size=3, thres=0.01, minDist=1, xdif=1, x1=0, x2=4000):
+def Tau_outputs(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six_ratios, seven_six_error, U238_decay_constant, U235_decay_constant, U238_U235, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off, plotwidth, plotheight, Image_File_Option, min_cluster_size=3, thres=0.01, minDist=1, xdif=1, x1=0, x2=4000):
  #Tau calculation code below (with modifications) obtained from detritalPy_v1.3: @authors: glennrsharman, jonathanpsharman, zoltansylvester 
  #Tau plotting code author: morganbrooks 
-    
+
     import peakutils
 
     # Check to see if ages is a list of arrays or just a single list of ages
@@ -3008,111 +3037,210 @@ def Tau_outputs(ages, errors, sample_list, eight_six_ratios, eight_six_error, se
         errors = [errors]
 
     # Calculate the PDP - note that a small xdif may be desired for increased precision
-    PDP_age, PDP = PDPcalcAges(ages, errors, xdif)
+    Tau_PDP_age, Tau_PDP = PDPcalcAges(ages, errors, xdif)
 
     Tau_Ratios = []
-    Tau = []
-    Tau_Grains = []
-    
-    for i in range(len(ages)):  
+    Tau_MDA = []
+    Tau_wo_systematic = []
 
-        # Calculate peak indexes
-        peakIndexes = list(peakutils.indexes(PDP[i], thres=thres, min_dist=minDist))
-        # Peak ages
-        peakAges = PDP_age[peakIndexes]
-        # Number of grains per peak
-        peakAgeGrain = peakAgesGrains([peakAges], [ages[i]], [errors[i]])[0]
-
-        # Calculate trough indexes
-        troughIndexes = list(peakutils.indexes(PDP[i]*-1, thres=thres, min_dist=minDist))
-        # Trough ages
-        troughAges = [0] + list(PDP_age[troughIndexes]) + [4500] # Append a 0 because there is no trough on the young size of the youngest peak and no trough on the old side of the oldest peak
-
-        # Zip peak ages and grains per peak
-        peakAgesGrains_ = list(zip(peakAges, peakAgeGrain))
-        # Filter out peaks with less than min_cluster_size grains (default is 3, following Barbeau et al., 2009: EPSL)
-        peakAgesGrainsFiltered = list(filter(lambda x: x[1] >= min_cluster_size, peakAgesGrains_))
-
-        # Stop the loop if no peaks are present with the min_cluster_size
-        if peakAgesGrainsFiltered == []:
-            tauMethod.append([np.nan, np.nan, np.nan, np.nan])
-            continue
-
-        # Select the nearest trough that is younger than the youngest peak with at least min_cluster_size analyses
-        troughYoung = np.max(list(filter(lambda x: x < peakAgesGrainsFiltered[0][0], troughAges)))
-
-        # Select the nearest trough that is older than the youngest peak with at least min_cluster_size analyses
-        troughOld = np.min(list(filter(lambda x: x > peakAgesGrainsFiltered[0][0], troughAges)))
-
-        # Select ages and errors that fall between troughYoung and troughOld
         
-            
-        if Data_Type == "238U/206Pb_&_207Pb/206Pb": 
-            
+
+    if Data_Type == "238U/206Pb_&_207Pb/206Pb": 
+        for i in range(len(ages)): 
+                
+            # Calculate peak indexes
+            peakIndexes = list(peakutils.indexes(Tau_PDP[i], thres=thres, min_dist=minDist))
+            # Peak ages
+            peakAges = Tau_PDP_age[peakIndexes]
+            # Number of grains per peak
+            peakAgeGrain = peakAgesGrains([peakAges], [ages[i]], [errors[i]])[0]
+
+            # Calculate trough indexes
+            troughIndexes = list(peakutils.indexes(Tau_PDP[i]*-1, thres=thres, min_dist=minDist))
+            # Trough ages
+            troughAges = [0] + list(Tau_PDP_age[troughIndexes]) + [4500] # Append a 0 because there is no trough on the young size of the youngest peak and no trough on the old side of the oldest peak
+
+            # Zip peak ages and grains per peak
+            peakAgesGrains_ = list(zip(peakAges, peakAgeGrain))
+            # Filter out peaks with less than min_cluster_size grains (default is 3, following Barbeau et al., 2009: EPSL)
+            peakAgesGrainsFiltered = list(filter(lambda x: x[1] >= min_cluster_size, peakAgesGrains_))
+
+            # Stop the loop if no peaks are present with the min_cluster_size
+            if peakAgesGrainsFiltered == []:
+                tauMethod.append([np.nan, np.nan, np.nan, np.nan])
+                continue
+
+            # Select the nearest trough that is younger than the youngest peak with at least min_cluster_size analyses
+            troughYoung = np.max(list(filter(lambda x: x < peakAgesGrainsFiltered[0][0], troughAges)))
+
+            # Select the nearest trough that is older than the youngest peak with at least min_cluster_size analyses
+            troughOld = np.min(list(filter(lambda x: x > peakAgesGrainsFiltered[0][0], troughAges)))
+
+            # Select ages and errors that fall between troughYoung and troughOld
+
             ages_errors1s = list(zip(ages[i], errors[i],1/eight_six_ratios[i], eight_six_error[i],seven_six_ratios[i], seven_six_error[i]))
             ages_errors1s_filtered = list(filter(lambda x: x[0] < troughOld and x[0] > troughYoung, ages_errors1s))
-           
-            if ages_errors1s_filtered[0][0] < best_age_cut_off:
-                tauMethod_WM, tauMethod_WM_err2s, tauMethod_WM_MSWD = weightedMean(np.array([d[2] for d in ages_errors1s_filtered]), np.array([d[3] for d in ages_errors1s_filtered]))
-            else:
-                tauMethod_WM, tauMethod_WM_err2s, tauMethod_WM_MSWD = weightedMean(np.array([d[4] for d in ages_errors1s_filtered]), np.array([d[5] for d in ages_errors1s_filtered]))
-                
-            Tau_Ratios.append([tauMethod_WM, tauMethod_WM_err2s/2, tauMethod_WM_MSWD, len(ages_errors1s_filtered)])
-            Tau_age_calc = age_calculation(Tau_Ratios, U238_decay_constant, U235_decay_constant, U238_U235, Data_Type,best_age_cut_off)
-            Tau.append([Tau_age_calc[0],Tau_age_calc[1],Tau_age_calc[2],Tau_age_calc[3]])
-            Tau_Grains.append([ages_errors1s_filtered])
+
+            tauMethod_WM_6_8, tauMethod_WM_err2s_6_8, tauMethod_WM_MSWD_6_8 = weightedMean(np.array([d[2] for d in ages_errors1s_filtered]), np.array([d[3] for d in ages_errors1s_filtered]))
+            tauMethod_WM_7_6, tauMethod_WM_err2s_7_6, tauMethod_WM_MSWD_7_6 = weightedMean(np.array([d[4] for d in ages_errors1s_filtered]), np.array([d[5] for d in ages_errors1s_filtered]))
+
+            Tau_Ratios.append([tauMethod_WM_6_8, tauMethod_WM_err2s_6_8/2, tauMethod_WM_MSWD_6_8, tauMethod_WM_7_6, tauMethod_WM_err2s_7_6, tauMethod_WM_MSWD_7_6, len(ages_errors1s_filtered)])
+
+            Tau_age_calc, MDA_eight_six_age, MDA_seven_six_age = age_calculation(Tau_Ratios, U238_decay_constant, U235_decay_constant, U238_U235, Data_Type,best_age_cut_off)
+
+            Tau_wo_systematic.append([Tau_age_calc[0],Tau_age_calc[1],Tau_age_calc[2],Tau_age_calc[3]])
             
-        if Data_Type == "Ages":
+                
+        Tau_MDA = systematic_uncertainty_addition(Tau_wo_systematic, Tau_Ratios, sample_list, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, U238_decay_constant, U235_decay_constant, U238_U235, Data_Type, best_age_cut_off)
+            
+        for i in range(len(ages)): 
+            # Calculate peak indexes
+            peakIndexes = list(peakutils.indexes(Tau_PDP[i], thres=thres, min_dist=minDist))
+            # Peak ages
+            peakAges = Tau_PDP_age[peakIndexes]
+            # Number of grains per peak
+            peakAgeGrain = peakAgesGrains([peakAges], [ages[i]], [errors[i]])[0]
+
+            # Calculate trough indexes
+            troughIndexes = list(peakutils.indexes(Tau_PDP[i]*-1, thres=thres, min_dist=minDist))
+            # Trough ages
+            troughAges = [0] + list(Tau_PDP_age[troughIndexes]) + [4500] # Append a 0 because there is no trough on the young size of the youngest peak and no trough on the old side of the oldest peak
+
+            # Zip peak ages and grains per peak
+            peakAgesGrains_ = list(zip(peakAges, peakAgeGrain))
+            # Filter out peaks with less than min_cluster_size grains (default is 3, following Barbeau et al., 2009: EPSL)
+            peakAgesGrainsFiltered = list(filter(lambda x: x[1] >= min_cluster_size, peakAgesGrains_))
+
+            # Stop the loop if no peaks are present with the min_cluster_size
+            if peakAgesGrainsFiltered == []:
+                tauMethod.append([np.nan, np.nan, np.nan, np.nan])
+                continue
+
+            # Select the nearest trough that is younger than the youngest peak with at least min_cluster_size analyses
+            troughYoung = np.max(list(filter(lambda x: x < peakAgesGrainsFiltered[0][0], troughAges)))
+
+            # Select the nearest trough that is older than the youngest peak with at least min_cluster_size analyses
+            troughOld = np.min(list(filter(lambda x: x > peakAgesGrainsFiltered[0][0], troughAges)))
+
+            # Select ages and errors that fall between troughYoung and troughOld
+
+            ages_errors1s_plot = list(zip(ages[i], errors[i],1/eight_six_ratios[i], eight_six_error[i],seven_six_ratios[i], seven_six_error[i]))
+            ages_errors1s_filtered_plot = list(filter(lambda x: x[0] < troughOld and x[0] > troughYoung, ages_errors1s_plot))
+           
+            #Plotting
+            sample_array = np.array(sample_list)
+            sample_arrays = np.split(sample_array,len(sample_array))
+            N = len(sample_list)
+
+            samples = sample_arrays[i]
+
+            Taufig, Tauax = plt.subplots(1,figsize=(plotwidth, plotheight))
+            Tauax.plot(Tau_PDP_age, Tau_PDP[i])
+            Tauax.set_xlabel('Age (Ma)')
+            Tauax.set_title(samples[0])
+            Tauax.set_xlim(0,(Tau_MDA[i][0]+500))
+            Taufig.tight_layout(pad=3)
+
+            for a,b,c,d,e,f in ages_errors1s_filtered_plot:
+                Tauax.plot(a,0,'.',color='red',markersize="5")
+
+            Tauax.plot(a,0,'.',color='red',markersize="5", label= str(Tau_MDA[i][3])+' Grains Between Minima of The Youngest Peak')
+
+            Tauax.axvline(Tau_MDA[i][0],color='black', linestyle='dotted', label="MDA: "+str(round(Tau_MDA[i][0],2))+"+/- "+str(round(Tau_MDA[i][1],2)))
+
+            plt.legend(loc='upper right')
+
+            if Image_File_Option == 'web':
+                filename = 'Tau_Plots_' + str(samples[0])
+                asset_folder = 'assets/plots/Individual_MDA_Plots/'
+                for fileformat in ['.svg', '.tiff', '.eps', '.png', '.pdf', '.jpeg']:
+                    Taufig.savefig(asset_folder + filename + fileformat)
+                plt.close(Taufig)   
+            else:
+                Taufig.savefig('Saved_Files/Individual_MDA_Plots/Tau_Plots.' + Image_File_Option)  
+
+
+
+    if Data_Type == "Ages":
+        for i in range(len(ages)): 
+            
+            
+            # Calculate peak indexes
+            peakIndexes = list(peakutils.indexes(Tau_PDP[i], thres=thres, min_dist=minDist))
+            # Peak ages
+            peakAges = Tau_PDP_age[peakIndexes]
+            # Number of grains per peak
+            peakAgeGrain = peakAgesGrains([peakAges], [ages[i]], [errors[i]])[0]
+
+            # Calculate trough indexes
+            troughIndexes = list(peakutils.indexes(Tau_PDP[i]*-1, thres=thres, min_dist=minDist))
+            # Trough ages
+            troughAges = [0] + list(Tau_PDP_age[troughIndexes]) + [4500] # Append a 0 because there is no trough on the young size of the youngest peak and no trough on the old side of the oldest peak
+
+            # Zip peak ages and grains per peak
+            peakAgesGrains_ = list(zip(peakAges, peakAgeGrain))
+            # Filter out peaks with less than min_cluster_size grains (default is 3, following Barbeau et al., 2009: EPSL)
+            peakAgesGrainsFiltered = list(filter(lambda x: x[1] >= min_cluster_size, peakAgesGrains_))
+
+            # Stop the loop if no peaks are present with the min_cluster_size
+            if peakAgesGrainsFiltered == []:
+                tauMethod.append([np.nan, np.nan, np.nan, np.nan])
+                continue
+
+            # Select the nearest trough that is younger than the youngest peak with at least min_cluster_size analyses
+            troughYoung = np.max(list(filter(lambda x: x < peakAgesGrainsFiltered[0][0], troughAges)))
+
+            # Select the nearest trough that is older than the youngest peak with at least min_cluster_size analyses
+            troughOld = np.min(list(filter(lambda x: x > peakAgesGrainsFiltered[0][0], troughAges)))
+
+            # Select ages and errors that fall between troughYoung and troughOld
             ages_errors1s = list(zip(ages[i], errors[i],ages[i], errors[i],ages[i], errors[i]))
             ages_errors1s_filtered = list(filter(lambda x: x[0] < troughOld and x[0] > troughYoung, ages_errors1s))
-            
-            tauMethod_WM, tauMethod_WM_err2s, tauMethod_WM_MSWD = weightedMean(np.array([d[0] for d in ages_errors1s_filtered]), np.array([d[1] for d in ages_errors1s_filtered]))
-            Tau.append([tauMethod_WM, tauMethod_WM_err2s/2, tauMethod_WM_MSWD, len(ages_errors1s_filtered)])
-            Tau_Grains.append(ages_errors1s_filtered)
-        
-        plot_max = tauMethod_WM+200
-    
 
-        sample_array = np.array(sample_list)
-        sample_arrays = np.split(sample_array,len(sample_array))
-        N = len(sample_list)
-     
-        samples = sample_arrays[i]        
-       
-        Taufig, Tauax = plt.subplots(1,figsize=(plotwidth, plotheight,))
-        Tauax.plot(PDP_age, PDP[i])
-        Tauax.set_xlabel('Age (Ma)')
-        Tauax.set_title(samples[0])
-        Tauax.set_xlim(0,(plot_max))
-        Taufig.tight_layout(pad=3)
+            tauMethod_WM, tauMethod_WM_err2s, tauMethod_WM_MSWD = weightedMean(np.array([d[0] for d in ages_errors1s_filtered]), np.array([d[1] for d in ages_errors1s_filtered]))
+            Tau_MDA.append([tauMethod_WM, tauMethod_WM_err2s/2, tauMethod_WM_MSWD, len(ages_errors1s_filtered)])
+                
+            #Plotting
+            sample_array = np.array(sample_list)
+            sample_arrays = np.split(sample_array,len(sample_array))
+            N = len(sample_list)
+
+            samples = sample_arrays[i]
+
+            Taufig, Tauax = plt.subplots(1,figsize=(plotwidth, plotheight))
+            Tauax.plot(Tau_PDP_age, Tau_PDP[i])
+            Tauax.set_xlabel('Age (Ma)')
+            Tauax.set_title(samples[0])
+            Tauax.set_xlim(0,(Tau_MDA[i][0]+500))
+            Taufig.tight_layout(pad=3)
             
-        for a, b,c,d,e,f in ages_errors1s_filtered:
-              
-            Tauax.plot(a,0,'.',color='red',markersize="5")
-            
-        Tauax.plot(a,0,'.',color='red',markersize="5", label= str(Tau[i][3])+' Grains between minima of youngest peak')
-            
-        Tauax.axvline(Tau[i][0],color='black', linestyle='dotted', label="MDA: "+str(round(Tau[i][0],2))+"+/- "+str(round(Tau[i][1],2)))
-        plt.legend(loc='upper right')
- 
-        if Image_File_Option == 'web':
-            filename = 'Tau_Plots_' + str(i)
-            asset_folder = 'assets/plots/Individual_MDA_Plots/'
-            for fileformat in ['.svg', '.tiff', '.eps', '.png', '.pdf', '.jpeg']:
-                Taufig.savefig(asset_folder + filename + fileformat)
-            plt.close(Taufig)   
-        else:
-            Taufig.savefig('Saved_Files/Individual_MDA_Plots/Tau_Plots.' + Image_File_Option)  
+            for a,b,c,d,e,f in ages_errors1s_filtered:
+                Tauax.plot(a,0,'.',color='red',markersize="5")
+
+            Tauax.plot(a,0,'.',color='red',markersize="5",label= str(Tau_MDA[i][3])+' Grains Between Minima of The Youngest Peak')
+
+
+            Tauax.axvline(Tau_MDA[i][0],color='black', linestyle='dotted', label="MDA: "+str(round(Tau_MDA[i][0],2))+"+/- "+str(round(Tau_MDA[i][1],2)))
+
+            plt.legend(loc='upper right')
+
+            if Image_File_Option == 'web':
+                filename = 'Tau_Plots_' + str(samples[0])
+                asset_folder = 'assets/plots/Individual_MDA_Plots/'
+                for fileformat in ['.svg', '.tiff', '.eps', '.png', '.pdf', '.jpeg']:
+                    Taufig.savefig(asset_folder + filename + fileformat)
+                plt.close(Taufig)   
+            else:
+                Taufig.savefig('Saved_Files/Individual_MDA_Plots/Tau_Plots.' + Image_File_Option)  
+
     
     plt.close(Taufig)
-    Tau_Table_ = pd.DataFrame(data=Tau, index=[sample_list], columns=['Tau_MDA (Ma)', 'Tau_+/-1σ', 'Tau_MSWD','Grains'])
+    Tau_Table_ = pd.DataFrame(data=Tau_MDA, index=[sample_list], columns=['Tau_MDA (Ma)', 'Tau_+/-1σ', 'Tau_MSWD','Grains'])
     Tau_Table_['Sample_ID'] = sample_list
     Tau_Table_ = Tau_Table_[['Sample_ID', 'Tau_MDA (Ma)', 'Tau_+/-1σ', 'Tau_MSWD','Grains']] 
-    
-
-    
-    
-    return Tau, Tau_Table_
+   
+        
+    return Tau_MDA, Tau_Table_
 
 def YSP_outputs(Data_Type, ages, errors, sample_list, YSP_MDA, YSP_cluster, plotwidth, plotheight, age_addition_set_max_plot, Image_File_Option, min_cluster_size=2, MSWD_threshold=1):
     #YSP plotting code author: morganbrooks 
@@ -3296,7 +3424,7 @@ def YSP_outputs(Data_Type, ages, errors, sample_list, YSP_MDA, YSP_cluster, plot
         YSPfig.tight_layout(pad=1)
  
         if Image_File_Option == 'web':
-            filename = 'YSP_Plots_' + str(i)
+            filename = 'YSP_Plots_' + str(samples[0])
             asset_folder = 'assets/plots/Individual_MDA_Plots/'
             for fileformat in ['.svg', '.tiff', '.eps', '.png', '.pdf', '.jpeg']:
                 YSPfig.savefig(asset_folder + filename + fileformat)
@@ -3993,16 +4121,26 @@ def age_calculation(MDAs_ratios, U238_decay_constant, U235_decay_constant, U238_
     Age_Calculated_MDAs = []
     MDA_best_age = []
     MDA_best_error = []
+    ratio_calc_WMSD = []
         
     MDA_ratio_calc_array = np.array(MDAs_ratios)
-    MDA_ratio_calc_age = MDA_ratio_calc_array [:,0]
-    MDA_ratio_calc_error1s = MDA_ratio_calc_array [:,1]
-    MDA_ratio_calc_WMSD = MDA_ratio_calc_array [:,2]
-    MDA_ratio_calc_cluster_length = MDA_ratio_calc_array[:,3]
     
-    MDA_ratio_calc_age_arrays = np.split(MDA_ratio_calc_age ,len(MDA_ratio_calc_age))
-    MDA_ratio_calc_error1s_arrays = np.split(MDA_ratio_calc_error1s ,len(MDA_ratio_calc_error1s ))
-
+    MDA_6_8_ratio_age = MDA_ratio_calc_array [:,0]
+    MDA_6_8_ratio_error1s = MDA_ratio_calc_array [:,1]
+    MDA_6_8_ratio_calc_WMSD = MDA_ratio_calc_array [:,2]
+    
+    MDA_7_6_ratio_age = MDA_ratio_calc_array [:,3]
+    MDA_7_6_ratio_error1s = MDA_ratio_calc_array [:,4]
+    MDA_7_6_ratio_calc_WMSD = MDA_ratio_calc_array [:,5]
+    
+    MDA_ratio_calc_cluster_length = MDA_ratio_calc_array[:,6]
+    
+    
+    MDA_ratio_calc_age_arrays_6_8 = np.split(MDA_6_8_ratio_age ,len(MDA_6_8_ratio_age))
+    MDA_ratio_calc_age_arrays_7_6 = np.split(MDA_7_6_ratio_age ,len(MDA_7_6_ratio_age))
+    
+    MDA_ratio_calc_error1s_arrays = np.split(MDA_6_8_ratio_error1s ,len(MDA_6_8_ratio_error1s))
+  
 
     if Data_Type == '238U/206Pb_&_207Pb/206Pb':
          
@@ -4011,144 +4149,138 @@ def age_calculation(MDAs_ratios, U238_decay_constant, U235_decay_constant, U238_
             res = abs(U238_U235 * r - (np.exp(U235_decay_constant * t) - 1) / (np.exp(U238_decay_constant * t) - 1))
             return res
             
-        for i in range(len(MDA_ratio_calc_age_arrays)):
+        for i in range(len(MDA_ratio_calc_age_arrays_7_6)):
             
             #7/6 Mean Age
-            t_m = 1 / U238_decay_constant * np.log(MDA_ratio_calc_age[i] + 1)  # initial time for calculation
-            T76_m = optimize.leastsq(func_t76, t_m, args=(MDA_ratio_calc_age[i]))[0]
-            MDA_seven_six_age.append(T76_m/1000000)
+            t_m = 1 / U238_decay_constant * np.log(MDA_7_6_ratio_age[i] + 1)  # initial time for calculation
+            T76_m = optimize.leastsq(func_t76, t_m, args=(MDA_7_6_ratio_age[i]))[0]
+            MDA_seven_six_ages = (T76_m/1000000)
+            MDA_seven_six_age.append(MDA_seven_six_ages)
             
             #7/6 Low Age
-            t_l = 1 / U238_decay_constant * np.log((MDA_ratio_calc_age[i]-MDA_ratio_calc_error1s[i]) + 1)  # initial time for calculation
-            T76_l = optimize.leastsq(func_t76, t_l, args=(MDA_ratio_calc_age[i]-MDA_ratio_calc_error1s[i]))[0]
+            t_l = 1 / U238_decay_constant * np.log((MDA_7_6_ratio_age[i]-MDA_7_6_ratio_error1s[i]) + 1)  # initial time for calculation
+            T76_l = optimize.leastsq(func_t76, t_l, args=(MDA_7_6_ratio_age[i]-MDA_7_6_ratio_error1s[i]))[0]
             MDA_seven_six_age_low.append(T76_l/1000000)
     
             MDA_seven_six_age_errors =  MDA_seven_six_age[i] - MDA_seven_six_age_low[i]
             MDA_seven_six_age_error.append(MDA_seven_six_age_errors)
-
-            MDA_log_eight_six_ratio = np.log((1+((MDA_ratio_calc_age[i]))))
+        
+        for i in range(len(MDA_ratio_calc_age_arrays_6_8)):  
+            
+            #6/8 Mean Age
+            MDA_log_eight_six_ratio = np.log((1+((MDA_6_8_ratio_age[i]))))
             MDA_eight_six_ages = (((Rec_U238_decay_constant) * (MDA_log_eight_six_ratio)) / 1000000)
-
-            MDA_log_eight_six_ratio_low = np.log((1+((((MDA_ratio_calc_age[i]-MDA_ratio_calc_error1s[i]))))))
+            
+            #6/8 Low Age
+            MDA_log_eight_six_ratio_low = np.log((1+((((MDA_6_8_ratio_age[i])-MDA_6_8_ratio_error1s[i])))))
             MDA_eight_six_ages_low = (((Rec_U238_decay_constant) * (MDA_log_eight_six_ratio_low)) / 1000000)
 
             MDA_eight_six_age_errors =  MDA_eight_six_ages - MDA_eight_six_ages_low
             MDA_eight_six_age.append(MDA_eight_six_ages)
             MDA_eight_six_age_error.append(MDA_eight_six_age_errors)
+     
 
         for i in range(len(MDA_eight_six_age)):
             MDA_best_age_ = (np.where(MDA_seven_six_age[i] < best_age_cut_off,MDA_eight_six_age[i],MDA_seven_six_age[i]))
             MDA_best_error_ = (np.where(MDA_best_age_ == MDA_eight_six_age[i],MDA_eight_six_age_error[i],MDA_seven_six_age_error[i]))
+            ratio_calc_WMSD_ = (np.where(MDA_best_age_ == MDA_eight_six_age[i],MDA_6_8_ratio_calc_WMSD[i],MDA_7_6_ratio_calc_WMSD[i]))
             
             MDA_best_age = list(MDA_best_age_)
             MDA_best_error= list(MDA_best_error_)
-            ratio_calc_WMSD = MDA_ratio_calc_WMSD[i]
+            ratio_calc_WMSD = list (ratio_calc_WMSD_)
             ratio_calc_cluster_length = MDA_ratio_calc_cluster_length[i]
             
+            eight_six_and_seven_six_ages = []
+            
             age_calc = list([MDA_best_age, MDA_best_error, ratio_calc_WMSD, ratio_calc_cluster_length])
+       
+            eight_six_and_seven_six_ages = []
             
             age_calc_array = []
-            def flatten_list(age_calc):
+            
+            def flatten_age_calc_list(age_calc):
                 # iterating over the data
                 for element in age_calc:
                     # checking for list
                     if type(element) == list:
                         # calling the same function with current element as new argument
-                        flatten_list(element)
+                        flatten_age_calc_list(element)
                     else:
                         age_calc_array.append(element)
 
             # flattening the given list
-            flatten_list(age_calc)
-          
+            flatten_age_calc_list(age_calc)
+       
+       
+    return age_calc_array,MDA_eight_six_age,MDA_seven_six_age
+
+def systematic_uncertainty_addition(MDAs_ages, MDAs_ratios, sample_list, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, U238_decay_constant, U235_decay_constant, U238_U235,  Data_Type, best_age_cut_off):
+ 
+    N = len(sample_list)
+    import math 
+    
+    MDAs_ages_array = np.array(MDAs_ages)
+    
+    excess_variance_206_238_sq = (excess_variance_206_238**2)
+    excess_variance_207_206_sq = (excess_variance_207_206**2)
+    Sy_calibration_uncertainty_206_238_sq = (Sy_calibration_uncertainty_206_238**2) 
+    Sy_calibration_uncertainty_207_206_sq = (Sy_calibration_uncertainty_207_206**2) 
+    decay_constant_uncertainty_U238_sq = (decay_constant_uncertainty_U238**2)
+    decay_constant_uncertainty_U235_sq =  (decay_constant_uncertainty_U235**2)
+    
+    Add_and_square_root_constants_206_238_ = (math.sqrt(excess_variance_206_238_sq+Sy_calibration_uncertainty_206_238_sq+decay_constant_uncertainty_U238_sq))
+    Add_and_square_root_constants_207_206_= (math.sqrt(excess_variance_207_206_sq+Sy_calibration_uncertainty_207_206_sq+decay_constant_uncertainty_U238_sq+decay_constant_uncertainty_U235_sq))
+    
+    sy_age_cal = []
+    mean_age = []
+    
+    seven_six_age_low = []
+    seven_six_age_mean = []
+    
+    eight_six_age_low = []
+    eight_six_age_mean = []
+    
+    total_uncertainty_7_6 = []
+    total_uncertainty_8_6 = []
+    one_s_abs_total_8_6 = []
+    one_s_abs_total_7_6 = []
+    total_uncertainty_7_6_ = []
+    total_uncertainty_8_6_ = []
+    
+    
+    for a,b,c,d,e,f,g in MDAs_ratios:
+        error_percent_7_6 = (e/d)*100
+        error_percent_7_6_2s = error_percent_7_6*2
+        error_percent_sq_7_6 = error_percent_7_6_2s**2
+        sqrt_added_sq_uncer_7_6 = (math.sqrt(error_percent_sq_7_6+(Add_and_square_root_constants_207_206_**2)))/100
+        ratio_minus_times_sqrt_added_sq_uncer_7_6 = (d-(d*sqrt_added_sq_uncer_7_6))
+
+        error_percent_6_8 = (b/a)*100
+        error_percent_6_8_2s = error_percent_6_8*2
+        error_percent_sq_6_8 = (error_percent_6_8_2s**2)
+        sqrt_added_sq_uncer_6_8 = (math.sqrt(error_percent_sq_6_8+(Add_and_square_root_constants_206_238_**2)))/100
+        ratio_minus_times_sqrt_added_sq_uncer_6_8 = (a-(a*sqrt_added_sq_uncer_6_8))
+    
+        sy_age_cal.append([ratio_minus_times_sqrt_added_sq_uncer_6_8,b,c,ratio_minus_times_sqrt_added_sq_uncer_7_6,e,f,g])
+        mean_age.append([a,b,c,d,e,f,g])
+        
+        age_calc_low,eight_six_age_low,seven_six_age_low = age_calculation(sy_age_cal, U238_decay_constant, U235_decay_constant, U238_U235, Data_Type, best_age_cut_off)
+        age_calc_mean,eight_six_age_mean,seven_six_age_mean = age_calculation(MDAs_ratios, U238_decay_constant, U235_decay_constant, U238_U235, Data_Type, best_age_cut_off)      
+    
+  
+    for i in range(N):
+        
+        one_s_abs_total_7_6 = (seven_six_age_mean[i] - seven_six_age_low)/2
+        one_s_abs_total_8_6 = (eight_six_age_mean[i] - eight_six_age_low)/2
+        
+        one_s_abs_total_7_6_ = np.squeeze(one_s_abs_total_7_6)
             
-    return age_calc_array 
-
-def systematic_uncertainty_addition(MDAs_ratios, sample_list, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off):
- 
-    N = len(sample_list)
-    import math 
+        if MDAs_ages_array[i][0] < best_age_cut_off:
+            MDAs_ages[i][1] = one_s_abs_total_8_6[i]
+        else: 
+            MDAs_ages[i][1] = one_s_abs_total_7_6_[i] 
     
-    
-    excess_variance_206_238_sq = (excess_variance_206_238**2)
-    excess_variance_207_206_sq = (excess_variance_207_206**2)
-    Sy_calibration_uncertainty_206_238_sq = (Sy_calibration_uncertainty_206_238**2) 
-    Sy_calibration_uncertainty_207_206_sq = (Sy_calibration_uncertainty_207_206**2) 
-    decay_constant_uncertainty_U238_sq = (decay_constant_uncertainty_U238**2)
-    decay_constant_uncertainty_U235_sq =  (decay_constant_uncertainty_U235**2)
-    total_uncertainty = []
-    MDAs_ratios_ = np.array(MDAs_ratios)
-    
-    
-    if MDAs_ratios_[0][0] > best_age_cut_off:
-        for a,b,c,d in MDAs_ratios:
-            error_percent = (b/a)*100
-            error_percent_sq = (error_percent**2)
-            add_in_systematic_u = (error_percent_sq+excess_variance_207_206_sq+Sy_calibration_uncertainty_207_206_sq+decay_constant_uncertainty_U238_sq+decay_constant_uncertainty_U235_sq)
-            final_total_uncertainty_percent = math.sqrt(add_in_systematic_u)
-            final_total_uncertainty_abs = (final_total_uncertainty_percent/100)*a
-            total_uncertainty.append(final_total_uncertainty_abs)
-    
-    elif MDAs_ratios_[0][0] < best_age_cut_off:
-        for a,b,c,d in MDAs_ratios:
-            error_percent = (b/a)*100
-            error_percent_sq = (error_percent**2)
-            add_in_systematic_u = (error_percent_sq+excess_variance_206_238_sq+Sy_calibration_uncertainty_206_238_sq+decay_constant_uncertainty_U238_sq)
-            final_total_uncertainty_percent = math.sqrt(add_in_systematic_u)
-            final_total_uncertainty_abs = (final_total_uncertainty_percent/100)*a
-            total_uncertainty.append(final_total_uncertainty_abs)
-    
-    total_uncertainty_ = np.array(total_uncertainty)
-    
-    
-    for i in range(N):
-        MDAs_ratios[i][1] = total_uncertainty_[i]
-    
-    
-    return MDAs_ratios
-
-def systematic_uncertainty_addition_YSG(MDAs_ratios_YSG, sample_list, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off):
- 
-    N = len(sample_list)
-    import math 
-    
-    
-    excess_variance_206_238_sq = (excess_variance_206_238**2)
-    excess_variance_207_206_sq = (excess_variance_207_206**2)
-    Sy_calibration_uncertainty_206_238_sq = (Sy_calibration_uncertainty_206_238**2) 
-    Sy_calibration_uncertainty_207_206_sq = (Sy_calibration_uncertainty_207_206**2) 
-    decay_constant_uncertainty_U238_sq = (decay_constant_uncertainty_U238**2)
-    decay_constant_uncertainty_U235_sq =  (decay_constant_uncertainty_U235**2)
-    total_uncertainty = []
-    MDAs_ratios_ = np.array(MDAs_ratios_YSG)
-    
-    
-    if MDAs_ratios_[0][0] > best_age_cut_off:
-        for a,b in MDAs_ratios_YSG:
-            error_percent = (b/a)*100
-            error_percent_sq = (error_percent**2)
-            add_in_systematic_u = (error_percent_sq+excess_variance_207_206_sq+Sy_calibration_uncertainty_207_206_sq+decay_constant_uncertainty_U238_sq+decay_constant_uncertainty_U235_sq)
-            final_total_uncertainty_percent = math.sqrt(add_in_systematic_u)
-            final_total_uncertainty_abs = (final_total_uncertainty_percent/100)*a
-            total_uncertainty.append(final_total_uncertainty_abs)
-    
-    elif MDAs_ratios_[0][0] < best_age_cut_off:
-        for a,b in MDAs_ratios_YSG:
-            error_percent = (b/a)*100
-            error_percent_sq = (error_percent**2)
-            add_in_systematic_u = (error_percent_sq+excess_variance_206_238_sq+Sy_calibration_uncertainty_206_238_sq+decay_constant_uncertainty_U238_sq)
-            final_total_uncertainty_percent = math.sqrt(add_in_systematic_u)
-            final_total_uncertainty_abs = (final_total_uncertainty_percent/100)*a
-            total_uncertainty.append(final_total_uncertainty_abs)
-    
-    total_uncertainty_ = np.array(total_uncertainty)
-    
-    
-    for i in range(N):
-        MDAs_ratios_YSG[i][1] = total_uncertainty_[i]
-    
-    
-    return MDAs_ratios_YSG
+    return MDAs_ages
 
 #MDA Calulators
 
@@ -4190,24 +4322,45 @@ def YPP(ages, errors, min_cluster_size=2, thres=0.01, minDist=1, xdif=0.1):
 
     return YPP
 
-def YSG(ages, errors, sample_list, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off):
-
-    # Check to see if ages is a list of arrays or just a single list of ages
-    if not hasattr(ages[0], '__len__'):
-        ages = [ages]
-        errors = [errors]
+def YSG(ages, errors, sample_list,  eight_six_ratios, eight_six_error, seven_six_ratios, seven_six_error, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, U238_decay_constant, U235_decay_constant, U238_U235, Data_Type, best_age_cut_off):
     
+    YSG_MDAs_ratios = []
     YSG_wo_systematic = []
+    YSG_systematic_Calculation = []
     YSG = []
     
-    for i in range(len(ages)):
-        data_err1s = list(zip(ages[i], errors[i]))
-        data_err1s.sort(key=lambda d: d[0] + d[1]) # Sort based on age + 1s error
-        YSG_wo_systematic.append([data_err1s[0][0],data_err1s[0][1]]) # Reporting 1-sigma error  
+    youngest = []
     
-    YSG = systematic_uncertainty_addition_YSG(YSG_wo_systematic, sample_list, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off)   
+    if Data_Type == "238U/206Pb_&_207Pb/206Pb": 
+        for i in range(len(ages)):  
+            data_err1s = list(zip(ages[i], errors[i],1/eight_six_ratios[i], eight_six_error[i],seven_six_ratios[i], seven_six_error[i]))
+            data_err1s.sort(key=lambda d: d[0] + d[1]) # Sort based on age + 1s error
+   
+            youngest = data_err1s[0]
+            YSG_MDAs_ratios.append([youngest[2], youngest[3], youngest[0], youngest[4], youngest[5], youngest[1], youngest[1]])
+            
+            YSG_age_calc, MDA_eight_six_age, MDA_seven_six_age = age_calculation(YSG_MDAs_ratios, U238_decay_constant, U235_decay_constant, U238_U235, Data_Type,best_age_cut_off)
+            
+            YSG_wo_systematic.append([YSG_age_calc[0],YSG_age_calc[1],YSG_age_calc[2],YSG_age_calc[3]]) # Reporting 1-sigma error  
+       
+        YSG_systematic_Calculation = systematic_uncertainty_addition(YSG_wo_systematic, YSG_MDAs_ratios, sample_list, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, U238_decay_constant, U235_decay_constant, U238_U235, Data_Type, best_age_cut_off)   
+
+        for i in range(len(ages)):
+            
+            if YSG_systematic_Calculation[0] == 0.0:
+                YSG.append([np.nan,np.nan,np.nan,np.nan])
+            else:
+                YSG.append([YSG_systematic_Calculation [i][0], YSG_systematic_Calculation [i][1]])
+    
+        
+    if Data_Type == "Ages":      
+        for i in range(len(ages)):
+            data_err1s = list(zip(ages[i], errors[i]))
+            data_err1s.sort(key=lambda d: d[0] + d[1]) # Sort based on age + 1s error
+            YSG.append([data_err1s[0][0],data_err1s[0][1]]) # Reporting 1-sigma error  
     
     return YSG
+
 
 def YSG_for_YDZ(ages, errors):
 
@@ -4270,7 +4423,6 @@ def YDZ(ages, errors, iterations=10000, chartOutput = False, bins=25):
     return YDZ, minAges, mode
 
 
-
 def YC2s(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six_ratios, seven_six_error, U238_decay_constant, U235_decay_constant, U238_U235, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off, min_cluster_size=3):
     
     if not hasattr(ages[0], '__len__'):
@@ -4281,52 +4433,54 @@ def YC2s(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six
     YC2s_MDAs_ratios = []
     YC2s = []
     YC2s_wo_systematic = []
-    
-    for i in range(len(ages)):
-        
-        if Data_Type == "238U/206Pb_&_207Pb/206Pb": 
             
+    if Data_Type == "238U/206Pb_&_207Pb/206Pb": 
+        for i in range(len(ages)):  
             data_err2s = list(zip(ages[i], errors[i]*2,1/eight_six_ratios[i], eight_six_error[i]*2,seven_six_ratios[i], seven_six_error[i]*2))
             data_err2s_ageSort = list(zip(ages[i], errors[i]*2,eight_six_ratios[i], eight_six_error[i]*2,seven_six_ratios[i], seven_six_error[i]*2))
             data_err2s_ageSort.sort(key=lambda d: d[0]) # Sort based on age
             data_err2s.sort(key=lambda d: d[0] + d[1]) # Sort based on age + 2s error
-           
+
+
             YC2s_cluster, max_cluster,YC2s_age_cluster = find_youngest_cluster(data_err2s, sample_list, min_cluster_size)
             YC2s_cluster_arrays.append(YC2s_age_cluster)
-            
-            if YC2s_cluster[0][0] < best_age_cut_off:
-                YC2s_WM = weightedMean(np.array([d[2] for d in YC2s_cluster]), np.array([d[3] for d in YC2s_cluster])/2)
-            else: 
-                YC2s_WM = weightedMean(np.array([d[4] for d in YC2s_cluster]), np.array([d[5] for d in YC2s_cluster])/2)
-            
-            if YC2s_WM[0] == 0.0:
+
+            YC2s_WM_6_8 = weightedMean(np.array([d[2] for d in YC2s_cluster]), np.array([d[3] for d in YC2s_cluster])/2)
+
+            YC2s_WM_7_6 = weightedMean(np.array([d[4] for d in YC2s_cluster]), np.array([d[5] for d in YC2s_cluster])/2)
+
+            if YC2s_WM_6_8[0] == 0.0:
+                YC2s_MDAs_ratios.append([np.nan,np.nan,np.nan,np.nan])
+            if YC2s_WM_7_6[0] == 0.0:
                 YC2s_MDAs_ratios.append([np.nan,np.nan,np.nan,np.nan])
             else:
-                YC2s_MDAs_ratios.append([YC2s_WM[0], YC2s_WM[1]/2, YC2s_WM[2], len(YC2s_cluster)])
-            
-            YC2s_age_calc = age_calculation(YC2s_MDAs_ratios, U238_decay_constant, U235_decay_constant, U238_U235, Data_Type,best_age_cut_off)
+                YC2s_MDAs_ratios.append([YC2s_WM_6_8[0], YC2s_WM_6_8[1]/2, YC2s_WM_6_8[2], YC2s_WM_7_6[0], YC2s_WM_7_6[1]/2, YC2s_WM_7_6[2], len(YC2s_cluster)])
+
+            YC2s_age_calc, MDA_eight_six_age, MDA_seven_six_age = age_calculation(YC2s_MDAs_ratios, U238_decay_constant, U235_decay_constant, U238_U235, Data_Type,best_age_cut_off)
+
             YC2s_wo_systematic.append([YC2s_age_calc[0],YC2s_age_calc[1],YC2s_age_calc[2],YC2s_age_calc[3]])
         
-        
-        if Data_Type == "Ages":
-            
+        YC2s = systematic_uncertainty_addition(YC2s_wo_systematic, YC2s_MDAs_ratios, sample_list, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, U238_decay_constant, U235_decay_constant, U238_U235, Data_Type, best_age_cut_off)   
+    
+    if Data_Type == "Ages":
+        for i in range(len(ages)):  
             data_err2s = list(zip(ages[i], errors[i]*2,ages[i], errors[i]*2,ages[i], errors[i]*2))
             data_err2s_ageSort = list(zip(ages[i], errors[i]*2,ages[i], errors[i]*2,ages[i], errors[i]*2))
             data_err2s_ageSort.sort(key=lambda d: d[0]) # Sort based on age
             data_err2s.sort(key=lambda d: d[0] + d[1]) # Sort based on age + 2s error
-            
+
             YC2s_cluster, max_cluster,YC2s_age_cluster = find_youngest_cluster(data_err2s, sample_list, min_cluster_size)
             YC2s_WM = weightedMean(np.array([d[0] for d in YC2s_cluster]), np.array([d[1] for d in YC2s_cluster])/2)
-            
+
             if YC2s_WM[0] == 0.0:
                 YC2s.append([np.nan,np.nan,np.nan,np.nan])
             else:
-                YC2s_wo_systematic.append([YC2s_WM[0], YC2s_WM[1]/2, YC2s_WM[2], len(YC2s_cluster)])
+                YC2s.append([YC2s_WM[0], YC2s_WM[1]/2, YC2s_WM[2], len(YC2s_cluster)])
                 YC2s_cluster_arrays.append(YC2s_age_cluster)
-                
-    YC2s = systematic_uncertainty_addition(YC2s_wo_systematic, sample_list, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off)   
-
+    
     return YC2s, YC2s_cluster_arrays
+
+
 
 def YC1s(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six_ratios, seven_six_error, U238_decay_constant, U235_decay_constant, U238_U235, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off, min_cluster_size=2):
     
@@ -4339,11 +4493,9 @@ def YC1s(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six
     YC1s = []
     YC1s_wo_systematic = []
    
-    
-    for i in range(len(ages)):
-          
             
-        if Data_Type == "238U/206Pb_&_207Pb/206Pb": 
+    if Data_Type == "238U/206Pb_&_207Pb/206Pb": 
+        for i in range(len(ages)):
             
             data_err1s = list(zip(ages[i], errors[i],1/eight_six_ratios[i], eight_six_error[i],seven_six_ratios[i], seven_six_error[i]))
             data_err1s_ageSort = list(zip(ages[i], errors[i],eight_six_ratios[i], eight_six_error[i],seven_six_ratios[i], seven_six_error[i]))
@@ -4353,21 +4505,26 @@ def YC1s(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six
             YC1s_cluster, max_cluster,YC1s_age_cluster  = find_youngest_cluster(data_err1s, sample_list, min_cluster_size)
             YC1s_cluster_arrays.append(YC1s_age_cluster)
             
-            if YC1s_cluster[0][0] < best_age_cut_off:
-                YC1s_WM = weightedMean(np.array([d[2] for d in YC1s_cluster]), np.array([d[3] for d in YC1s_cluster]))
-            else: 
-                YC1s_WM = weightedMean(np.array([d[4] for d in YC1s_cluster]), np.array([d[5] for d in YC1s_cluster]))
-            
-            if YC1s_WM[0] == 0.0:
+            YC1s_WM_6_8 = weightedMean(np.array([d[2] for d in YC1s_cluster]), np.array([d[3] for d in YC1s_cluster]))
+
+            YC1s_WM_7_6 = weightedMean(np.array([d[4] for d in YC1s_cluster]), np.array([d[5] for d in YC1s_cluster]))
+
+            if YC1s_WM_6_8[0] == 0.0:
+                YC1s_MDAs_ratios.append([np.nan,np.nan,np.nan,np.nan])
+            if YC1s_WM_7_6[0] == 0.0:
                 YC1s_MDAs_ratios.append([np.nan,np.nan,np.nan,np.nan])
             else:
-                YC1s_MDAs_ratios.append([YC1s_WM[0], YC1s_WM[1]/2, YC1s_WM[2], len(YC1s_cluster)])
-            
-            YC1s_age_calc = age_calculation(YC1s_MDAs_ratios, U238_decay_constant, U235_decay_constant, U238_U235, Data_Type,best_age_cut_off)
+                YC1s_MDAs_ratios.append([YC1s_WM_6_8[0], YC1s_WM_6_8[1]/2, YC1s_WM_6_8[2], YC1s_WM_7_6[0], YC1s_WM_7_6[1]/2, YC1s_WM_7_6[2], len(YC1s_cluster)])
+
+
+            YC1s_age_calc, MDA_eight_six_age, MDA_seven_six_age = age_calculation(YC1s_MDAs_ratios, U238_decay_constant, U235_decay_constant, U238_U235, Data_Type,best_age_cut_off)
+
             YC1s_wo_systematic.append([YC1s_age_calc[0],YC1s_age_calc[1],YC1s_age_calc[2],YC1s_age_calc[3]])
-            
+           
+        YC1s = systematic_uncertainty_addition(YC1s_wo_systematic, YC1s_MDAs_ratios, sample_list, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, U238_decay_constant, U235_decay_constant, U238_U235, Data_Type, best_age_cut_off)   
         
-        if Data_Type == "Ages":
+    if Data_Type == "Ages":
+         for i in range(len(ages)):
             
             data_err1s = list(zip(ages[i], errors[i],ages[i], errors[i],ages[i], errors[i]))
             data_err1s_ageSort = list(zip(ages[i], errors[i],ages[i], errors[i],ages[i], errors[i]))
@@ -4380,10 +4537,9 @@ def YC1s(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six
             if YC1s_WM[0] == 0.0:
                 YC1s.append([np.nan,np.nan,np.nan,np.nan])
             else:
-                YC1s_wo_systematic.append([YC1s_WM[0], YC1s_WM[1]/2, YC1s_WM[2], len(YC1s_cluster)])
+                YC1s.append([YC1s_WM[0], YC1s_WM[1]/2, YC1s_WM[2], len(YC1s_cluster)])
                 YC1s_cluster_arrays.append(YC1s_age_cluster)
     
-    YC1s = systematic_uncertainty_addition(YC1s_wo_systematic, sample_list, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off)   
 
     return YC1s, YC1s_cluster_arrays
 
@@ -4402,11 +4558,10 @@ def Y3Zo(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six
     Y3Zo = []
     Y3Zo_3cluster_sort = []
     Y3Zo_wo_systematic = []
-    
-    for i in range(len(ages)):
+
             
-            
-        if Data_Type == "238U/206Pb_&_207Pb/206Pb": 
+    if Data_Type == "238U/206Pb_&_207Pb/206Pb": 
+        for i in range(len(ages)):
             
             data_err2s = list(zip(ages[i], errors[i]*2,1/eight_six_ratios[i], eight_six_error[i]*2,seven_six_ratios[i], seven_six_error[i]*2))
             data_err2s_ageSort = list(zip(ages[i], errors[i]*2,1/eight_six_ratios[i], eight_six_error[i]*2,seven_six_ratios[i], seven_six_error[i]*2))
@@ -4417,7 +4572,7 @@ def Y3Zo(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six
             
             Y3Zo_3cluster_sort.append(Y3Zo_cluster)
             Y3Zo_3cluster_sorti = Y3Zo_3cluster_sort[i]
-            Y3Zo_3cluster_sorti.sort(key=lambda d: d[0]) # Sort based on age
+            Y3Zo_3cluster_sorti.sort(key=lambda d: d[0]) # Sort based on age - 2s uncertainty
             Y3Zo_3cluster = Y3Zo_3cluster_sorti[:3] #take lowest 3 of cluster
             
             Y3Zo_cluster_arrays_before_sort.append(Y3Zo_age_cluster)
@@ -4425,25 +4580,29 @@ def Y3Zo(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six
             Y3Zo_cluster_arrays_sorti.sort(key=lambda d: d[0]) # Sort based on age
             Y3Zo_cluster_arrays_low_3 = Y3Zo_cluster_arrays_sorti[:3] #take lowest 3 of cluster
             Y3Zo_cluster_arrays.append(Y3Zo_cluster_arrays_low_3)
-            
-            
-            if Y3Zo_3cluster[0][0] < best_age_cut_off:
-                Y3Zo_WM = weightedMean(np.array([d[2] for d in Y3Zo_3cluster]), np.array([d[3] for d in Y3Zo_3cluster])/2)
-            else: 
-                Y3Zo_WM = weightedMean(np.array([d[4] for d in Y3Zo_3cluster]), np.array([d[5] for d in Y3Zo_3cluster])/2)
-            
-            if Y3Zo_WM[0] == 0.0:
+
+            Y3Zo_WM_6_8 = weightedMean(np.array([d[2] for d in Y3Zo_3cluster]), np.array([d[3] for d in Y3Zo_3cluster])/2)
+
+            Y3Zo_WM_7_6 = weightedMean(np.array([d[4] for d in Y3Zo_3cluster]), np.array([d[5] for d in Y3Zo_3cluster])/2)
+
+            if Y3Zo_WM_6_8[0] == 0.0:
+                Y3Zo_MDAs_ratios.append([np.nan,np.nan,np.nan,np.nan])
+            if Y3Zo_WM_7_6[0] == 0.0:
                 Y3Zo_MDAs_ratios.append([np.nan,np.nan,np.nan,np.nan])
             else:
-                Y3Zo_MDAs_ratios.append([Y3Zo_WM[0], Y3Zo_WM[1]/2, Y3Zo_WM[2],len(Y3Zo_3cluster)])
-            
-            Y3Zo_age_calc = age_calculation(Y3Zo_MDAs_ratios, U238_decay_constant, U235_decay_constant, U238_U235, Data_Type,best_age_cut_off)
-        
+                Y3Zo_MDAs_ratios.append([Y3Zo_WM_6_8[0], Y3Zo_WM_6_8[1]/2, Y3Zo_WM_6_8[2], Y3Zo_WM_7_6[0], Y3Zo_WM_7_6[1]/2, Y3Zo_WM_7_6[2], len(Y3Zo_3cluster)])
+
+
+            Y3Zo_age_calc, MDA_eight_six_age, MDA_seven_six_age = age_calculation(Y3Zo_MDAs_ratios, U238_decay_constant, U235_decay_constant, U238_U235, Data_Type,best_age_cut_off)
+
             Y3Zo_wo_systematic.append([Y3Zo_age_calc[0],Y3Zo_age_calc[1],Y3Zo_age_calc[2],Y3Zo_age_calc[3]])
-            
-            
+
         
-        if Data_Type == "Ages":
+        Y3Zo = systematic_uncertainty_addition(Y3Zo_wo_systematic, Y3Zo_MDAs_ratios, sample_list, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, U238_decay_constant, U235_decay_constant, U238_U235, Data_Type, best_age_cut_off)
+                                               
+            
+    if Data_Type == "Ages":
+        for i in range(len(ages)):
             
             data_err2s = list(zip(ages[i], errors[i]*2,ages[i], errors[i]*2,ages[i], errors[i]*2))
             data_err2s_ageSort = list(zip(ages[i], errors[i]*2,ages[i], errors[i]*2,ages[i], errors[i]*2))
@@ -4454,7 +4613,7 @@ def Y3Zo(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six
             
             Y3Zo_3cluster_sort.append(Y3Zo_cluster)
             Y3Zo_3cluster_sorti = Y3Zo_3cluster_sort[i]
-            Y3Zo_3cluster_sorti.sort(key=lambda d: d[0]) # Sort based on age
+            Y3Zo_3cluster_sorti.sort(key=lambda d: d[0]) # Sort based on age 
             Y3Zo_3cluster = Y3Zo_3cluster_sorti[:3] #take lowest 3 of cluster
             
             Y3Zo_cluster_arrays_before_sort.append(Y3Zo_age_cluster)
@@ -4467,11 +4626,9 @@ def Y3Zo(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six
             if Y3Zo_WM[0] == 0.0:
                 Y3Zo.append([np.nan,np.nan,np.nan,np.nan])
             else:
-                Y3Zo_wo_systematic.append([Y3Zo_WM[0], Y3Zo_WM[1]/2, Y3Zo_WM[2], len(Y3Zo_3cluster)])
+                Y3Zo.append([Y3Zo_WM[0], Y3Zo_WM[1]/2, Y3Zo_WM[2], len(Y3Zo_3cluster)])
                 Y3Zo_cluster_arrays.append(Y3Zo_cluster_arrays_low_3)
-    
-    Y3Zo = systematic_uncertainty_addition(Y3Zo_wo_systematic, sample_list, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off)   
-
+   
     return Y3Zo, Y3Zo_cluster_arrays
 
 def Y3Za(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six_ratios, seven_six_error, U238_decay_constant, U235_decay_constant, U238_U235, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off):
@@ -4485,33 +4642,38 @@ def Y3Za(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six
     Y3Za = []
     Y3Za_wo_systematic = []
     
-    
-    for i in range(len(ages)):
-        
-            
-            
-        if Data_Type == "238U/206Pb_&_207Pb/206Pb": 
-            
+ 
+    if Data_Type == "238U/206Pb_&_207Pb/206Pb":
+        for i in range(len(ages)):
+                                               
             data_err1s = list(zip(ages[i], errors[i],1/eight_six_ratios[i], eight_six_error[i],seven_six_ratios[i], seven_six_error[i]))
             data_err1s_ageSort = list(zip(ages[i], errors[i],1/eight_six_ratios[i], eight_six_error[i],seven_six_ratios[i], seven_six_error[i]))
             data_err1s_ageSort.sort(key=lambda d: d[0]) # Sort based on age
             
            
-            if data_err1s_ageSort[0][0] < best_age_cut_off:
-                Y3Za_WM, Y3Za_WMerr2s, Y3Za_WM_MSWD = weightedMean([x[2] for x in data_err1s_ageSort[:3]], [x[3] for x in data_err1s_ageSort[:3]])
-            else:
-                Y3Za_WM, Y3Za_WMerr2s, Y3Za_WM_MSWD = MweightedMean([x[4] for x in data_err1s_ageSort[:3]], [x[5] for x in data_err1s_ageSort[:3]])
+            Y3Za_WM_6_8,Y3Za_6_8_WMerr2s, Y3Za_6_8_WM_MSWD = weightedMean([x[2] for x in data_err1s_ageSort[:3]], [x[3] for x in data_err1s_ageSort[:3]])
+
+            Y3Za_WM_7_6,Y3Za_7_6_WMerr2s, Y3Za_7_6_WM_MSWD = weightedMean([x[4] for x in data_err1s_ageSort[:3]], [x[5] for x in data_err1s_ageSort[:3]])
             
             if len(ages[i]) < 3: # Return nulls if the samples has less than 3 analyses
                 Y3Za_MDAs_ratios.append([np.nan,np.nan,np.nan])
             else:
-                Y3Za_MDAs_ratios.append([Y3Za_WM, Y3Za_WMerr2s/2, Y3Za_WM_MSWD,len(data_err1s_ageSort[:3])])
+                                               
+                                               
+                Y3Za_MDAs_ratios.append([Y3Za_WM_6_8, Y3Za_6_8_WMerr2s/2, Y3Za_6_8_WM_MSWD, Y3Za_WM_7_6, Y3Za_7_6_WMerr2s/2, Y3Za_7_6_WM_MSWD, len(data_err1s_ageSort[:3])])
+                                               
                 Y3Za_cluster_arrays.append(data_err1s_ageSort[:3])
-               
-            Y3Za_age_calc = age_calculation(Y3Za_MDAs_ratios, U238_decay_constant, U235_decay_constant, U238_U235,Data_Type,best_age_cut_off)
+                                               
+
+            Y3Za_age_calc, MDA_eight_six_age, MDA_seven_six_age = age_calculation(Y3Za_MDAs_ratios, U238_decay_constant, U235_decay_constant, U238_U235, Data_Type,best_age_cut_off)
+
             Y3Za_wo_systematic.append([Y3Za_age_calc[0],Y3Za_age_calc[1],Y3Za_age_calc[2],Y3Za_age_calc[3]])
         
-        if Data_Type == "Ages":
+        Y3Za = systematic_uncertainty_addition(Y3Za_wo_systematic, Y3Za_MDAs_ratios, sample_list, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, U238_decay_constant, U235_decay_constant, U238_U235, Data_Type, best_age_cut_off)   
+    
+        
+    if Data_Type == "Ages":
+        for i in range(len(ages)):
             
             data_err1s = list(zip(ages[i], errors[i],ages[i], errors[i],ages[i], errors[i]))
             data_err1s_ageSort = list(zip(ages[i], errors[i],ages[i], errors[i],ages[i], errors[i]))
@@ -4524,10 +4686,9 @@ def Y3Za(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six
             if len(ages[i]) < 3: # Return nulls if the samples has less than 3 analyses
                 Y3Za.append([np.nan,np.nan,np.nan])
             else:
-                Y3Za_wo_systematic.append([Y3Za_WM, Y3Za_WMerr2s/2, Y3Za_WM_MSWD, len(data_err1s_ageSort[:3])])
+                Y3Za.append([Y3Za_WM, Y3Za_WMerr2s/2, Y3Za_WM_MSWD, len(Y3Za_cluster_arrays)])
                 Y3Za_cluster_arrays.append(data_err1s_ageSort[:3])
                
-    Y3Za = systematic_uncertainty_addition(Y3Za_wo_systematic, sample_list, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off)   
     
     return Y3Za, Y3Za_cluster_arrays
 
@@ -4543,26 +4704,26 @@ def tau(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six_
         errors = [errors]
 
     # Calculate the PDP - note that a small xdif may be desired for increased precision
-    PDP_age, PDP = PDPcalcAges(ages, errors, xdif)
+    Tau_PDP_age, Tau_PDP = PDPcalcAges(ages, errors, xdif)
 
     Tau_Ratios = []
-    Tau = []
+    Tau_MDA = []
     Tau_Grains = []
     Tau_wo_systematic = []
     
     for i in range(len(ages)):  
 
         # Calculate peak indexes
-        peakIndexes = list(peakutils.indexes(PDP[i], thres=thres, min_dist=minDist))
+        peakIndexes = list(peakutils.indexes(Tau_PDP[i], thres=thres, min_dist=minDist))
         # Peak ages
-        peakAges = PDP_age[peakIndexes]
+        peakAges = Tau_PDP_age[peakIndexes]
         # Number of grains per peak
         peakAgeGrain = peakAgesGrains([peakAges], [ages[i]], [errors[i]])[0]
 
         # Calculate trough indexes
-        troughIndexes = list(peakutils.indexes(PDP[i]*-1, thres=thres, min_dist=minDist))
+        troughIndexes = list(peakutils.indexes(Tau_PDP[i]*-1, thres=thres, min_dist=minDist))
         # Trough ages
-        troughAges = [0] + list(PDP_age[troughIndexes]) + [4500] # Append a 0 because there is no trough on the young size of the youngest peak and no trough on the old side of the oldest peak
+        troughAges = [0] + list(Tau_PDP_age[troughIndexes]) + [4500] # Append a 0 because there is no trough on the young size of the youngest peak and no trough on the old side of the oldest peak
 
         # Zip peak ages and grains per peak
         peakAgesGrains_ = list(zip(peakAges, peakAgeGrain))
@@ -4584,33 +4745,33 @@ def tau(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six_
         
             
         if Data_Type == "238U/206Pb_&_207Pb/206Pb": 
-            
-            ages_errors1s = list(zip(ages[i], errors[i],1/eight_six_ratios[i], eight_six_error[i],seven_six_ratios[i], seven_six_error[i]))
-            ages_errors1s_filtered = list(filter(lambda x: x[0] < troughOld and x[0] > troughYoung, ages_errors1s))
-           
-            if ages_errors1s_filtered[i][0] < best_age_cut_off:
-                tauMethod_WM, tauMethod_WM_err2s, tauMethod_WM_MSWD = weightedMean(np.array([d[2] for d in ages_errors1s_filtered]), np.array([d[3] for d in ages_errors1s_filtered]))
-            else:
-                tauMethod_WM, tauMethod_WM_err2s, tauMethod_WM_MSWD = weightedMean(np.array([d[4] for d in ages_errors1s_filtered]), np.array([d[5] for d in ages_errors1s_filtered]))
-                
-            Tau_Ratios.append([tauMethod_WM, tauMethod_WM_err2s/2, tauMethod_WM_MSWD, len(ages_errors1s_filtered)])
-            Tau_age_calc = age_calculation(Tau_Ratios, U238_decay_constant, U235_decay_constant, U238_U235, Data_Type,best_age_cut_off)
-            Tau_wo_systematic.append([Tau_age_calc[0],Tau_age_calc[1],Tau_age_calc[2],Tau_age_calc[3]])
-            Tau_Grains.append([ages_errors1s_filtered])
-            
-        if Data_Type == "Ages":
-            ages_errors1s = list(zip(ages[i], errors[i],ages[i], errors[i],ages[i], errors[i]))
-            ages_errors1s_filtered = list(filter(lambda x: x[0] < troughOld and x[0] > troughYoung, ages_errors1s))
-            
-            tauMethod_WM, tauMethod_WM_err2s, tauMethod_WM_MSWD = weightedMean(np.array([d[0] for d in ages_errors1s_filtered]), np.array([d[1] for d in ages_errors1s_filtered]))
-            Tau_wo_systematic.append([tauMethod_WM, tauMethod_WM_err2s/2, tauMethod_WM_MSWD, len(ages_errors1s_filtered)])
-            Tau_Grains.append([ages_errors1s_filtered])
         
-        plot_max = tauMethod_WM+200
-    
-    Tau = systematic_uncertainty_addition(Tau_wo_systematic, sample_list, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off) 
+                ages_errors1s = list(zip(ages[i], errors[i],1/eight_six_ratios[i], eight_six_error[i],seven_six_ratios[i], seven_six_error[i]))
+                ages_errors1s_filtered = list(filter(lambda x: x[0] < troughOld and x[0] > troughYoung, ages_errors1s))
 
-    return Tau, Tau_Grains, PDP_age, PDP,plot_max,ages_errors1s_filtered,tauMethod_WM,tauMethod_WM_err2s
+                tauMethod_WM_6_8, tauMethod_WM_err2s_6_8, tauMethod_WM_MSWD_6_8 = weightedMean(np.array([d[2] for d in ages_errors1s_filtered]), np.array([d[3] for d in ages_errors1s_filtered]))
+                tauMethod_WM_7_6, tauMethod_WM_err2s_7_6, tauMethod_WM_MSWD_7_6 = weightedMean(np.array([d[4] for d in ages_errors1s_filtered]), np.array([d[5] for d in ages_errors1s_filtered]))
+
+                Tau_Ratios.append([tauMethod_WM_6_8, tauMethod_WM_err2s_6_8/2, tauMethod_WM_MSWD_6_8, tauMethod_WM_7_6, tauMethod_WM_err2s_7_6, tauMethod_WM_MSWD_7_6, len(ages_errors1s_filtered)])
+
+                Tau_age_calc, MDA_eight_six_age, MDA_seven_six_age = age_calculation(Tau_Ratios, U238_decay_constant, U235_decay_constant, U238_U235, Data_Type,best_age_cut_off)
+
+                Tau_wo_systematic.append([Tau_age_calc[0],Tau_age_calc[1],Tau_age_calc[2],Tau_age_calc[3]])
+                Tau_Grains.append([ages_errors1s_filtered])
+       
+        if Data_Type == "Ages":
+        
+                ages_errors1s = list(zip(ages[i], errors[i],ages[i], errors[i],ages[i], errors[i]))
+                ages_errors1s_filtered = list(filter(lambda x: x[0] < troughOld and x[0] > troughYoung, ages_errors1s))
+
+                tauMethod_WM, tauMethod_WM_err2s, tauMethod_WM_MSWD = weightedMean(np.array([d[0] for d in ages_errors1s_filtered]), np.array([d[1] for d in ages_errors1s_filtered]))
+                Tau_MDA.append([tauMethod_WM, tauMethod_WM_err2s/2, tauMethod_WM_MSWD, len(ages_errors1s_filtered)])
+                Tau_Grains.append([ages_errors1s_filtered])
+
+    if Data_Type == "238U/206Pb_&_207Pb/206Pb": 
+        Tau_MDA = systematic_uncertainty_addition(Tau_wo_systematic, Tau_Ratios, sample_list, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, U238_decay_constant, U235_decay_constant, U238_U235, Data_Type, best_age_cut_off)
+    
+    return Tau_MDA, Tau_Grains, Tau_PDP_age, Tau_PDP,ages_errors1s_filtered
 
 def YSP(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six_ratios, seven_six_error, U238_decay_constant, U235_decay_constant, U238_U235, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off, min_cluster_size=2, MSWD_threshold=1):
 
@@ -4625,11 +4786,10 @@ def YSP(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six_
     YSP_cluster = []
     YSP_wo_systematic = []
     
-    for i in range(len(ages)): # One loop for each sample or sample group
-    
-    # Zip ages and errors and sort by age
         
-        if Data_Type == "238U/206Pb_&_207Pb/206Pb": 
+    if Data_Type == "238U/206Pb_&_207Pb/206Pb": 
+        
+        for i in range(len(ages)): 
             data_err1s_ageSort = list(zip(ages[i], errors[i],1/eight_six_ratios[i], eight_six_error[i],seven_six_ratios[i], seven_six_error[i]))
             data_err1s_ageSort.sort(key=lambda d: d[0]) # Sort based on age
             
@@ -4638,30 +4798,21 @@ def YSP(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six_
                 # Creat list of MSWD
                 MSWD = []
                 for k in range(len(data_err1s_ageSort)):
-
-                    if data_err1s_ageSort[0][0] < best_age_cut_off:
-                        MSWD.append(weightedMean(np.array([d[2] for d in data_err1s_ageSort[:(k+2)]]), np.array([d[3] for d in data_err1s_ageSort[:(k+2)]]))[2])
-                    else:
-                        MSWD.append(weightedMean(np.array([d[4] for d in data_err1s_ageSort[:(k+2)]]), np.array([d[5] for d in data_err1s_ageSort[:(k+2)]]))[2])
-
+                    MSWD.append(weightedMean(np.array([d[0] for d in data_err1s_ageSort[:(k+2)]]), np.array([d[1] for d in data_err1s_ageSort[:(k+2)]]))[2])
+            
                 # Add MSWD to the ages & errors tuple   
                 data_err1s_MSWD = []
 
                 for k in range(len(data_err1s_ageSort)):
-                    if data_err1s_ageSort[0][0] < best_age_cut_off: 
-                        if k == 0: # Assign the first age an MSWD of 0 (so it is always included in the MSWD)
-                            data_err1s_MSWD.append((data_err1s_ageSort[k][0], data_err1s_ageSort[k][1], 0, data_err1s_ageSort[k][2],data_err1s_ageSort[k][3]))
-                        else: # Assign analyses the MSWD of the previos analysis, such that the filtering returns the correct analyses
-                            data_err1s_MSWD.append((data_err1s_ageSort[k][0], data_err1s_ageSort[k][1], MSWD[k-1],data_err1s_ageSort[k][2],data_err1s_ageSort[k][3]))
-                    else: 
-                        if k == 0: # Assign the first age an MSWD of 0 (so it is always included in the MSWD)
-                            data_err1s_MSWD.append((data_err1s_ageSort[k][0], data_err1s_ageSort[k][1], 0, data_err1s_ageSort[k][4],data_err1s_ageSort[k][5]))
-                        else: # Assign analyses the MSWD of the previos analysis, such that the filtering returns the correct analyses
-                            data_err1s_MSWD.append((data_err1s_ageSort[k][0], data_err1s_ageSort[k][1], MSWD[k-1],data_err1s_ageSort[k][4],data_err1s_ageSort[k][5]))
-
+                   
+                    if k == 0: # Assign the first age an MSWD of 0 (so it is always included in the MSWD)
+                        data_err1s_MSWD.append((data_err1s_ageSort[k][0], data_err1s_ageSort[k][1], 0))
+                    else: # Assign analyses the MSWD of the previos analysis, such that the filtering returns the correct analyses
+                        data_err1s_MSWD.append((data_err1s_ageSort[k][0], data_err1s_ageSort[k][1], MSWD[k-1]))
+                   
                 # Need to exit the algorithm if no YSP is found
                 if j == len(ages[i])-1:
-                    YSP.append([float('nan'), float('nan'), float('nan'), float('nan')])
+                    YSP_wo_systematic.append([float('nan'), float('nan'), float('nan'), float('nan')])
                     break
 
                 # Find the index of the analysis with an MSWD closest to 1
@@ -4669,20 +4820,33 @@ def YSP(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six_
 
                 # Filter analyses beyond the one which has a MSWD closest to MSWD_threshold
                 agesFiltered = data_err1s_MSWD[0:idx+1]
+                agesFiltered_addratios = []
 
-                YSP_WM, YSP_WM_err2s, YSP_WM_MSWD = weightedMean(np.array([d[3] for d in agesFiltered]), np.array([d[4] for d in agesFiltered]))
-
-                YSP_Ratios.append([YSP_WM, YSP_WM_err2s/2, YSP_WM_MSWD, len(agesFiltered)])
+                for k in range(len(agesFiltered)):
+                    agesFiltered_addratios.append((agesFiltered[k][0],agesFiltered[k][1],data_err1s_ageSort[k][2], data_err1s_ageSort[k][3],data_err1s_ageSort[k][4], data_err1s_ageSort[k][5]))
+                
+                YSP_WM_6_8, YSP_WM_err2s_6_8, YSP_WM_MSWD_6_8 = weightedMean(np.array([d[2] for d in agesFiltered_addratios]), np.array([d[3] for d in agesFiltered_addratios]))
+                YSP_WM_7_6, YSP_WM_err2s_7_6, YSP_WM_MSWD_7_6 = weightedMean(np.array([d[4] for d in agesFiltered_addratios]), np.array([d[5] for d in agesFiltered_addratios]))
+                
+                YSP_Ratios.append([YSP_WM_6_8, YSP_WM_err2s_6_8/2, YSP_WM_MSWD_6_8,YSP_WM_7_6, YSP_WM_err2s_7_6/2, YSP_WM_MSWD_7_6,len(agesFiltered)])
 
                 if (agesFiltered[1][2] < 1 and len(agesFiltered) >= min_cluster_size): # The first one is excluded because the MSWD is made to be 0. The second youngest analysis must have a MSWD < 1 to proceed. The minimum cluster size must also be met or exceeded.
-                    YSP_age_calc = age_calculation(YSP_Ratios, U238_decay_constant, U235_decay_constant, U238_U235, Data_Type,best_age_cut_off)
+                    
+                    YSP_age_calc, MDA_eight_six_age, MDA_seven_six_age = age_calculation(YSP_Ratios, U238_decay_constant, U235_decay_constant, U238_U235, Data_Type,best_age_cut_off)
                     YSP_wo_systematic.append([YSP_age_calc[0],YSP_age_calc[1],YSP_age_calc[2],YSP_age_calc[3]])
                     YSP_cluster.append(agesFiltered)
                     break
                 else:
                     del data_err1s_ageSort[0] # Delete the first analysis, which was no use at all, and try again      
         
-        if Data_Type == "Ages":
+        
+            
+        YSP = systematic_uncertainty_addition(YSP_wo_systematic, YSP_Ratios, sample_list, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, U238_decay_constant, U235_decay_constant, U238_U235, Data_Type, best_age_cut_off)   
+    
+        
+        
+    if Data_Type == "Ages":
+        for i in range(len(ages)): 
             data_err1s_ageSort = list(zip(ages[i], errors[i],ages[i], errors[i],ages[i], errors[i]))
             data_err1s_ageSort.sort(key=lambda d: d[0]) # Sort based on age
             
@@ -4717,13 +4881,12 @@ def YSP(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six_
                 YSP_WM, YSP_WM_err2s, YSP_WM_MSWD = weightedMean(np.array([d[0] for d in agesFiltered]), np.array([d[1] for d in agesFiltered]))
 
                 if (agesFiltered[1][2] < 1 and len(agesFiltered) >= min_cluster_size): # The first one is excluded because the MSWD is made to be 0. The second youngest analysis must have a MSWD < 1 to proceed. The minimum cluster size must also be met or exceeded.
-                    YSP_wo_systematic.append([YSP_WM, YSP_WM_err2s/2, YSP_WM_MSWD, len(agesFiltered)])
+                    YSP.append([YSP_WM, YSP_WM_err2s/2, YSP_WM_MSWD, len(agesFiltered)])
                     YSP_cluster.append(agesFiltered)
                     break
                 else:
                     del data_err1s_ageSort[0] # Delete the first analysis, which was no use at all, and try again      
     
-    YSP = systematic_uncertainty_addition(YSP_wo_systematic, sample_list, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off)
        
     return YSP, YSP_cluster
 
