@@ -7,6 +7,7 @@ import json
 from dash import dcc
 from dash import html
 from dash import dash_table
+from dash.exceptions import PreventUpdate
 import dash_bootstrap_components as dbc
 from dash.dash_table.Format import Format, Scheme
 from dash.dependencies import Input, Output, State
@@ -46,7 +47,7 @@ carousel = dbc.Carousel(id="CarouselPlot",
     items=[{"key": "1", "src": "assets/img/plot_placeholder.svg"}])
 
 def sampleSelector(df):
-    checklist_options = [{'label': 'Sample ' + i, 'value': i} for i in df]
+    checklist_options = [{'label': '' + i, 'value': i} for i in df]
     # checklist_options.append({'label': 'All Samples', 'value': json.dumps([i for i in df])})
     selector = dcc.Checklist(id='sample_selection', options=checklist_options, value=[df[0]],
                              labelStyle={'display': 'inline-block', 'margin-bottom': '0.5rem', 'font-size': '1.15rem'}, labelClassName='col-sm-6')
@@ -94,9 +95,12 @@ accordion = html.Div(
                     html.Hr(),
                     html.Div(children=[
                         html.H4('Calculated MDAs & Uncertainties', className="col-12 col-md-6"),
-                         dbc.Button([html.I(className='fas fa-download'), " Export"], color="outline-primary", className="col-12 col-xxl-1", disabled=True)
+                        html.P('All uncertainties are quoted in absolute values'),
+                        dcc.Dropdown(options=[
+                            {'label': u'Export as CSV', 'value': 'csv'},
+                            {'label': u'Export as XLSX', 'value': 'xlsx'},
+                            ], placeholder="Select a format to export", value='csv', id='tabletype-dropdown'),
                     ], className="row justify-content-between"),
-                    html.P('All uncertainties are quoted in absolute values'),
                     html.Hr(),
                     dcc.Loading(
                         id="loading-summary-mda-table",
@@ -169,7 +173,7 @@ app.layout = dbc.Container(fluid=True, children=[
                 {'label': u'Tau: Tau Method', 'value': 'Tau'},
                 {'label': u'YSP: Youngest Statistical Population', 'value': 'YSP'},
                 {'label': u'MLA: Maximum Likelihood Age', 'value': 'MLA'},
-                {'label': u'All Methods', 'value': 'All'}], id = 'method-dropdown'),
+                {'label': u'All Methods', 'value': 'All'}], id = 'method-dropdown', value=None),
             html.Br(),
             html.Label('Sigma (σx) in Dataset (default is 1σx)'),
             dcc.RadioItems(options=[{'label': '1 σx', 'value': 1},
@@ -301,7 +305,7 @@ def MDATabLoader(template_path, selection):
 
         tabs.append(
             dcc.Tab(
-                label=f"Sample { idx_df }",
+                label=f"{ idx_df }",
                 value=f"tab{ idx + 1 }",
                 children=[html.Br(),
                           dash_table.DataTable(id='datatable-upload-container',
@@ -315,6 +319,7 @@ def MDATabLoader(template_path, selection):
     #
     sa_tables = MDAFunc.check_data_loading(analyses_df, Data_Type)
     sample_selector = sampleSelector(sa_tables['Sample_ID'])
+    select_all = dcc.Checklist(id="sample_all", options=[{"label": "Select all Samples", "value": "All"}], value=[], labelStyle={"display": "inline-block"},)
     summary_table = dash_table.DataTable(id='datatable-summary', columns=[{"name": i, "id": i} for i in sa_tables.columns], data=sa_tables.to_dict(
         'records'), page_action="native", page_size=5, style_cell={'textAlign': 'center'})
 
@@ -327,7 +332,7 @@ def MDATabLoader(template_path, selection):
         'sample_amounts_table': sa_tables.to_json(date_format='iso', orient='split')
     }
 
-    return dcc.Tabs(id="tab", value="tab1", children=tabs), json.dumps(df_all_data), [html.H5('Data Upload Summary'), html.Br(), summary_table], [html.H5('Select Samples to Plot'), html.Br(), sample_selector], dimensions
+    return dcc.Tabs(id="tab", value="tab1", children=tabs), json.dumps(df_all_data), [html.H5('Data Upload Summary'), html.Br(), summary_table], [html.H5('Select Samples to Plot'), html.Br(), select_all, html.Hr(), sample_selector], dimensions
 
 
 @app.callback(Output('data-load', 'disabled'),
@@ -463,9 +468,14 @@ def download_plot(clicked, idx, file_format, items):
               Input("mda_all_methods_and_plots", "n_clicks"),
               Input("mda_individual_method_and_plot", "n_clicks"),
               Input("mda_one_method_all_plots", "n_clicks"),
+              Input('tabletype-dropdown', 'value'),
               prevent_initial_call=True)
-def pre_calculation(computed_data, method, sample_list, sigma, uncertainty, best_age_cut_off, U238_decay_constant, U235_decay_constant, U238_U235, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, age_addition_set_max_plot, button_method_1, button_method_2, button_method_3):
-    
+def pre_calculation(computed_data, method, sample_list, sigma, uncertainty,
+                    best_age_cut_off, U238_decay_constant, U235_decay_constant, U238_U235,
+                    excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238,
+                    Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238,
+                    decay_constant_uncertainty_U235, age_addition_set_max_plot,
+                    button_method_1, button_method_2, button_method_3, tabletype):
     df_errors = None
     summary_mda_table = html.Div()
     Image_File_Option = 'web'
@@ -491,9 +501,31 @@ def pre_calculation(computed_data, method, sample_list, sigma, uncertainty, best
             ages, errors, eight_six_ratios, eight_six_error, seven_six_ratios, seven_six_error, numGrains, labels, sample_list, best_age_cut_off, dataToLoad_MLA, U238_decay_constant, U235_decay_constant, U238_U235, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235 = MDAFunc.sampleToData(
                 sample_list, main_byid_df, sigma, Data_Type, uncertainty, best_age_cut_off, U238_decay_constant, U235_decay_constant, U238_U235, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235)
 
-             
-            U238_decay_constant, U235_decay_constant, U238_U235, YSG_MDA, YC1s_MDA, YC1s_cluster_arrays, YC2s_MDA, YC2s_cluster_arrays, YDZ_MDA, minAges, mode, Y3Zo_MDA, Y3Zo_cluster_arrays, Y3Za_MDA, Y3Za_cluster_arrays, Tau_MDA, Tau_Grains, Tau_PDP_age, Tau_PDP,ages_errors1s_filtered, YSP_MDA, YSP_cluster, YPP_MDA, MLA_MDA = MDAFunc.MDA_Calculator(ages, errors, sample_list, dataToLoad_MLA, eight_six_ratios, eight_six_error, seven_six_ratios, seven_six_error, U238_decay_constant, U235_decay_constant,U238_U235, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off)
-
+            U238_decay_constant, U235_decay_constant, U238_U235, YSG_MDA, YC1s_MDA, YC1s_cluster_arrays, YC2s_MDA, YC2s_cluster_arrays, YDZ_MDA, minAges, mode, Y3Zo_MDA, Y3Zo_cluster_arrays, Y3Za_MDA, Y3Za_cluster_arrays, Tau_MDA, Tau_Grains, PDP_age, PDP, plot_max, ages_errors1s_filtered, tauMethod_WM, tauMethod_WM_err2s, YSP_MDA, YSP_cluster, YPP_MDA, MLA_MDA = MDAFunc.MDA_Calculator(
+                ages, errors, sample_list, dataToLoad_MLA, eight_six_ratios, eight_six_error, seven_six_ratios, seven_six_error, U238_decay_constant, U235_decay_constant, U238_U235, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off)
+                
+            df_errors = {
+                'ages': ages,
+                'errors': errors,
+                'eight_six_ratios': eight_six_ratios,
+                'eight_six_error': eight_six_error,
+                'seven_six_ratios': seven_six_ratios,
+                'seven_six_error': seven_six_error,
+                'numGrains': json.dumps(numGrains),
+                'labels': json.dumps(labels),
+                'sample_list': json.dumps(sample_list),
+                'best_age_cut_off': json.dumps(best_age_cut_off),
+                'dataToLoad_MLA': json.dumps(dataToLoad_MLA),
+                'U238_decay_constant': json.dumps(U238_decay_constant),
+                'U235_decay_constant': json.dumps(U235_decay_constant),
+                'U238_U235': json.dumps(U238_U235),
+                'excess_variance_206_238': json.dumps(excess_variance_206_238),
+                'excess_variance_207_206': json.dumps(excess_variance_207_206),
+                'Sy_calibration_uncertainty_206_238': json.dumps(Sy_calibration_uncertainty_206_238),
+                'Sy_calibration_uncertainty_207_206': json.dumps(Sy_calibration_uncertainty_207_206),
+                'decay_constant_uncertainty_U238': json.dumps(decay_constant_uncertainty_U238),
+                'decay_constant_uncertainty_U235': json.dumps(decay_constant_uncertainty_U235)
+            }
 
         if triggered == 'mda_all_methods_and_plots':
             folder_path = '/assets/plots/All_MDA_Methods_Plots/'
@@ -530,7 +562,7 @@ def pre_calculation(computed_data, method, sample_list, sigma, uncertainty, best
             mda_table = dash_table.DataTable(id='datatable-mda', columns=[{"name": i, "id": i, "type": "numeric",
                                                                            'format': Format(scheme=Scheme.fixed, precision=2)} for i in MDAs_1s_table.columns],
                                              data=MDAs_1s_table.to_dict('records'), page_action="native", page_size=5, style_cell={'textAlign': 'center'},
-                                             style_table={'overflowX': 'auto'})  # , export_format="csv"
+                                             style_table={'overflowX': 'auto'}, export_format=tabletype)
 
             files = glob.glob("assets/plots/All_MDA_Methods_Plots/*")
             for f in files:
@@ -563,18 +595,14 @@ def pre_calculation(computed_data, method, sample_list, sigma, uncertainty, best
             elif method == 'YC1s':
                 YC1s_MDA, method_table = MDAFunc.YC1s_outputs(ages, errors, sample_list, YC1s_MDA, YC1s_cluster_arrays, plotwidth, plotheight, age_addition_set_max_plot, Image_File_Option, min_cluster_size=2)
             elif method == 'YC2s':
-                age_addition_set_max_plot = 5
                 YC2s, method_table = MDAFunc.YC2s_outputs(ages, errors, sample_list, YC2s_MDA, YC2s_cluster_arrays, plotwidth, plotheight, age_addition_set_max_plot, Image_File_Option, min_cluster_size=3)
             elif method == 'Y3Zo':
-                age_addition_set_max_plot = 15
                 Y3Zo_MDA, method_table = MDAFunc.Y3Zo_outputs(ages, errors, sample_list, Y3Zo_MDA, Y3Zo_cluster_arrays, plotwidth, plotheight, age_addition_set_max_plot, Image_File_Option, min_cluster_size=3)
             elif method == 'Y3Za':
-                age_addition_set_max_plot = 10
                 Y3Za_MDA, method_table = MDAFunc.Y3Za_outputs(ages, errors, Y3Za_MDA, Y3Za_cluster_arrays, sample_list, plotwidth, plotheight, age_addition_set_max_plot, Image_File_Option)
             elif method == 'Tau':
                 Tau_MDA, method_table = MDAFunc.Tau_outputs(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six_ratios, seven_six_error, U238_decay_constant, U235_decay_constant, U238_U235, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off, plotwidth, plotheight, Image_File_Option, min_cluster_size=3, thres=0.01, minDist=1, xdif=1, x1=0, x2=4000)
             elif method == 'YSP':
-                age_addition_set_max_plot = 20
                 YSP_MDA, method_table = MDAFunc.YSP_outputs(Data_Type, ages, errors, sample_list, YSP_MDA, YSP_cluster, plotwidth, plotheight, age_addition_set_max_plot, Image_File_Option, min_cluster_size=2, MSWD_threshold=1)
             elif method == 'MLA':
                 folder_path = 'assets/plots/IsoplotR/'
@@ -583,11 +611,16 @@ def pre_calculation(computed_data, method, sample_list, sigma, uncertainty, best
                     os.remove(f)
                 method_table = MDAFunc.MLA_outputs(sample_list, dataToLoad_MLA, True)
             
-            dashtable = dash_table.DataTable(id='datatable-mda', columns=[{"name": i, "id": i, "type": "numeric", 'format': Format(scheme=Scheme.fixed, precision=2)} for i in method_table.columns], data=method_table.to_dict('records'), page_action="native", page_size=5, style_cell={'textAlign': 'center'}, style_table={'overflowX': 'auto'})
+            dashtable = dash_table.DataTable(id='datatable-mda', export_format=tabletype,
+                                             columns=[{"name": i, "id": i, "type": "numeric", 'format': Format(
+                                                 scheme=Scheme.fixed, precision=2)} for i in method_table.columns],
+                                             data=method_table.to_dict('records'), page_action="native", page_size=5,
+                                             style_cell={'textAlign': 'center'}, style_table={'overflowX': 'auto'})
+
             files = [file for file in os.listdir(os.getcwd() + "/" + folder_path) if file.endswith(".svg")]
             carousel2 = dbc.Carousel(id="CarouselPlot", items=[{"key": str(pos+1), "src": folder_path+img} for pos, img in enumerate(files)], controls=True, indicators=True, variant="dark")
 
-            return df_errors, method_title_text, method_text, dashtable, carousel2
+            return errors, method_title_text, method_text, dashtable, carousel2
         elif triggered == 'mda_one_method_all_plots':
             folder_path = 'assets/plots/Stratigraphic_Plots/'
             files = glob.glob(folder_path+"*")
@@ -595,12 +628,13 @@ def pre_calculation(computed_data, method, sample_list, sigma, uncertainty, best
                 os.remove(f)
             if method != 'All':
                 method_text = method_description[method]
+                method_title_text = method_title[method]
 
             MDAFunc.MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau_MDA, YSP_MDA, YPP_MDA, MLA_MDA, ages, errors, sample_list, Image_File_Option, plotwidth, plotheight, method)
 
             files = [file for file in os.listdir(os.getcwd() + "/" + folder_path) if file.endswith(".svg")]
             carousel2 = dbc.Carousel(id="CarouselPlot", items=[{"key": str(pos+1), "src": folder_path+img} for pos, img in enumerate(files)], controls=True, indicators=True, variant="dark")
-            return df_errors, method_text, dashtable, carousel2
+            return df_errors, method_title_text, method_text, None, carousel2
 
     return df_errors, method_title_text, method_text, summary_mda_table, carousel
 
@@ -613,9 +647,9 @@ def pre_calculation(computed_data, method, sample_list, sigma, uncertainty, best
     Input("data-reset", "n_clicks"))
 def clear_selection(clicks):
     if clicks is not None:
-        return "", "", "", ""
+        return None, None, None, None
     else:
-        return "", "", "percent", 2
+        return None, None, "percent", 2
 
 
 @app.callback(
@@ -633,6 +667,15 @@ def func(selection, download):
 
     return dcc.send_file(template_filename)
 
+@app.callback(
+    Output("sample_selection", "value"),
+    [Input("sample_all", "value")],
+    [State("sample_selection", "options")],
+)
+def select_all_none(all_selected, options):
+    all_or_none = []
+    all_or_none = [option["value"] for option in options if all_selected]
+    return all_or_none
 
 server = app.server
 
