@@ -1,0 +1,8 @@
+# Configuration denoting which users are allowed to approve changes to which files
+#
+# DON'T FORGET:  keep lists of usernames in 'alphanumeric' order for consistency and ease of use
+#
+# For more info on CODEOWNERS: https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/about-code-owners
+
+# these users can approve changes to all files
+* @diegofcoelho @morganbrooks
