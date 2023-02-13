@@ -111,7 +111,6 @@ There quite a few nuances regarding the deployment through GCP that might be wor
 
 
 - [Top 3 ways to run your containers on Google Cloud](https://www.youtube.com/watch?v=jh0fPT-AWwM)
-
 - [GCP Deployment with GIT](https://medium.com/lfdev-blog/google-cloud-compute-deploy-com-git-d8feec8c933a)
 
 - [How to Run Docker containers on GCP](https://www.cloudsavvyit.com/4589/how-to-run-docker-containers-on-google-cloud-platform/)
@@ -124,3 +123,5 @@ The MDAPy library was written in Python 3 and relies on a few well-known package
 The dashboard is mostly written in Dash, which is a framework created by plotly and written on the top of `Flask`, `Plotly.js` and `React.js` for creating interactive web applications. With dash, you don't have to learn HTML, CSS and Javascript in order to create interactive dashboards, you only need python ([Dash for beginners](https://towardsdatascience.com/dash-for-beginners-create-interactive-python-dashboards-338bfcb6ffa4#:~:text=Dash%20is%20a%20python%20framework,dashboards%2C%20you%20only%20need%20python.)).
 
 However, MDAPy can be used directly by loading the library or the sample [jupyter notebook](MDAPy/MDAPy.ipynb) included in this directory.
+
+<!-- docker run -it -e PORT=80 -p 8080:80 mdapy -->
