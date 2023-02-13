@@ -345,24 +345,28 @@ def MDATabLoader(template_path, selection):
               Output("data-reset", "disabled"),
               Input('dataset-dropdown', 'value'),
               Input('method-dropdown', 'value'),
-              Input('computed-data', 'data'))
-def buttons(selection, method, summary):
-
+              Input('computed-data', 'data'),
+              Input('sample_selection', 'value'))
+def buttons(selection, method, summary, sample_selection):
+    """
+        This method handle the state of eight buttons that should be enabled/disabled based on
+        conditions that allow the calculations to be executed appropriately.
+    """
     if (((selection == '') or (selection is None)) and ((method == '') or (method is None))):
-        B1, B2, B3, B7, B8 = True, True, True, True, True
+        Button_1, Button_2, Button_3, Button_7, Button_8 = True, True, True, True, True
     else:
-        B1, B2, B3, B7, B8 = False, False, False, False, False
-    if len(summary) <= 2:
-        B4, B5, B6 = True, True, True
+        Button_1, Button_2, Button_3, Button_7, Button_8 = False, False, False, False, False
+    if len(summary) <= 2 or len(sample_selection)==0:
+        Button_4, Button_5, Button_6 = True, True, True
     else:
         if (method is None):
-            B4, B5, B6 = False, True, True
+            Button_4, Button_5, Button_6 = False, True, True
         elif (method == 'All'):
-            B4, B5, B6 = False, True, False
+            Button_4, Button_5, Button_6 = False, True, False
         else:
-            B4, B5, B6 = False, False, False
+            Button_4, Button_5, Button_6 = False, False, False
     
-    return B1, B2, B3, B4, B5, B6, B7, B8
+    return Button_1, Button_2, Button_3, Button_4, Button_5, Button_6, Button_7, Button_8
 
 
 @app.callback(Output('main-panel', 'children'),
@@ -501,7 +505,7 @@ def pre_calculation(computed_data, method, sample_list, sigma, uncertainty,
             ages, errors, eight_six_ratios, eight_six_error, seven_six_ratios, seven_six_error, numGrains, labels, sample_list, best_age_cut_off, dataToLoad_MLA, U238_decay_constant, U235_decay_constant, U238_U235, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235 = MDAFunc.sampleToData(
                 sample_list, main_byid_df, sigma, Data_Type, uncertainty, best_age_cut_off, U238_decay_constant, U235_decay_constant, U238_U235, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235)
 
-            U238_decay_constant, U235_decay_constant, U238_U235, YSG_MDA, YC1s_MDA, YC1s_cluster_arrays, YC2s_MDA, YC2s_cluster_arrays, YDZ_MDA, minAges, mode, Y3Zo_MDA, Y3Zo_cluster_arrays, Y3Za_MDA, Y3Za_cluster_arrays, Tau_MDA, Tau_Grains, PDP_age, PDP, plot_max, ages_errors1s_filtered, tauMethod_WM, tauMethod_WM_err2s, YSP_MDA, YSP_cluster, YPP_MDA, MLA_MDA = MDAFunc.MDA_Calculator(
+            U238_decay_constant, U235_decay_constant, U238_U235, YSG_MDA, YC1s_MDA, YC1s_cluster_arrays, YC2s_MDA, YC2s_cluster_arrays, YDZ_MDA, minAges, mode, Y3Zo_MDA, Y3Zo_cluster_arrays, Y3Za_MDA, Y3Za_cluster_arrays, Tau_MDA, Tau_Grains, PDP_age, PDP, ages_errors1s_filtered, YSP_MDA, YSP_cluster, YPP_MDA, MLA_MDA = MDAFunc.MDA_Calculator(
                 ages, errors, sample_list, dataToLoad_MLA, eight_six_ratios, eight_six_error, seven_six_ratios, seven_six_error, U238_decay_constant, U235_decay_constant, U238_U235, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off)
                 
             df_errors = {
@@ -637,6 +641,27 @@ def pre_calculation(computed_data, method, sample_list, sigma, uncertainty,
             return df_errors, method_title_text, method_text, None, carousel2
 
     return df_errors, method_title_text, method_text, summary_mda_table, carousel
+
+
+@app.callback(
+    Output('best_age_cut_off', 'value'),
+    Output('U238_decay_constant', 'value'),
+    Output('U235_decay_constant', 'value'),
+    Output('U238_U235', 'value'),
+    Output('excess_variance_206_238', 'value'),
+    Output('excess_variance_207_206', 'value'),
+    Output('Sy_calibration_uncertainty_206_238', 'value'),
+    Output('Sy_calibration_uncertainty_207_206', 'value'),
+    Output('decay_constant_uncertainty_U238', 'value'),
+    Output('decay_constant_uncertainty_U235', 'value'),
+    Input("data-reset", "n_clicks"))
+def reset_numerics(clicks):
+    """
+        This function handle the reset of the numeric inputs that we have in the left bar.
+        Currently, the reset button is only enable after a dataset type is selected.
+        The clicks input doesn't have its value used, but it is responsible for triggering the event.
+    """
+    return 1500, 1.55125, 9.8485, 137.818, 1.2, 0.7, 0.6, 0.1, 0.16, 0.2
 
 
 @app.callback(
