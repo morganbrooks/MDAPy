@@ -124,4 +124,4 @@ The dashboard is mostly written in Dash, which is a framework created by plotly 
 
 However, MDAPy can be used directly by loading the library or the sample [jupyter notebook](MDAPy/MDAPy.ipynb) included in this directory.
 
-<!-- docker run -it -e PORT=80 -p 8080:80 mdapy -->
+<!-- docker run -it -e PORT=80 -p 8080:80 mdapy --> 
