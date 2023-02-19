@@ -54,7 +54,7 @@ def sampleSelector(df):
     return selector
 
 dimensions = [html.H5('Age Plotting Dimensions'),
-              html.Div(children=[html.P('For individual MDA plots with all ages plotted, this input controls the maximum age to be plotted to control how many measurements are shown on one plot. Input (Ma) will be added to the oldest age in the age clusters to give a max plotting age.'),
+              html.Div(children=[html.P('For YSG, YC2σ, YC1σ, YSP, Y3Za, and Y3Zo MDA plots, this input controls the maximum age to be plotted. The input below will be added to the oldest sample age in the MDA overlap clusters to give a max plotting age. Max Plotting Age = Oldest Sample in Cluster + Input'),
                                  dcc.Input(id='age-plot-dimensions', value=30, type='number', required=True, className='col-12',  min=5)], style={'width': '100%'}, className="row justify-content-end"),]
 
 summary = html.Div(id='summary-header', children=[
@@ -208,8 +208,8 @@ app.layout = dbc.Container(fluid=True, children=[
                 className="row input-row"),
 
             html.Br(),
-            html.B('Systematic Uncertainties (%)'),
-            html.P('Input 0 if not required in final MDA uncertainty calculation. Only applies to: YC1σ,YC2σ,YSG,Y3Za,Y3Zo,YSP,Tau'),
+            html.B('Systematic Uncertainties (Must Input 1σ %'),
+            html.P('For Ratio datasets only. Input 0 if not required in final MDA uncertainty calculation. Only calculated on: YC1σ,YC2σ,YSG,Y3Za,Y3Zo,YSP,Tau'),
             
             html.Div(children=[
                 html.Label('Long Term Excess Variance: U-Pb 238/206',
