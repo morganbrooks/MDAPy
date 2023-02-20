@@ -3067,7 +3067,8 @@ def Tau_outputs(ages, errors, sample_list, eight_six_ratios, eight_six_error, se
 
             # Stop the loop if no peaks are present with the min_cluster_size
             if peakAgesGrainsFiltered == []:
-                tauMethod.append([np.nan, np.nan, np.nan, np.nan])
+                Tau_Ratios.append([np.nan, np.nan, np.nan, np.nan])
+                Tau_MDA.append([np.nan, np.nan, np.nan, np.nan])
                 continue
 
             # Select the nearest trough that is younger than the youngest peak with at least min_cluster_size analyses
@@ -3113,7 +3114,8 @@ def Tau_outputs(ages, errors, sample_list, eight_six_ratios, eight_six_error, se
 
             # Stop the loop if no peaks are present with the min_cluster_size
             if peakAgesGrainsFiltered == []:
-                tauMethod.append([np.nan, np.nan, np.nan, np.nan])
+                Tau_Ratios.append([np.nan, np.nan, np.nan, np.nan])
+                Tau_MDA.append([np.nan, np.nan, np.nan, np.nan])
                 continue
 
             # Select the nearest trough that is younger than the youngest peak with at least min_cluster_size analyses
@@ -3184,7 +3186,8 @@ def Tau_outputs(ages, errors, sample_list, eight_six_ratios, eight_six_error, se
 
             # Stop the loop if no peaks are present with the min_cluster_size
             if peakAgesGrainsFiltered == []:
-                tauMethod.append([np.nan, np.nan, np.nan, np.nan])
+                Tau_Ratios.append([np.nan, np.nan, np.nan, np.nan])
+                Tau_MDA.append([np.nan, np.nan, np.nan, np.nan])
                 continue
 
             # Select the nearest trough that is younger than the youngest peak with at least min_cluster_size analyses
@@ -3343,7 +3346,7 @@ def YSP_outputs(Data_Type, ages, errors, sample_list, YSP_MDA, YSP_cluster, plot
         YSP_max_cluster = np.max(YSP_cluster_age_arrays_split_i)
                 
         if Data_Type == '238U/206Pb_&_207Pb/206Pb':      
-            for s, t, u, v, w in YSP_cluster_age_arrays_split_i:
+            for s, t, u in YSP_cluster_age_arrays_split_i:
                 clust_age = s
                 clust_error = t
                 cluster_age_and_error = s+t
@@ -3636,8 +3639,7 @@ def sampleToData(sample_list, main_byid_df, sigma, Data_Type, uncertainty, best_
         
         from scipy import optimize
         
-    
-        if type(sample_list[0])==tuple:
+          if type(sample_list[0])==tuple:
             for i in range(N):
                 samples = sample_list[i][0]
                 # Verify that all samples are in the database
@@ -3659,13 +3661,13 @@ def sampleToData(sample_list, main_byid_df, sigma, Data_Type, uncertainty, best_
                     if sigma == 2 and uncertainty == 'percent':
                         sample238U_206Pb_Errors = np.append(sample238U_206Pb_Errors, main_byid_df.loc[sample, eight_six_U_Pb_Err]/2/100)  
                         sample207Pb_206Pb_Errors = np.append(sample207Pb_206Pb_Errors, main_byid_df.loc[sample, seven_six_Pb_Pb_Err]/2/100) 
-                    elif uncertainty == 'percent':
+                    if uncertainty == 'percent':
                         sample238U_206Pb_Errors = np.append(sample238U_206Pb_Errors, main_byid_df.loc[sample, eight_six_U_Pb_Err]/100)  
                         sample207Pb_206Pb_Errors = np.append(sample207Pb_206Pb_Errors, main_byid_df.loc[sample, seven_six_Pb_Pb_Err]/100) 
-                    elif sigma == 2:
+                    if sigma == 2 and uncertainty == 'absolute':
                         sample238U_206Pb_Errors = np.append(sample238U_206Pb_Errors, main_byid_df.loc[sample, eight_six_U_Pb_Err]/2)  
                         sample207Pb_206Pb_Errors = np.append(sample207Pb_206Pb_Errors, main_byid_df.loc[sample, seven_six_Pb_Pb_Err]/2)
-                    else: 
+                    if sigma == 1 and uncertainty == 'absolute':
                         sample238U_206Pb_Errors = np.append(sample238U_206Pb_Errors, main_byid_df.loc[sample, eight_six_U_Pb_Err])  
                         sample207Pb_206Pb_Errors = np.append(sample207Pb_206Pb_Errors, main_byid_df.loc[sample, seven_six_Pb_Pb_Err]) 
                 
@@ -3698,22 +3700,22 @@ def sampleToData(sample_list, main_byid_df, sigma, Data_Type, uncertainty, best_
                     eight_six_error_no_conversion.append(main_byid_df.loc[sample, eight_six_U_Pb_Err]/2./100.)
                     seven_six_error_no_conversion.append(main_byid_df.loc[sample, seven_six_Pb_Pb_Err]/2./100.)
                 
-                elif uncertainty == 'percent':
+                if sigma == 1 and uncertainty == 'percent':
                     eight_six_error_no_conversion.append(main_byid_df.loc[sample, eight_six_U_Pb_Err]/100.)
                     seven_six_error_no_conversion.append(main_byid_df.loc[sample, seven_six_Pb_Pb_Err]/100.)
                 
-                elif sigma == 2:
-                    eight_six_error.append(main_byid_df.loc[sample, eight_six_U_Pb_Err]/2.)
+                if sigma == 2 and uncertainty == 'absolute':
+                    eight_six_error_no_conversion.append(main_byid_df.loc[sample, eight_six_U_Pb_Err]/2.)
                     seven_six_error.append(main_byid_df.loc[sample, seven_six_Pb_Pb_Err]/2.)
                 
-                else:
-                    eight_six_error.append(main_byid_df.loc[sample, eight_six_U_Pb_Err])
+                if sigma == 1 and uncertainty == 'absolute':
+                    eight_six_error_no_conversion.append(main_byid_df.loc[sample, eight_six_U_Pb_Err])
                     seven_six_error.append(main_byid_df.loc[sample, seven_six_Pb_Pb_Err])
                     
                 numGrains.append(len(main_byid_df.loc[sample, eight_six_U_Pb]))
                 labels.append(main_byid_df.loc[sample,sampleLabel])
                 
-       
+        
         #converting uncertainty from percent to absolute 
         if uncertainty == 'percent':
             for i in range(len(eight_six_ratios)):
@@ -3723,6 +3725,11 @@ def sampleToData(sample_list, main_byid_df, sigma, Data_Type, uncertainty, best_
             for i in range(len(seven_six_ratios)):
                 seven_six_errors_converted = (seven_six_error_no_conversion[i]*seven_six_ratios[i])
                 seven_six_error.append(seven_six_errors_converted)
+        
+        if uncertainty == 'absolute':
+            for i in range(len(eight_six_ratios)):
+                eight_six_errors_converted = (eight_six_error_no_conversion[i]*(1/eight_six_ratios[i])*(1/eight_six_ratios[i]))
+                eight_six_error.append(eight_six_errors_converted)
         
    
         #age calcuation for ratios 
@@ -4732,7 +4739,8 @@ def tau(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six_
 
         # Stop the loop if no peaks are present with the min_cluster_size
         if peakAgesGrainsFiltered == []:
-            tauMethod.append([np.nan, np.nan, np.nan, np.nan])
+            Tau_Ratios.append([np.nan, np.nan, np.nan, np.nan])
+            Tau_MDA.append([np.nan, np.nan, np.nan, np.nan])
             continue
 
         # Select the nearest trough that is younger than the youngest peak with at least min_cluster_size analyses
