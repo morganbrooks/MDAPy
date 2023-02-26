@@ -58,6 +58,19 @@ Dash is running on http://127.0.0.1:8050/
 
 Note that we assume the user is spinning the Dash application from within the `src` folder.
 
+#### Docker Compose
+
+The easiest way to work on the project without having to reload it constantly is by running:
+
+```
+docker-compose build
+# and then
+docker-compose up
+```
+
+That will spin up a version of the application that reloads automatically everytime the source code is altered. In essence it is a docker image that is linked directly to your source code and monitor changes. The application is kept running through Docker, but runs using the code in your computer.
+This is also the preferred way of development since it does not install libraries in your host computer, only in the docker guest.
+
 ### IsoplotR
 Explain about the package and its use here.
 ### 2.3) Heroku Deployment
