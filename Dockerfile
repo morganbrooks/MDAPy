@@ -7,9 +7,10 @@ RUN apt-get install -y libxt6
 ENV RENV_VERSION 0.14.0
 WORKDIR .
 COPY . ./
-RUN R -e 'install.packages(c("remotes", "IsoplotR", "dplyr", "rjson", "openxlsx", "readxl", "renv"))'
-RUN R -e 'renv::restore()'
 COPY requirements.txt ./requirements.txt
 RUN pip install -r requirements.txt
+RUN R -e 'install.packages(c("remotes", "IsoplotR", "dplyr", "rjson", "openxlsx", "readxl", "renv"))'
+RUN R -e 'renv::restore()'
+
 # ENV PORT 8080
 CMD exec gunicorn --bind :$PORT --log-level info --workers 1 --threads 8 --timeout 900 app:server
