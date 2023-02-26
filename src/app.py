@@ -1,24 +1,14 @@
 # Run this app with `python app.py` and
 # visit http://127.0.0.1:8050/ in your web browser.
 
-import glob
 import dash
-import json
 from dash import dcc
 from dash import html
-from dash import dash_table
-from dash.exceptions import PreventUpdate
 import dash_bootstrap_components as dbc
-from dash.dash_table.Format import Format, Scheme
-from dash.dependencies import Input, Output, State
-from MDAPy import MDAPy_Functions as MDAFunc
-import plotly.express as px
-import pandas as pd
-import base64
 import os
-import numpy as np
-import io
 
+DASH_HOT_RELOAD = os.getenv("DASH_HOT_RELOAD") or False
+DASH_DEBUG = os.getenv("DASH_DEBUG") or False
 
 app = dash.Dash(__name__, external_stylesheets=[
                 dbc.themes.BOOTSTRAP, dbc.icons.FONT_AWESOME], suppress_callback_exceptions=True, use_pages=True)
@@ -56,4 +46,4 @@ server = app.server
 
 
 if __name__ == '__main__':
-    app.run_server(debug=True, dev_tools_hot_reload=False)
+    app.run_server(debug=DASH_DEBUG, dev_tools_hot_reload=DASH_HOT_RELOAD)

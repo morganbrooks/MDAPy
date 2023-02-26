@@ -42,7 +42,7 @@ Rscript -e "install.packages('IsoplotR', 'dplyr', 'rjson', 'openxlsx')"
 ```
 As the R Script is called from within the MDAPy package, we recommend the installation of these packages to your global R library.
 
-And that is it! You can now start your MDAPy dashboard by running:
+And that is it! You can now start your MDAPy dashboard by running the command below:
 
 ```
 python app.py
@@ -55,6 +55,9 @@ Dash is running on http://127.0.0.1:8050/
    Use a production WSGI server instead.
  * Debug mode: on
 ```
+
+Note that we assume the user is spinning the Dash application from within the `src` folder.
+
 ### IsoplotR
 Explain about the package and its use here.
 ### 2.3) Heroku Deployment

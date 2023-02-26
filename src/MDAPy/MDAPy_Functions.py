@@ -3639,7 +3639,7 @@ def sampleToData(sample_list, main_byid_df, sigma, Data_Type, uncertainty, best_
         
         from scipy import optimize
         
-          if type(sample_list[0])==tuple:
+        if type(sample_list[0])==tuple:
             for i in range(N):
                 samples = sample_list[i][0]
                 # Verify that all samples are in the database

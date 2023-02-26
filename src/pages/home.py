@@ -295,7 +295,7 @@ def download_plot(clicked, idx, file_format, items):
         if idx is None:
             idx = 0
         file = items[idx]['src']
-        o = dcc.send_file(file[0:].replace('.svg', file_format)), False, False
+        o = dcc.send_file(os.getcwd() + file[0:].replace('.svg', file_format)), False, False
     else:
         if 'plot_placeholder' not in items[0]['src']:
             if file_format is None:
