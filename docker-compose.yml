@@ -5,14 +5,12 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile-dev
-      args:
-        options: --reload
     image: mdapy:dev
     environment:
-      PORT: 8080
-      DASH_DEBUG: True
-      DASH_HOT_RELOAD: True
-    command: gunicorn --bind :8080 --log-level info --workers 1 --threads 8 --timeout 900 app:server
+      - PORT=8080
+      - DASH_DEBUG=True
+      - DASH_HOT_RELOAD=True
+    command: gunicorn --reload --bind :8080 --log-level info --workers 1 --threads 8 --timeout 900 app:server
     ports:
       - "8080:8080"
     volumes:

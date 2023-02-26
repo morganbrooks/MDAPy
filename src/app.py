@@ -6,9 +6,10 @@ from dash import dcc
 from dash import html
 import dash_bootstrap_components as dbc
 import os
+import ast
 
-DASH_HOT_RELOAD = os.getenv("DASH_HOT_RELOAD") or False
-DASH_DEBUG = os.getenv("DASH_DEBUG") or False
+DASH_HOT_RELOAD = ast.literal_eval(os.getenv("DASH_HOT_RELOAD")) or False
+DASH_DEBUG = ast.literal_eval(os.getenv("DASH_DEBUG")) or False
 
 app = dash.Dash(__name__, external_stylesheets=[
                 dbc.themes.BOOTSTRAP, dbc.icons.FONT_AWESOME], suppress_callback_exceptions=True, use_pages=True)
@@ -39,7 +40,6 @@ app.layout = dbc.Container(fluid=True, children=[
     # dbc.Alert("Hello Bootstrap!", color="success")
 ],
     className="container-fluid",
-
 )
 
 server = app.server
