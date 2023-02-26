@@ -74,7 +74,7 @@ You will see that we have a Dockerfile in the root of this repository containing
 #### 2.4.2) Build a MDAPy Docker Image
 Assuming that you know the basics, you could build a MDAPy Docker Image by running the following command in a terminal/prompt at the root of this repository:
 ```
-build -t <IMAGE_NAME> .
+build build -t <IMAGE_NAME> .
 ```
 
 That will trigger the build of an image with the name given in the command above. To list all docker images available in your system:
