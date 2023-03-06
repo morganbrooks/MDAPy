@@ -44,7 +44,7 @@ As the R Script is called from within the MDAPy package, we recommend the instal
 
 And that is it! You can now start your MDAPy dashboard by running the command below:
 
-```
+``` 
 python app.py
 
 Dash is running on http://127.0.0.1:8050/
