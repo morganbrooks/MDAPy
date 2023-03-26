@@ -330,3 +330,7 @@ input[type="checkbox"] { /* change "blue" browser chrome to yellow */
 .column-header-name {
     margin: 1rem;
 }
+
+.carousel-indicators {
+    bottom: -1.5rem !important;
+}

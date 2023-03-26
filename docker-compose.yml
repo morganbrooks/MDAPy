@@ -5,6 +5,8 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile-dev
+      args:
+        options: --reload
     image: mdapy:dev
     environment:
       - PORT=8080
