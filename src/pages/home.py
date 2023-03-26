@@ -96,10 +96,6 @@ accordion = html.Div(
                     html.Div(children=[
                         html.H4('Calculated MDAs & Uncertainties', className="col-12 col-md-6"),
                         html.P('All uncertainties are quoted in absolute values'),
-                        dcc.Dropdown(options=[
-                            {'label': u'Export as CSV', 'value': 'csv'},
-                            {'label': u'Export as XLSX', 'value': 'xlsx'},
-                            ], placeholder="Select a format to export", value='csv', id='tabletype-dropdown'),
                     ], className="row justify-content-between"),
                     html.Hr(),
                     dcc.Loading(
@@ -332,7 +328,6 @@ def download_plot(clicked, idx, file_format, items):
     Input("mda_all_methods_and_plots", "n_clicks"),
     Input("mda_individual_method_and_plot", "n_clicks"),
     Input("mda_one_method_all_plots", "n_clicks"),
-    Input('tabletype-dropdown', 'value'),
 
     State('computed-data-errors', 'data'),
     State('summary-mda-title', 'children'),
@@ -346,7 +341,7 @@ def pre_calculation(computed_data, method, sample_list, sigma, uncertainty,
                     excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238,
                     Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238,
                     decay_constant_uncertainty_U235, age_addition_set_max_plot,
-                    button_method_1, button_method_2, button_method_3, tabletype,
+                    button_method_1, button_method_2, button_method_3,
                     state_computed_data_errors, state_summary_mda_title, state_summary_mda_text,
                     state_summary_mda_table, state_plot_carousel):
     df_errors = None
@@ -361,6 +356,12 @@ def pre_calculation(computed_data, method, sample_list, sigma, uncertainty,
     buttons = ['mda_all_methods_and_plots',
                'mda_individual_method_and_plot', 'mda_one_method_all_plots']
 
+    # Deletes all files from the plots folders, not matter which method was called.
+    folder_path = os.getcwd() + '/assets/plots/*'
+    plot_files = glob.glob(folder_path + "/*.*", recursive=True)
+    for f in plot_files:
+        os.remove(f)
+    #
     if triggered in buttons:
         if sample_list is not None:
             loaded_data = json.loads(computed_data)
@@ -432,14 +433,11 @@ def pre_calculation(computed_data, method, sample_list, sigma, uncertainty,
                 'decay_constant_uncertainty_U235': json.dumps(decay_constant_uncertainty_U235)
             }
 
-            mda_table = dash_table.DataTable(id='datatable-mda', columns=[{"name": i, "id": i, "type": "numeric",
+            state_summary_mda_table = dash_table.DataTable(id='datatable-mda', columns=[{"name": i, "id": i, "type": "numeric",
                                                                            'format': Format(scheme=Scheme.fixed, precision=2)} for i in MDAs_1s_table.columns],
                                              data=MDAs_1s_table.to_dict('records'), page_action="native", page_size=5, style_cell={'textAlign': 'center'},
-                                             style_table={'overflowX': 'auto'}, export_format=tabletype)
+                                             style_table={'overflowX': 'auto'}, export_format='xlsx', export_headers='display')
 
-            files = glob.glob("assets/plots/All_MDA_Methods_Plots/*")
-            for f in files:
-                os.remove(f)
 
             MDAfig, MDA_plot_final = MDAFunc.Plot_MDA(MDAs_1s_table, all_MDA_data, sample_list, YSG_MDA, YC1s_MDA, YC2s_MDA,
                                                       YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau_MDA, YSP_MDA, YPP_MDA, MLA_MDA, Image_File_Option, plotwidth, plotheight)
@@ -449,12 +447,9 @@ def pre_calculation(computed_data, method, sample_list, sigma, uncertainty,
             carousel2 = dbc.Carousel(id="CarouselPlot", items=[{"key": str(pos+1), "src": folder_path+img} for pos, img in enumerate(files)],
                                      controls=True, indicators=True, variant="dark")
 
-            return df_errors, method_title_text, method_text, mda_table, carousel2
+            return df_errors, method_title_text, method_text, state_summary_mda_table, carousel2
         elif triggered == 'mda_individual_method_and_plot':
-            folder_path = 'assets/plots/Individual_MDA_Plots/'
-            files = glob.glob(folder_path+"*")
-            for f in files:
-                os.remove(f)
+            folder_path = '/assets/plots/Individual_MDA_Plots/'
             
             method_text = method_description[method]
             method_title_text = method_title[method]
@@ -479,12 +474,9 @@ def pre_calculation(computed_data, method, sample_list, sigma, uncertainty,
                 YSP_MDA, method_table = MDAFunc.YSP_outputs(Data_Type, ages, errors, sample_list, YSP_MDA, YSP_cluster, plotwidth, plotheight, age_addition_set_max_plot, Image_File_Option, min_cluster_size=2, MSWD_threshold=1)
             elif method == 'MLA':
                 folder_path = 'assets/plots/IsoplotR/'
-                files_web = glob.glob(folder_path + "*.svg") + glob.glob(folder_path + "*.png")
-                for f in files_web:
-                    os.remove(f)
                 method_table = MDAFunc.MLA_outputs(sample_list, dataToLoad_MLA, True)
             
-            dashtable = dash_table.DataTable(id='datatable-mda', export_format=tabletype,
+            state_summary_mda_table = dash_table.DataTable(id='datatable-mda', export_format='xlsx', export_headers='display',
                                              columns=[{"name": i, "id": i, "type": "numeric", 'format': Format(
                                                  scheme=Scheme.fixed, precision=2)} for i in method_table.columns],
                                              data=method_table.to_dict('records'), page_action="native", page_size=5,
@@ -493,12 +485,9 @@ def pre_calculation(computed_data, method, sample_list, sigma, uncertainty,
             files = [file for file in os.listdir(os.getcwd() + "/" + folder_path) if file.endswith(".svg")]
             carousel2 = dbc.Carousel(id="CarouselPlot", items=[{"key": str(pos+1), "src": folder_path+img} for pos, img in enumerate(files)], controls=True, indicators=True, variant="dark")
 
-            return errors, method_title_text, method_text, dashtable, carousel2
+            return errors, method_title_text, method_text, state_summary_mda_table, carousel2
         elif triggered == 'mda_one_method_all_plots':
-            folder_path = 'assets/plots/Stratigraphic_Plots/'
-            files = glob.glob(folder_path+"*")
-            for f in files:
-                os.remove(f)
+            folder_path = '/assets/plots/Stratigraphic_Plots/'
             if method != 'All':
                 method_text = method_description[method]
                 method_title_text = method_title[method]
@@ -508,10 +497,8 @@ def pre_calculation(computed_data, method, sample_list, sigma, uncertainty,
             files = [file for file in os.listdir(os.getcwd() + "/" + folder_path) if file.endswith(".svg")]
             carousel2 = dbc.Carousel(id="CarouselPlot", items=[{"key": str(pos+1), "src": folder_path+img} for pos, img in enumerate(files)], controls=True, indicators=True, variant="dark")
             return df_errors, method_title_text, method_text, None, carousel2
-    if triggered == "tabletype-dropdown":
-      return state_computed_data_errors, state_summary_mda_title, state_summary_mda_text, state_summary_mda_table, state_plot_carousel
-    else:
-      return df_errors, method_title_text, method_text, summary_mda_table, carousel
+    
+    return df_errors, method_title_text, method_text, state_summary_mda_table, carousel
 
 
 @callback(

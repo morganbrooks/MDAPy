@@ -8,8 +8,8 @@ import dash_bootstrap_components as dbc
 import os
 import ast
 
-DASH_HOT_RELOAD = ast.literal_eval(os.getenv("DASH_HOT_RELOAD")) or False
-DASH_DEBUG = ast.literal_eval(os.getenv("DASH_DEBUG")) or False
+DASH_HOT_RELOAD = True #ast.literal_eval(os.getenv("DASH_HOT_RELOAD")) if os.getenv("DASH_HOT_RELOAD") is not None else False
+DASH_DEBUG = True #ast.literal_eval(os.getenv("DASH_DEBUG")) if os.getenv("DASH_DEBUG") is not None else False
 
 app = dash.Dash(__name__, external_stylesheets=[
                 dbc.themes.BOOTSTRAP, dbc.icons.FONT_AWESOME], suppress_callback_exceptions=True, use_pages=True)
