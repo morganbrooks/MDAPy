@@ -96,8 +96,8 @@ accordion = html.Div(
                     html.Div(children=[
                         html.H4('Calculated MDAs & Uncertainties', className="col-12 col-md-6"),
                         html.P('All uncertainties are quoted in absolute values'),
-                    ], className="row justify-content-between"),
-                    html.Hr(),
+                    ], className="row justify-content-between", id="UncertaintyTable"),
+                    html.Hr(id="UncertaintySep"),
                     dcc.Loading(
                         id="loading-summary-mda-table",
                         type="default",
@@ -188,6 +188,15 @@ def MDATabLoader(template_path, selection):
 
     return dcc.Tabs(id="tab", value="tab1", children=tabs), json.dumps(df_all_data), [html.H5('Data Upload Summary'), html.Br(), summary_table], [html.H5('Select Samples to Plot'), html.Br(), select_all, html.Hr(), sample_selector], dimensions
 
+@callback(
+        Output('UncertaintyTable', 'style'),
+        Output('UncertaintySep', 'style'),
+        Input('summary-mda-table', 'children'))
+def hide_table(table_data):
+    if table_data is not None:
+        if len(table_data) > 0:
+           return {'display': 'block'}, {'display': 'block'}
+    return {'display': 'none'}, {'display': 'none'}
 
 @callback(Output('data-load', 'disabled'),
               Output('upload-button', 'disabled'),
@@ -473,7 +482,7 @@ def pre_calculation(computed_data, method, sample_list, sigma, uncertainty,
             elif method == 'YSP':
                 YSP_MDA, method_table = MDAFunc.YSP_outputs(Data_Type, ages, errors, sample_list, YSP_MDA, YSP_cluster, plotwidth, plotheight, age_addition_set_max_plot, Image_File_Option, min_cluster_size=2, MSWD_threshold=1)
             elif method == 'MLA':
-                folder_path = 'assets/plots/IsoplotR/'
+                folder_path = '/assets/plots/IsoplotR/'
                 method_table = MDAFunc.MLA_outputs(sample_list, dataToLoad_MLA, True)
             
             state_summary_mda_table = dash_table.DataTable(id='datatable-mda', export_format='xlsx', export_headers='display',
