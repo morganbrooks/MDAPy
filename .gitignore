@@ -13,7 +13,7 @@ dev/
 venv/
 *.pyc
 *.DS_Store
-src/assets/plots/*/*
+# src/assets/plots/*/*
 src/assets/plots/*/*.png
 src/assets/plots/*/*.svg
 src/assets/plots/*/*.tiff
