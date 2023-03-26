@@ -1,6 +1,6 @@
 <!-- ![MDAPy Logo](assets/img/logo.png) -->
 <p align="center" width="100%">
-  <img align="center" src="assets/img/logo.png">   
+  <img align="center" src="src/MDAPy/Logo/logo4.png">   
 </p>
 
 ## 1) Introduction
