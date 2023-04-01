@@ -28,7 +28,7 @@ Instructions for installing and running MDAPy:
 5. Locate the folder where you put MDAPy in your terminal. To do this type: 
 
 - ls -> This will show you what is in the directory you are in
-- cd 'Folder where MDAPy is kept' -> cd = change directory, so here you want to find the folder where MDAPy is kept using cd for getting there 
+- cd 'Folder where MDAPy is kept' -> cd = change directory, here you want to find the folder where MDAPy is kept using cd 
 - cd MDAPy -> Go into the MDAPy folder where the docker files are kept
 - docker-compose build -> This will build the docker container of MDAPy, this will take a while the first time
 - docker-compose up -> This will launch MDAPy on your computer
