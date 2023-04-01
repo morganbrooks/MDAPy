@@ -25,9 +25,7 @@ Instructions for installing and running MDAPy:
 
 4. Once docker is downloaded, locate the terminal (Apple) or command prompt (PC)
 
-5. Locate the folder where you put MDAPy in your terminal/command prompt. 
-
-To do this type: 
+5. Locate the folder where you put MDAPy in your terminal/command prompt. To do this type: 
 
 - ls -> This will show you what is in the directory you are in
 - cd 'Folder where MDAPy is kept' -> cd = change directory, find the folder where MDAPy is kept using cd 
