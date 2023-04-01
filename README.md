@@ -13,7 +13,7 @@ The current version of MDAPy is accessible as a downloadable software package. T
 
 What is Docker? Docker is an open platform for developing, shipping, and running applications. Docker enables you to separate your applications from your infrastructure so you can deliver software quickly. 
 
-Instructions for isntalling and running MDAPy:
+Instructions for installing and running MDAPy:
 
 1. Download the code zip file from this GitHub page using the green code button at the top. 
 
