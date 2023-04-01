@@ -27,11 +27,11 @@ Instructions for isntalling and running MDAPy:
 
 5. Locate the folder where you put MDAPy in your terminal. To do this type: 
 
-ls -> enter (this will show you what is in the directory you are in)
-cd Documents -> enter (cd = change directory, so here you want to put in the folder where MDAPy is kept) 
-cd MDAPy -> enter (go into the MDAPy folder where the docker files are kept)
-docker-compose build -> enter (this will build the docker container of MDAPy, this will take a while the first time)
-docker-compose up -> enter (this will launch MDAPy on your computer)
+- ls -> enter (this will show you what is in the directory you are in)
+- cd Documents -> enter (cd = change directory, so here you want to put in the folder where MDAPy is kept) 
+- cd MDAPy -> enter (go into the MDAPy folder where the docker files are kept)
+- docker-compose build -> enter (this will build the docker container of MDAPy, this will take a while the first time)
+- docker-compose up -> enter (this will launch MDAPy on your computer)
 
 6. Open an internet browser and type in http://localhost:8080
 
