@@ -20,10 +20,10 @@ Instructions for installing and running MDAPy:
 2. Unzip and place the folder in an easy to locate area, like 'Documents' 
 
 3. Download and sign up for Docker. 
-- If using a newer computer Download and sign up for an account here: https://www.docker.com/
+- If using a newer computer download and sign up for an account here: https://www.docker.com/
 - If using an older computer download and sign up for an account using an older version: https://docs.docker.com/desktop/previous-versions/archive-windows/
 
-4. Once docker is downloaded, locate the terminal (on Apple within utilities) or command prompt (on PC)
+4. Once docker is downloaded, locate the terminal (Apple) or command prompt (PC)
 
 5. Locate the folder where you put MDAPy in your terminal. To do this type: 
 
