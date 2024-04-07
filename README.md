@@ -19,7 +19,8 @@ Instructions for installing and running MDAPy:
 
 2. Unzip and place the folder in an easy to locate area, like 'Documents' 
 
-3. Download and sign up for Docker. 
+3. Download Docker for free:
+    
 - If using a newer computer download Docker for free here: https://docs.docker.com/desktop/?_gl=1*ykuao1*_ga*MTM1MjY4NjgxNS4xNzEyNTE2ODY3*_ga_XJWPQMJYHQ*MTcxMjUxNjg2Ny4xLjEuMTcxMjUxNzY2Mi4yMC4wLjA.
   
 - If using an older computer an older version of Docker must be downloaded, find the one for your computer here: https://docs.docker.com/desktop/previous-versions/archive-windows/
