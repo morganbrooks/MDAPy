@@ -19,13 +19,13 @@ Instructions for installing and running MDAPy:
 
 2. Unzip and place the folder in an easy to locate area, like 'Documents' 
 
-3. Download Docker for free:
+3. Download Docker for free - you will need to sign up for an account, but that is also free: 
     
 - If using a newer computer download Docker for free here: https://docs.docker.com/desktop/?_gl=1*ykuao1*_ga*MTM1MjY4NjgxNS4xNzEyNTE2ODY3*_ga_XJWPQMJYHQ*MTcxMjUxNjg2Ny4xLjEuMTcxMjUxNzY2Mi4yMC4wLjA.
   
 - If using an older computer an older version of Docker must be downloaded, find the one for your computer here: https://docs.docker.com/desktop/previous-versions/archive-windows/
 
-4. Once docker is downloaded, locate the terminal (Apple) or command prompt (PC)
+4. Once docker is downloaded, make sure it is open on your computer, then locate the terminal (Apple) or command prompt (PC)
 
 5. Locate the folder where you put MDAPy in your terminal/command prompt: 
 
@@ -59,6 +59,8 @@ docker-compose up
 
 
 6. Open an internet browser and type in http://localhost:8080
+
+7. The next time you want to open MDAPy, you open Docker, open the command prompt/terminal and follow the same steps as above but you can skip the "docker-compose build" step and go straight to "docker-compose up 
 
 
 
