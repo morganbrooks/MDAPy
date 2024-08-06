@@ -60,7 +60,6 @@ docker-compose up
 
 6. Open an internet browser and type in http://localhost:8080
 
-7. The next time you want to open MDAPy, you open Docker, open the command prompt/terminal and follow the same steps as above but you can skip the "docker-compose build" step and go straight to "docker-compose up 
 
 
 
