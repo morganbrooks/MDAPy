@@ -607,8 +607,8 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
             YSGaxi.set_xticklabels(YSG_sample_sort,rotation='vertical') 
             
         YSGaxi.hlines(y=YSG_age_values, xmin=0, xmax=(0), color = 'midnightblue', lw=1, linewidth=3, label='MDA: YSG')
-        YSGaxi.broken_barh([(0.15, 0)], (YSG_age_values,0), facecolors=('cornflowerblue'), label='1σ Error')
-        YSGaxi.broken_barh([(0.15, 0)], (YSG_age_values,0), facecolors=('lightsteelblue'), label='2σ Error')
+        YSGaxi.broken_barh([(0.15, 0)], (YSG_age_values,0), facecolors=('cornflowerblue'), label='1σ Uncertainty')
+        YSGaxi.broken_barh([(0.15, 0)], (YSG_age_values,0), facecolors=('lightsteelblue'), label='2σ Uncertainty')
 
         YSGaxi.set_ylabel('Age'+" " +'(Ma)', labelpad=25)
         YSGaxi.set_yticks(np.arange(round(YSG_Y_Max[-1]-20),round(YSG_sorted[0][0]+20), 5))
@@ -759,8 +759,8 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
             YDZaxi.set_xticklabels(YDZ_sample_sort, rotation='vertical')  
             
         YDZaxi.hlines(y=YDZ_age_values, xmin=0, xmax=(0), color = 'midnightblue', lw=1, linewidth=3, label='MDA: YDZ')
-        YDZaxi.broken_barh([(0.15, 0)], (YDZ_age_values,0), facecolors=('cornflowerblue'), label='1σ Error')
-        YDZaxi.broken_barh([(0.15, 0)], (YDZ_age_values,0), facecolors=('lightsteelblue'), label='2σ Error')
+        YDZaxi.broken_barh([(0.15, 0)], (YDZ_age_values,0), facecolors=('cornflowerblue'), label='1σ Uncertainty')
+        YDZaxi.broken_barh([(0.15, 0)], (YDZ_age_values,0), facecolors=('lightsteelblue'), label='2σ Uncertainty')
             
         YDZaxi.set_ylabel('Age'+" " +'(Ma)', labelpad=25)
         YDZaxi.yaxis.grid(True)
@@ -909,8 +909,8 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
             YC1saxi.set_xticklabels(YC1s_sample_sort, rotation='vertical') 
         
         YC1saxi.hlines(y=YC1s_age_values, xmin=0, xmax=(0), color = 'midnightblue', lw=1, linewidth=3, label='MDA: YC1s')
-        YC1saxi.broken_barh([(0.15, 0)], (YC1s_age_values,0), facecolors=('cornflowerblue'), label='1σ Error')
-        YC1saxi.broken_barh([(0.15, 0)], (YC1s_age_values,0), facecolors=('lightsteelblue'), label='2σ Error')
+        YC1saxi.broken_barh([(0.15, 0)], (YC1s_age_values,0), facecolors=('cornflowerblue'), label='1σ Uncertainty')
+        YC1saxi.broken_barh([(0.15, 0)], (YC1s_age_values,0), facecolors=('lightsteelblue'), label='2σ Uncertainty')
 
         YC1saxi.yaxis.grid(True)
        
@@ -1057,8 +1057,8 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
             YC2saxi.set_xticklabels(YC2s_sample_sort, rotation='vertical') 
         
         YC2saxi.hlines(y=YC2s_age_values, xmin=0, xmax=(0), color = 'midnightblue', lw=1, linewidth=3, label='MDA: YC2σ')
-        YC2saxi.broken_barh([(0.15, 0)], (YC2s_age_values,0), facecolors=('cornflowerblue'), label='1σ Error')
-        YC2saxi.broken_barh([(0.15, 0)], (YC2s_age_values,0), facecolors=('lightsteelblue'), label='2σ Error')
+        YC2saxi.broken_barh([(0.15, 0)], (YC2s_age_values,0), facecolors=('cornflowerblue'), label='1σ Uncertainty')
+        YC2saxi.broken_barh([(0.15, 0)], (YC2s_age_values,0), facecolors=('lightsteelblue'), label='2σ Uncertainty')
     
         
         YC2saxi.set_ylabel('Age'+" " +'(Ma)',labelpad=25)
@@ -1205,8 +1205,8 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
             Y3Zoaxi.set_xticklabels(Y3Zo_sample_sort, rotation='vertical') 
         
         Y3Zoaxi.hlines(y=Y3Zo_age_values, xmin=0, xmax=(0), color = 'midnightblue', lw=1, linewidth=3, label='MDA: Y3Zo')
-        Y3Zoaxi.broken_barh([(0.15, 0)], (Y3Zo_age_values,0), facecolors=('cornflowerblue'), label='1σ Error')
-        Y3Zoaxi.broken_barh([(0.15, 0)], (Y3Zo_age_values,0), facecolors=('lightsteelblue'), label='2σ Error')
+        Y3Zoaxi.broken_barh([(0.15, 0)], (Y3Zo_age_values,0), facecolors=('cornflowerblue'), label='1σ Uncertainty')
+        Y3Zoaxi.broken_barh([(0.15, 0)], (Y3Zo_age_values,0), facecolors=('lightsteelblue'), label='2σ Uncertainty')
     
         Y3Zoaxi.set_ylabel('Age'+" " +'(Ma)',labelpad=25)
         Y3Zoaxi.yaxis.grid(True)  
@@ -1352,8 +1352,8 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
             Tauaxi.set_xticklabels(Tau_sample_sort, rotation='vertical') 
         
         Tauaxi.hlines(y=Tau_age_values, xmin=0, xmax=(0), color = 'midnightblue', lw=1, linewidth=3, label='MDA: Tau')
-        Tauaxi.broken_barh([(0.15, 0)], (Tau_age_values,0), facecolors=('cornflowerblue'), label='1σ Error')
-        Tauaxi.broken_barh([(0.15, 0)], (Tau_age_values,0), facecolors=('lightsteelblue'), label='2σ Error')
+        Tauaxi.broken_barh([(0.15, 0)], (Tau_age_values,0), facecolors=('cornflowerblue'), label='1σ Uncertainty')
+        Tauaxi.broken_barh([(0.15, 0)], (Tau_age_values,0), facecolors=('lightsteelblue'), label='2σ Uncertainty')
     
         Tauaxi.set_ylabel('Age'+" " +'(Ma)',labelpad=25)
         Tauaxi.yaxis.grid(True)  
@@ -1500,8 +1500,8 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
             Y3Zaaxi.set_xticklabels(Y3Za_sample_sort, rotation='vertical') 
         
         Y3Zaaxi.hlines(y=Y3Za_age_values, xmin=0, xmax=(0), color = 'midnightblue', lw=1, linewidth=3, label='MDA: Y3Za')
-        Y3Zaaxi.broken_barh([(0.15, 0)], (Y3Za_age_values,0), facecolors=('cornflowerblue'), label='1σ Error')
-        Y3Zaaxi.broken_barh([(0.15, 0)], (Y3Za_age_values,0), facecolors=('lightsteelblue'), label='2σ Error')
+        Y3Zaaxi.broken_barh([(0.15, 0)], (Y3Za_age_values,0), facecolors=('cornflowerblue'), label='1σ Uncertainty')
+        Y3Zaaxi.broken_barh([(0.15, 0)], (Y3Za_age_values,0), facecolors=('lightsteelblue'), label='2σ Uncertainty')
     
         Y3Zaaxi.set_ylabel('Age'+" " +'(Ma)',labelpad=25)
         Y3Zaaxi.yaxis.grid(True)  
@@ -1647,8 +1647,8 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
             YSPaxi.set_xticklabels(YSP_sample_sort, rotation='vertical') 
         
         YSPaxi.hlines(y=YSP_age_values, xmin=0, xmax=(0), color = 'midnightblue', lw=1, linewidth=3, label='MDA: YSP')
-        YSPaxi.broken_barh([(0.15, 0)], (YSP_age_values,0), facecolors=('cornflowerblue'), label='1σ Error')
-        YSPaxi.broken_barh([(0.15, 0)], (YSP_age_values,0), facecolors=('lightsteelblue'), label='2σ Error')
+        YSPaxi.broken_barh([(0.15, 0)], (YSP_age_values,0), facecolors=('cornflowerblue'), label='1σ Uncertainty')
+        YSPaxi.broken_barh([(0.15, 0)], (YSP_age_values,0), facecolors=('lightsteelblue'), label='2σ Uncertainty')
     
         YSPaxi.set_ylabel('Age'+" " +'(Ma)',labelpad=25)
         YSPaxi.yaxis.grid(True)  
@@ -1743,8 +1743,8 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
             YPPaxi.set_xticklabels(YPP_sample_sort, rotation='vertical') 
         
         YPPaxi.hlines(y=YPP_age_values, xmin=0, xmax=(0), color = 'midnightblue', lw=1, linewidth=3, label='MDA: YPP')
-        YPPaxi.broken_barh([(0.15, 0)], (YPP_age_values,0), facecolors=('cornflowerblue'), label='1σ Error')
-        YPPaxi.broken_barh([(0.15, 0)], (YPP_age_values,0), facecolors=('lightsteelblue'), label='2σ Error')
+        YPPaxi.broken_barh([(0.15, 0)], (YPP_age_values,0), facecolors=('cornflowerblue'), label='1σ Uncertainty')
+        YPPaxi.broken_barh([(0.15, 0)], (YPP_age_values,0), facecolors=('lightsteelblue'), label='2σ Uncertainty')
     
         YPPaxi.set_ylabel('Age'+" " +'(Ma)',labelpad=25)
         YPPaxi.yaxis.grid(True)  
@@ -1889,8 +1889,8 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
             MLAaxi.set_xticklabels(MLA_sample_sort, rotation='vertical') 
         
         MLAaxi.hlines(y=MLA_age_values, xmin=0, xmax=(0), color = 'midnightblue', lw=1, linewidth=3, label='MDA: MLA')
-        MLAaxi.broken_barh([(0.15, 0)], (MLA_age_values,0), facecolors=('cornflowerblue'), label='1σ Error')
-        MLAaxi.broken_barh([(0.15, 0)], (MLA_age_values,0), facecolors=('lightsteelblue'), label='2σ Error')
+        MLAaxi.broken_barh([(0.15, 0)], (MLA_age_values,0), facecolors=('cornflowerblue'), label='1σ Uncertainty')
+        MLAaxi.broken_barh([(0.15, 0)], (MLA_age_values,0), facecolors=('lightsteelblue'), label='2σ Uncertainty')
     
         MLAaxi.set_ylabel('Age'+" " +'(Ma)',labelpad=25)
         MLAaxi.yaxis.grid(True)  
@@ -2074,8 +2074,8 @@ def YSG_outputs(ages, errors, plotwidth, plotheight, sample_list, YSG_MDA, age_a
                 break 
         
         YSGaxi.hlines(y=YSG_value, xmin=0, xmax=(0), color = 'midnightblue', lw=1, linewidth=3, label='Age'+" " +'(Ma)')
-        YSGaxi.broken_barh([(0.15, 0)], (YSG_value,0), facecolors=('cornflowerblue'), label='1σ Error')
-        YSGaxi.broken_barh([(0.15, 0)], (YSG_value,0), facecolors=('lightsteelblue'), label='2σ Error')
+        YSGaxi.broken_barh([(0.15, 0)], (YSG_value,0), facecolors=('cornflowerblue'), label='1σ Uncertainty')
+        YSGaxi.broken_barh([(0.15, 0)], (YSG_value,0), facecolors=('lightsteelblue'), label='2σ Uncertainty')
         YSGaxi.broken_barh([(0.15, 0)], (YSG_value,0), facecolors=('crimson'), label='YSG: '+str(round(YSG_value,2)) +"+/- "+str(round(YSG_err1s_value,2)))
         YSGaxi.set_xticks([])
         YSGaxi.set_ylabel('Age'+" " +'(Ma)')                
@@ -2420,12 +2420,12 @@ def YC1s_outputs(ages, errors, sample_list, YC1s_MDA, YC1s_cluster_arrays, plotw
         
         YC1saxi.hlines(y=YC1s_value, xmin=0, xmax=(0), color = 'midnightblue', lw=1, linewidth=3, label='Age'+" " +'(Ma)')
         YC1saxi.axhline(YC1s_value,color='black', linestyle='dotted', label='MDA: '+str(round(YC1s_value,2))+"+/- "+str(round(YC1s_err1s_value,2)))
-        YC1saxi.broken_barh([(0.15, 0)], (YC1s_value,0), facecolors=('cornflowerblue'), label='1σ Error')
-        YC1saxi.broken_barh([(0.15, 0)], (YC1s_value,0), facecolors=('lightsteelblue'), label='2σ Error')
+        YC1saxi.broken_barh([(0.15, 0)], (YC1s_value,0), facecolors=('cornflowerblue'), label='1σ Uncertainty')
+        YC1saxi.broken_barh([(0.15, 0)], (YC1s_value,0), facecolors=('lightsteelblue'), label='2σ Uncertainty')
         YC1saxi.broken_barh([(0.15, 0)], (YC1s_value,0), facecolors=('crimson'), label='Cluster: '+str(YC1s_grains_value))
         YC1saxi.set_xticks([])
         YC1saxi.set_ylabel('Age'+" " +'(Ma)')                
-        YC1saxi.set_xlabel('Individual Age Measurements +/- 1σ/2σ Error')
+        YC1saxi.set_xlabel('Individual Age Measurements +/- 1σ/2σ Uncertainty')
         YC1saxi.set_title(samples[0]) 
         YC1saxi.yaxis.grid(True)
         plt.legend(loc='lower right')
@@ -2613,14 +2613,14 @@ def YC2s_outputs(ages, errors, sample_list, YC2s_MDA, YC2s_cluster_arrays, plotw
         
         YC2saxi.hlines(y=YC2s_value, xmin=0, xmax=(0), color = 'midnightblue', lw=1, linewidth=3, label='Age'+" " +'(Ma)')
         YC2saxi.axhline(YC2s_value,color='black', linestyle='dotted', label='MDA: '+str(round(YC2s_value,2))+"+/- "+str(round(YC2s_err1s_value,2)))
-        YC2saxi.broken_barh([(0.15, 0)], (YC2s_value,0), facecolors=('cornflowerblue'), label='1σ Error')
-        YC2saxi.broken_barh([(0.15, 0)], (YC2s_value,0), facecolors=('lightsteelblue'), label='2σ Error')
+        YC2saxi.broken_barh([(0.15, 0)], (YC2s_value,0), facecolors=('cornflowerblue'), label='1σ Uncertainty')
+        YC2saxi.broken_barh([(0.15, 0)], (YC2s_value,0), facecolors=('lightsteelblue'), label='2σ Uncertainty')
         YC2saxi.broken_barh([(0.15, 0)], (YC2s_value,0), facecolors=('crimson'), label='Cluster: '+str(YC2s_grains_value))
         
         YC2saxi.set_xticks([])
         
         YC2saxi.set_ylabel('Age'+" " +'(Ma)')                
-        YC2saxi.set_xlabel('Individual Age Measurements +/- 1σ/2σ Error')
+        YC2saxi.set_xlabel('Individual Age Measurements +/- 1σ/2σ Uncertainty')
         YC2saxi.set_title(samples[0]) 
         YC2saxi.yaxis.grid(True)
         plt.legend(loc='lower right')
@@ -2787,15 +2787,15 @@ def Y3Zo_outputs(ages, errors, sample_list, Y3Zo_MDA, Y3Zo_cluster_arrays, plotw
                         x_tick = n/20
                             
                 if any(C==Y3Zo_age_plus_error) == True:
-                    Y3Zoaxi.broken_barh([(x_tick, width)], (Y3Zo_age_value-Y3Zo_error2s_value, Y3Zo_error1s_value), facecolors=('lightcoral')) #label='2s Error')
-                    Y3Zoaxi.broken_barh([(x_tick, width)], (Y3Zo_age_value-Y3Zo_error1s_value,Y3Zo_error1s_value), facecolors=('crimson')) #label='1s Error')
+                    Y3Zoaxi.broken_barh([(x_tick, width)], (Y3Zo_age_value-Y3Zo_error2s_value, Y3Zo_error1s_value), facecolors=('lightcoral')) #label='2s Uncertainty')
+                    Y3Zoaxi.broken_barh([(x_tick, width)], (Y3Zo_age_value-Y3Zo_error1s_value,Y3Zo_error1s_value), facecolors=('crimson')) #label='1s Uncertainty')
                     Y3Zoaxi.broken_barh([(x_tick, width)], (Y3Zo_age_value, Y3Zo_error1s_value), facecolors=('crimson'))
                     Y3Zoaxi.broken_barh([(x_tick, width)], (Y3Zo_age_value+Y3Zo_error1s_value, Y3Zo_error1s_value), facecolors=('lightcoral'))   
                     Y3Zoaxi.hlines(y=Y3Zo_age_value, xmin=x_tick, xmax=(x_tick+(width-x_tick_adjust)), color = 'pink', lw=1,linewidth=3) #label='Cluster' )
                 
                 else:
-                    Y3Zoaxi.broken_barh([(x_tick, width)], (Y3Zo_age_value-Y3Zo_error2s_value, Y3Zo_error1s_value), facecolors=('lightsteelblue')) #label='2s Error')
-                    Y3Zoaxi.broken_barh([(x_tick, width)], (Y3Zo_age_value-Y3Zo_error1s_value,Y3Zo_error1s_value), facecolors=('cornflowerblue')) #label='1s Error')
+                    Y3Zoaxi.broken_barh([(x_tick, width)], (Y3Zo_age_value-Y3Zo_error2s_value, Y3Zo_error1s_value), facecolors=('lightsteelblue')) #label='2s Uncertainty')
+                    Y3Zoaxi.broken_barh([(x_tick, width)], (Y3Zo_age_value-Y3Zo_error1s_value,Y3Zo_error1s_value), facecolors=('cornflowerblue')) #label='1s Uncertainty')
                     Y3Zoaxi.broken_barh([(x_tick, width)], (Y3Zo_age_value, Y3Zo_error1s_value), facecolors=('cornflowerblue'))
                     Y3Zoaxi.broken_barh([(x_tick, width)], (Y3Zo_age_value+Y3Zo_error1s_value, Y3Zo_error1s_value), facecolors=('lightsteelblue'))      
                     Y3Zoaxi.hlines(y=Y3Zo_age_value, xmin=x_tick, xmax=(x_tick+(width-x_tick_adjust)), color = 'midnightblue', lw=1, linewidth=3) #label='Age', )
@@ -2804,8 +2804,8 @@ def Y3Zo_outputs(ages, errors, sample_list, Y3Zo_MDA, Y3Zo_cluster_arrays, plotw
         
         Y3Zoaxi.hlines(y=Y3Zo_value, xmin=0, xmax=(0), color = 'midnightblue', lw=1, linewidth=3, label='Age'+" " +'(Ma)')
         Y3Zoaxi.axhline(Y3Zo_value,color='black', linestyle='dotted', label='MDA: '+str(round(Y3Zo_value,2))+"+/- "+str(round(Y3Zo_err1s_value,2)))
-        Y3Zoaxi.broken_barh([(0.15, 0)], (Y3Zo_value,0), facecolors=('cornflowerblue'), label='1σ Error')
-        Y3Zoaxi.broken_barh([(0.15, 0)], (Y3Zo_value,0), facecolors=('lightsteelblue'), label='2σ Error')
+        Y3Zoaxi.broken_barh([(0.15, 0)], (Y3Zo_value,0), facecolors=('cornflowerblue'), label='1σ Uncertainty')
+        Y3Zoaxi.broken_barh([(0.15, 0)], (Y3Zo_value,0), facecolors=('lightsteelblue'), label='2σ Uncertainty')
         Y3Zoaxi.broken_barh([(0.15, 0)], (Y3Zo_value,0), facecolors=('crimson'), label='3 Grain Cluster')
         
         Y3Zoaxi.set_xticks([])
@@ -2996,13 +2996,13 @@ def Y3Za_outputs(ages, errors, Y3Za_MDA, Y3Za_cluster_arrays, sample_list, plotw
         
         Y3Zaaxi.hlines(y=Y3Za_value, xmin=0, xmax=(0), color = 'midnightblue', lw=1, linewidth=3, label='Age'+" " +'(Ma)')
         Y3Zaaxi.axhline(Y3Za_value,color='black', linestyle='dotted', label='MDA: '+str(round(Y3Za_value,2))+"+/- "+str(round(Y3Za_err1s_value,2)))
-        Y3Zaaxi.broken_barh([(0.15, 0)], (Y3Za_value,0), facecolors=('cornflowerblue'), label='1σ Error')
-        Y3Zaaxi.broken_barh([(0.15, 0)], (Y3Za_value,0), facecolors=('lightsteelblue'), label='2σ Error')
+        Y3Zaaxi.broken_barh([(0.15, 0)], (Y3Za_value,0), facecolors=('cornflowerblue'), label='1σ Uncertainty')
+        Y3Zaaxi.broken_barh([(0.15, 0)], (Y3Za_value,0), facecolors=('lightsteelblue'), label='2σ Uncertainty')
         Y3Zaaxi.broken_barh([(0.15, 0)], (Y3Za_value,0), facecolors=('crimson'), label='3 Grain Cluster')
         
         Y3Zaaxi.set_xticks([])
         Y3Zaaxi.set_ylabel('Age'+" " +'(Ma)')                
-        Y3Zaaxi.set_xlabel('Individual Age Measurements +/- 1σ/2σ Error')
+        Y3Zaaxi.set_xlabel('Individual Age Measurements +/- 1σ/2σ Uncertainty')
         Y3Zaaxi.set_title(samples[0]) 
         Y3Zaaxi.yaxis.grid(True)
         plt.legend(loc='lower right')
@@ -3413,14 +3413,14 @@ def YSP_outputs(Data_Type, ages, errors, sample_list, YSP_MDA, YSP_cluster, plot
         
         YSPaxi.hlines(y=YSP_value, xmin=0, xmax=(0), color = 'midnightblue', lw=1, linewidth=3, label='Age'+" " +'(Ma)')
         YSPaxi.axhline(YSP_value,color='black', linestyle='dotted', label='MDA: '+str(round(YSP_value,2))+"+/- "+str(round(YSP_err1s_value,2)))
-        YSPaxi.broken_barh([(0.15, 0)], (YSP_value,0), facecolors=('cornflowerblue'), label='1σ Error')
-        YSPaxi.broken_barh([(0.15, 0)], (YSP_value,0), facecolors=('lightsteelblue'), label='2σ Error')
+        YSPaxi.broken_barh([(0.15, 0)], (YSP_value,0), facecolors=('cornflowerblue'), label='1σ Uncertainty')
+        YSPaxi.broken_barh([(0.15, 0)], (YSP_value,0), facecolors=('lightsteelblue'), label='2σ Uncertainty')
         YSPaxi.broken_barh([(0.15, 0)], (YSP_value,0), facecolors=('crimson'), label='Cluster: '+str(YSP_grains_value))
         
         YSPaxi.set_xticks([])
         
         YSPaxi.set_ylabel('Age'+" " +'(Ma)')                
-        YSPaxi.set_xlabel('Individual Age Measurements +/- 1σ/2σ Error')
+        YSPaxi.set_xlabel('Individual Age Measurements +/- 1σ/2σ Uncertainty')
         YSPaxi.set_title(samples[0]) 
         YSPaxi.yaxis.grid(True)
         plt.legend(loc='lower right')
