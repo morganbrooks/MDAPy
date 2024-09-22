@@ -390,8 +390,8 @@ def Plot_MDA(MDAs_1s_table, all_MDA_data, sample_list, YSG_MDA, YC1s_MDA, YC2s_M
         MLA_err2s = MLA_MDAs_2s[0][1]
         
         #YSG
-        axi.broken_barh([(0.9, 0.22)], (YSG1-YSG_err2s, YSG_err1s), facecolors=('lightsteelblue'), label='2σ  Error')
-        axi.broken_barh([(0.9, 0.22)], (YSG1-YSG_err1s,YSG_err1s), facecolors=('cornflowerblue'), label='1σ  Error')
+        axi.broken_barh([(0.9, 0.22)], (YSG1-YSG_err2s, YSG_err1s), facecolors=('lightsteelblue'), label='2σ  Uncertainty')
+        axi.broken_barh([(0.9, 0.22)], (YSG1-YSG_err1s,YSG_err1s), facecolors=('cornflowerblue'), label='1σ  Uncertainty')
         axi.broken_barh([(0.9, 0.22)], (YSG1, YSG_err1s), facecolors=('cornflowerblue'))
         axi.broken_barh([(0.9, 0.22)], (YSG1+YSG_err1s, YSG_err1s), facecolors=('lightsteelblue'))
         axi.hlines(y=YSG1, xmin=1.1, xmax=0.9, color = 'midnightblue', lw=1, label='MDA', linewidth=3)
@@ -2154,8 +2154,8 @@ def YDZ_outputs(ages, errors, sample_list, plotwidth, plotheight, Image_File_Opt
         axYDZ.hist(minAges, bins=25)
         axYDZ.axvline(mode,color='red', linewidth=3,label='MDA:'+str(round(mode,2)))
             
-        axYDZ.axvline(np.percentile(minAges,2.5),linestyle='--',color='black', label='2s Error: - '+str(round(minus_error,2)))
-        axYDZ.axvline(np.percentile(minAges,97.5),linestyle='dashdot',color='black', label='2s Error: + '+str(round(plus_error,2)))
+        axYDZ.axvline(np.percentile(minAges,2.5),linestyle='--',color='black', label='2s Uncertainty: - '+str(round(minus_error,2)))
+        axYDZ.axvline(np.percentile(minAges,97.5),linestyle='dashdot',color='black', label='2s Uncertainty: + '+str(round(plus_error,2)))
             
            
         axYDZ.set_xlabel('Age (Ma)')
@@ -2810,7 +2810,7 @@ def Y3Zo_outputs(ages, errors, sample_list, Y3Zo_MDA, Y3Zo_cluster_arrays, plotw
         
         Y3Zoaxi.set_xticks([])
         Y3Zoaxi.set_ylabel('Age'+" " +'(Ma)')                
-        Y3Zoaxi.set_xlabel('Individual Age Measurements +/- 1σ/2σ  Error')
+        Y3Zoaxi.set_xlabel('Individual Age Measurements +/- 1σ/2σ  Uncertainty')
         Y3Zoaxi.set_title(samples[0]) 
         Y3Zoaxi.yaxis.grid(True)
         plt.legend(loc='lower right')
@@ -2979,15 +2979,15 @@ def Y3Za_outputs(ages, errors, Y3Za_MDA, Y3Za_cluster_arrays, sample_list, plotw
                         x_tick = n/20
                             
                 if any(C==Y3Za_age_plus_error) == True:
-                    Y3Zaaxi.broken_barh([(x_tick, width)], (Y3Za_age_value-Y3Za_error2s_value, Y3Za_error1s_value), facecolors=('lightcoral')) #label='2s Error')
-                    Y3Zaaxi.broken_barh([(x_tick, width)], (Y3Za_age_value-Y3Za_error1s_value,Y3Za_error1s_value), facecolors=('crimson')) #label='1s Error')
+                    Y3Zaaxi.broken_barh([(x_tick, width)], (Y3Za_age_value-Y3Za_error2s_value, Y3Za_error1s_value), facecolors=('lightcoral')) #label='2s Uncertainty')
+                    Y3Zaaxi.broken_barh([(x_tick, width)], (Y3Za_age_value-Y3Za_error1s_value,Y3Za_error1s_value), facecolors=('crimson')) #label='1s Uncertainty')
                     Y3Zaaxi.broken_barh([(x_tick, width)], (Y3Za_age_value, Y3Za_error1s_value), facecolors=('crimson'))
                     Y3Zaaxi.broken_barh([(x_tick, width)], (Y3Za_age_value+Y3Za_error1s_value, Y3Za_error1s_value), facecolors=('lightcoral'))   
                     Y3Zaaxi.hlines(y=Y3Za_age_value, xmin=x_tick, xmax=(x_tick+(width-x_tick_adjust)), color = 'pink', lw=1,linewidth=3) #label='Cluster' )
                 
                 else:
-                    Y3Zaaxi.broken_barh([(x_tick, width)], (Y3Za_age_value-Y3Za_error2s_value, Y3Za_error1s_value), facecolors=('lightsteelblue')) #label='2s Error')
-                    Y3Zaaxi.broken_barh([(x_tick, width)], (Y3Za_age_value-Y3Za_error1s_value,Y3Za_error1s_value), facecolors=('cornflowerblue')) #label='1s Error')
+                    Y3Zaaxi.broken_barh([(x_tick, width)], (Y3Za_age_value-Y3Za_error2s_value, Y3Za_error1s_value), facecolors=('lightsteelblue')) #label='2s Uncertainty')
+                    Y3Zaaxi.broken_barh([(x_tick, width)], (Y3Za_age_value-Y3Za_error1s_value,Y3Za_error1s_value), facecolors=('cornflowerblue')) #label='1s Uncertainty')
                     Y3Zaaxi.broken_barh([(x_tick, width)], (Y3Za_age_value, Y3Za_error1s_value), facecolors=('cornflowerblue'))
                     Y3Zaaxi.broken_barh([(x_tick, width)], (Y3Za_age_value+Y3Za_error1s_value, Y3Za_error1s_value), facecolors=('lightsteelblue'))      
                     Y3Zaaxi.hlines(y=Y3Za_age_value, xmin=x_tick, xmax=(x_tick+(width-x_tick_adjust)), color = 'midnightblue', lw=1, linewidth=3) #label='Age', )
@@ -3396,15 +3396,15 @@ def YSP_outputs(Data_Type, ages, errors, sample_list, YSP_MDA, YSP_cluster, plot
                         x_tick = n/20
                             
                 if any(C==YSP_age_plus_error) == True:
-                    YSPaxi.broken_barh([(x_tick, width)], (YSP_age_value-YSP_error2s_value, YSP_error1s_value), facecolors=('lightcoral')) #label='2s Error')
-                    YSPaxi.broken_barh([(x_tick, width)], (YSP_age_value-YSP_error1s_value,YSP_error1s_value), facecolors=('crimson')) #label='1s Error')
+                    YSPaxi.broken_barh([(x_tick, width)], (YSP_age_value-YSP_error2s_value, YSP_error1s_value), facecolors=('lightcoral')) #label='2s Uncertainty')
+                    YSPaxi.broken_barh([(x_tick, width)], (YSP_age_value-YSP_error1s_value,YSP_error1s_value), facecolors=('crimson')) #label='1s Uncertainty')
                     YSPaxi.broken_barh([(x_tick, width)], (YSP_age_value, YSP_error1s_value), facecolors=('crimson'))
                     YSPaxi.broken_barh([(x_tick, width)], (YSP_age_value+YSP_error1s_value, YSP_error1s_value), facecolors=('lightcoral'))   
                     YSPaxi.hlines(y=YSP_age_value, xmin=x_tick, xmax=(x_tick+(width-x_tick_adjust)), color = 'pink', lw=1,linewidth=3) #label='Cluster' )
                 
                 else:
-                    YSPaxi.broken_barh([(x_tick, width)], (YSP_age_value-YSP_error2s_value, YSP_error1s_value), facecolors=('lightsteelblue')) #label='2s Error')
-                    YSPaxi.broken_barh([(x_tick, width)], (YSP_age_value-YSP_error1s_value,YSP_error1s_value), facecolors=('cornflowerblue')) #label='1s Error')
+                    YSPaxi.broken_barh([(x_tick, width)], (YSP_age_value-YSP_error2s_value, YSP_error1s_value), facecolors=('lightsteelblue')) #label='2s Uncertainty')
+                    YSPaxi.broken_barh([(x_tick, width)], (YSP_age_value-YSP_error1s_value,YSP_error1s_value), facecolors=('cornflowerblue')) #label='1s Uncertainty')
                     YSPaxi.broken_barh([(x_tick, width)], (YSP_age_value, YSP_error1s_value), facecolors=('cornflowerblue'))
                     YSPaxi.broken_barh([(x_tick, width)], (YSP_age_value+YSP_error1s_value, YSP_error1s_value), facecolors=('lightsteelblue'))      
                     YSPaxi.hlines(y=YSP_age_value, xmin=x_tick, xmax=(x_tick+(width-x_tick_adjust)), color = 'midnightblue', lw=1, linewidth=3) #label='Age', )
