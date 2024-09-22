@@ -2079,7 +2079,7 @@ def YSG_outputs(ages, errors, plotwidth, plotheight, sample_list, YSG_MDA, age_a
         YSGaxi.broken_barh([(0.15, 0)], (YSG_value,0), facecolors=('crimson'), label='YSG: '+str(round(YSG_value,2)) +"+/- "+str(round(YSG_err1s_value,2)))
         YSGaxi.set_xticks([])
         YSGaxi.set_ylabel('Age'+" " +'(Ma)')                
-        YSGaxi.set_xlabel('Individual Age Measurements +/- 1s/2s Error')
+        YSGaxi.set_xlabel('Individual Age Measurements +/- 1σ/2σ Uncertainty')
         YSGaxi.set_title(samples[0]) 
         YSGaxi.yaxis.grid(True)
         plt.legend(loc='lower right')
