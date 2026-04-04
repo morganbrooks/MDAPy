@@ -1,30 +1,28 @@
-venv
-*.pyc
-.env
-.DS_Store
-src/data/temp_data.xlsx
-src/MDAPy/Saved_Files/*/*.svg
-src/MDAPy/Saved_Files/*/*.png
-src/MDAPy/Saved_Files/*/*.tiff
-src/MDAPy/Saved_Files/*/*.jpg
-src/MDAPy/Saved_Files/*/*.pdf
-src/MDAPy/Saved_Files/*/*.jpeg
-dev/
+# Python
 venv/
 *.pyc
-*.DS_Store
-# src/assets/plots/*/*
-src/assets/plots/*/*.png
-src/assets/plots/*/*.svg
-src/assets/plots/*/*.tiff
-src/assets/plots/*/*.jpeg
-src/assets/plots/*/*.eps
-src/assets/plots/*/*.pdf
-src/MDAPy/Data/~*
-src/MDAPy/R_Scripts/.ipynb_checkpoints/*
-src/MDAPy/Saved_Files/All_MDA_Methods_Plots/*.tif
-src/MDAPy/.ipynb_checkpoints/*
-src/MDAPy/Saved_Files/All_MDA_Methods_Plots/*
+
+# OS
+.DS_Store
+
+# Environment
+.env
+
+# Jupyter
+**/.ipynb_checkpoints/
+
+# Generated output
+src/MDAPy/Saved_Files/
+src/assets/plots/
+
+# Data files
+src/data/temp_data.xlsx
 src/data/ages_errors_calculated.xlsx
 src/data/All_MDA_Data.xlsx
+src/MDAPy/Data/~*
+
+# IDE
 /.project
+
+# Dev
+dev/
