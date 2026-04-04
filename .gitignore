@@ -19,7 +19,14 @@ src/assets/plots/
 src/data/temp_data.xlsx
 src/data/ages_errors_calculated.xlsx
 src/data/All_MDA_Data.xlsx
+
+# Temp and lock files
 src/MDAPy/Data/~*
+~$*
+.~lock.*
+
+# MATLAB
+*.fig
 
 # IDE
 /.project
