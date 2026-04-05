@@ -45,7 +45,7 @@ docker-compose up
 
 7. Open a browser and go to: **http://localhost:8080**
    
-8. For detailed usage instructions, see the [User Manual](MANUAL.md).
+8. For detailed usage instructions, see the [User Manual](MDAPy_User_Manual.md).
 
 ---
 
