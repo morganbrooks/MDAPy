@@ -1,24 +1,42 @@
+import os
 import dash
-from dash import html, dcc, callback, Input, Output
+from dash import html, dcc
+import dash_bootstrap_components as dbc
 
 dash.register_page(__name__)
 
-layout = html.Div(children=[
-    html.H1(children='This is our Analytics page'),
-	html.Div([
-        "Select a city: ",
-        dcc.RadioItems(['New York City', 'Montreal','San Francisco'],
-        'Montreal',
-        id='analytics-input')
-    ]),
-	html.Br(),
-    html.Div(id='analytics-output'),
-])
+# Load the manual from MANUAL.md
+# The file is located in the root of the project, two levels up from this file
+MANUAL_PATH = os.path.join(os.path.dirname(__file__), '..', '..', 'MANUAL.md')
 
+try:
+    with open(MANUAL_PATH, 'r', encoding='utf-8') as f:
+        manual_content = f.read()
+except FileNotFoundError:
+    manual_content = "# Manual Not Found\n\nThe user manual could not be located. Please refer to the [GitHub repository](https://github.com/morganbrooks/MDAPy) for documentation."
 
-@callback(
-    Output(component_id='analytics-output', component_property='children'),
-    Input(component_id='analytics-input', component_property='value')
+layout = dbc.Container(
+    fluid=True,
+    children=[
+        dbc.Row(
+            dbc.Col(
+                dbc.Card(
+                    dbc.CardBody(
+                        dcc.Markdown(
+                            children=manual_content,
+                            style={
+                                'fontFamily': 'inherit',
+                                'fontSize': '0.9rem',
+                                'lineHeight': '1.7',
+                            }
+                        )
+                    ),
+                    className='settings-menu',
+                    style={'marginTop': '20px', 'marginBottom': '40px'}
+                ),
+                width=10,
+                className='offset-1'
+            )
+        )
+    ]
 )
-def update_city_selected(input_value):
-    return f'You selected: {input_value}'
