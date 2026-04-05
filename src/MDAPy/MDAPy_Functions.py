@@ -1943,7 +1943,8 @@ def MDA_Strat_Plot(YSG_MDA, YC1s_MDA, YC2s_MDA, YDZ_MDA, Y3Zo_MDA, Y3Za_MDA, Tau
 #Functions for individual MDA method outputs 
 
 def YSG_outputs(ages, errors, plotwidth, plotheight, sample_list, YSG_MDA, age_addition_set_max_plot, Image_File_Option):
-    #YC1s plotting code author: morganbrooks 
+    #YSG plotting code author: morganbrooks 
+    
     if not hasattr(ages[0], '__len__'):
         ages = [ages]
         errors = [errors]
@@ -2105,6 +2106,7 @@ def YDZ_outputs(ages, errors, sample_list, plotwidth, plotheight, Image_File_Opt
 
 # YDZ Code below (with modifications) obtained from detritalPy_v1.3: @authors: glennrsharman, jonathanpsharman, zoltansylvester
 
+    
     if not hasattr(ages[0], '__len__'):
         ages = [ages]
         errors = [errors]
@@ -2183,7 +2185,7 @@ def YDZ_outputs(ages, errors, sample_list, plotwidth, plotheight, Image_File_Opt
 
 def YPP_outputs(ages, errors, sample_list, plotwidth, plotheight, Image_File_Option, sigma=1, min_cluster_size=2, thres=0.01, minDist=1, xdif=0.1):
     
-    # YPP calculation code below (with modifications) obtained from detritalPy_v1.3: @authors: glennrsharman, jonathanpsharman, zoltansylvester 
+    # Code used to calculate YPP (with modifications) obtained from detritalPy_v1.3: @authors: glennrsharman, jonathanpsharman, zoltansylvester 
     # YPP plotting code author: morganbrooks 
 
     # Check to see if ages is a list of arrays or just a single list of ages
@@ -3026,8 +3028,8 @@ def Y3Za_outputs(ages, errors, Y3Za_MDA, Y3Za_cluster_arrays, sample_list, plotw
     return Y3Za_MDA, Y3Za_Table_
 
 def Tau_outputs(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six_ratios, seven_six_error, U238_decay_constant, U235_decay_constant, U238_U235, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off, plotwidth, plotheight, Image_File_Option, min_cluster_size=3, thres=0.01, minDist=1, xdif=1, x1=0, x2=4000):
- #Tau calculation code below (with modifications) obtained from detritalPy_v1.3: @authors: glennrsharman, jonathanpsharman, zoltansylvester 
- #Tau plotting code author: morganbrooks 
+ #Code used to calculate Tau (with modifications) obtained from detritalPy_v1.3: @authors: glennrsharman, jonathanpsharman, zoltansylvester 
+ #Tau plotting, systematic uncertainty inclusion, and ratio vs age data type selection code author: morganbrooks 
 
     import peakutils
 
@@ -3443,7 +3445,7 @@ def YSP_outputs(Data_Type, ages, errors, sample_list, YSP_MDA, YSP_cluster, plot
     return YSP_MDA, YSP_Table_ 
 
 #MLA calculation code (not present) is sourced from IsoplotR: @authors: Pieter Vermeesch: Reference: Vermeesch, P., 2018, IsoplotR: a free and open toolbox for geochronology. Geoscience Frontiers, v.9, p.1479-1493, doi: 10.1016/j.gsf.2018.04.001.
-#MLA import code written by Morgan Brooks 
+#MLA import code written by morganbrooks and diegofcoelho
 
 def MLA_outputs(sample_list, dataToLoad, web=False):
     
@@ -3598,7 +3600,7 @@ def check_data_loading(df, Data_Type):
 
 #Convert the excel data to an array of ages and errors 
 #A portion of the code was obtained from detritalPy_v1.3: @authors: glennrsharman, jonathanpsharman, zoltansylvester
-#Morgan Brooks edits have been made to include a an array of 6/8 ratios 7/6 ratios, option for percent or absolute and sigma 1/2. Calculates ages and uncertainties from ratios.
+#morganbrooks edits have been made to include a an array of 6/8 ratios 7/6 ratios, option for percent or absolute and sigma 1/2. Calculates ages and uncertainties from ratios.
     
 def sampleToData(sample_list, main_byid_df, sigma, Data_Type, uncertainty, best_age_cut_off, U238_decay_constant, U235_decay_constant,U238_U235,excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235):
     
@@ -3916,8 +3918,7 @@ def sampleToData(sample_list, main_byid_df, sigma, Data_Type, uncertainty, best_
 #Function to find the youngest clusters that overlap 
 
 #1 First half of Code obtained from detritalPy_v1.3: @authors: glennrsharman, jonathanpsharman, zoltansylvester
-
-#2 Second half of code written by Morgan Brooks (added larger cluster criteria where all within sigma overlap are included). Code from detritalPy will sort grains by age+sigma and create a cluster until the youngest upper limit (top) is <= any of the bottom limits, and then stop. This leaves out many grains after this point. Also altered code to include the option of using isotopic ratios to cluster grains. The weighted mean of the cluster of isotopic ratios is then calculated and the age of that weighted mean ratio is computed for a final MDA. 
+#2 Second half of code written by morganbrooks (added larger cluster criteria where all within sigma overlap are included). Code from detritalPy will sort grains by age+sigma and create a cluster until the youngest upper limit (top) is <= any of the bottom limits, and then stop. This leaves out many grains after this point. Also altered code to include the option of using isotopic ratios to cluster grains. The weighted mean of the cluster of isotopic ratios is then calculated and the age of that weighted mean ratio is computed for a final MDA. 
 
 def find_youngest_cluster(data_err1s, sample_list, min_cluster_size=2):
     
@@ -4108,7 +4109,7 @@ def peakAgesGrains(peakAges, ages, errors, sig=2):
     return peakAgeGrain   
            
 #age calcuation for ratios after cluster formed with ages 
-#code written by Morgan Brooks 
+#code written by morganbrooks
     
 def age_calculation(MDAs_ratios, U238_decay_constant, U235_decay_constant, U238_U235, Data_Type, best_age_cut_off):
     
@@ -4220,7 +4221,9 @@ def age_calculation(MDAs_ratios, U238_decay_constant, U235_decay_constant, U238_
        
        
     return age_calc_array,MDA_eight_six_age,MDA_seven_six_age
-
+    
+#systematic uncertainty calcuation
+#code written by morganbrooks
 def systematic_uncertainty_addition(MDAs_ages, MDAs_ratios, sample_list, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, U238_decay_constant, U235_decay_constant, U238_U235,  Data_Type, best_age_cut_off):
  
     N = len(sample_list)
@@ -4291,8 +4294,7 @@ def systematic_uncertainty_addition(MDAs_ages, MDAs_ratios, sample_list, excess_
 
 #MDA Calulators
 
-#Code obtained from detritalPy_v1.3: @authors: glennrsharman, jonathanpsharman, zoltansylvester
-#Where code has been altered from the original a note is made 
+#YPP calculator code obtained from detritalPy_v1.3: @authors: glennrsharman, jonathanpsharman, zoltansylvester
 
 def YPP(ages, errors, min_cluster_size=2, thres=0.01, minDist=1, xdif=0.1):
 
@@ -4328,6 +4330,9 @@ def YPP(ages, errors, min_cluster_size=2, thres=0.01, minDist=1, xdif=0.1):
             YPP.append(np.nan)
 
     return YPP
+
+#YSG systematic uncertainty inclusion, and ratio vs age data type selection code author: morganbrooks 
+#YSG code obtained from detritalPy_v1.3: @authors: glennrsharman, jonathanpsharman, zoltansylvester
 
 def YSG(ages, errors, sample_list,  eight_six_ratios, eight_six_error, seven_six_ratios, seven_six_error, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, U238_decay_constant, U235_decay_constant, U238_U235, Data_Type, best_age_cut_off):
     
@@ -4368,6 +4373,7 @@ def YSG(ages, errors, sample_list,  eight_six_ratios, eight_six_error, seven_six
     
     return YSG
 
+#YSG for YDZ code obtained from detritalPy_v1.3: @authors: glennrsharman, jonathanpsharman, zoltansylvester
 
 def YSG_for_YDZ(ages, errors):
 
@@ -4384,6 +4390,8 @@ def YSG_for_YDZ(ages, errors):
         YSG_YDZ.append([data_err1s[0][0],data_err1s[0][1]]) # Reporting 1-sigma error    
     
     return YSG_YDZ
+
+#YDZ code obtained from detritalPy_v1.3: @authors: glennrsharman, jonathanpsharman, zoltansylvester
 
 def YDZ(ages, errors, iterations=10000, chartOutput = False, bins=25):
     from scipy import stats
@@ -4429,6 +4437,9 @@ def YDZ(ages, errors, iterations=10000, chartOutput = False, bins=25):
 
     return YDZ, minAges, mode
 
+
+#YC2s systematic uncertainty inclusion, and ratio vs age data type selection code author: morganbrooks
+#a portion of the code for calculating YC2s obtained from detritalPy_v1.3: @authors: glennrsharman, jonathanpsharman, zoltansylvester
 
 def YC2s(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six_ratios, seven_six_error, U238_decay_constant, U235_decay_constant, U238_U235, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off, min_cluster_size=3):
     
@@ -4488,6 +4499,9 @@ def YC2s(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six
     return YC2s, YC2s_cluster_arrays
 
 
+
+#YC1s systematic uncertainty inclusion, and ratio vs age data type selection code author: morganbrooks
+#a portion of the code for calculating YC1s obtained from detritalPy_v1.3: @authors: glennrsharman, jonathanpsharman, zoltansylvester
 
 def YC1s(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six_ratios, seven_six_error, U238_decay_constant, U235_decay_constant, U238_U235, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off, min_cluster_size=2):
     
@@ -4552,6 +4566,8 @@ def YC1s(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six
 
 
 
+#Y3Zo systematic uncertainty inclusion, and ratio vs age data type selection code author: morganbrooks 
+#a portion of the code for calculating Y3Zo obtained from detritalPy_v1.3: @authors: glennrsharman, jonathanpsharman, zoltansylvester
 
 def Y3Zo(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six_ratios, seven_six_error, U238_decay_constant, U235_decay_constant, U238_U235, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off):
     
@@ -4638,6 +4654,9 @@ def Y3Zo(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six
    
     return Y3Zo, Y3Zo_cluster_arrays
 
+#Y3Za systematic uncertainty inclusion, and ratio vs age data type selection code author: morganbrooks 
+#a portion of the code for calculating Y3Za obtained from detritalPy_v1.3: @authors: glennrsharman, jonathanpsharman, zoltansylvester
+
 def Y3Za(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six_ratios, seven_six_error, U238_decay_constant, U235_decay_constant, U238_U235, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off):
     
     if not hasattr(ages[0], '__len__'):
@@ -4699,6 +4718,8 @@ def Y3Za(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six
     
     return Y3Za, Y3Za_cluster_arrays
 
+#tau systematic uncertainty inclusion, and ratio vs age data type selection code author: morganbrooks 
+#a portion of the code for calculating tau obtained from detritalPy_v1.3: @authors: glennrsharman, jonathanpsharman, zoltansylvester
 
 def tau(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six_ratios, seven_six_error, U238_decay_constant, U235_decay_constant, U238_U235, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off, min_cluster_size=3, thres=0.01, minDist=1, xdif=1, x1=0, x2=4000):
 
@@ -4780,6 +4801,9 @@ def tau(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six_
         Tau_MDA = systematic_uncertainty_addition(Tau_wo_systematic, Tau_Ratios, sample_list, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, U238_decay_constant, U235_decay_constant, U238_U235, Data_Type, best_age_cut_off)
     
     return Tau_MDA, Tau_Grains, Tau_PDP_age, Tau_PDP,ages_errors1s_filtered
+
+#YSP systematic uncertainty inclusion, and ratio vs age data type selection code author: morganbrooks 
+#a portion of the code for calculating YSP obtained from detritalPy_v1.3: @authors: glennrsharman, jonathanpsharman, zoltansylvester
 
 def YSP(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six_ratios, seven_six_error, U238_decay_constant, U235_decay_constant, U238_U235, excess_variance_206_238, excess_variance_207_206, Sy_calibration_uncertainty_206_238, Sy_calibration_uncertainty_207_206, decay_constant_uncertainty_U238, decay_constant_uncertainty_U235, Data_Type, best_age_cut_off, min_cluster_size=2, MSWD_threshold=1):
 
@@ -4898,12 +4922,12 @@ def YSP(ages, errors, sample_list, eight_six_ratios, eight_six_error, seven_six_
        
     return YSP, YSP_cluster
 
-#MLA Code written by morganbrooks. Base of calculations is pulled from IsoplotR
+#MLA Code written by morganbrooks and diegofcoelho. Base of calculations is pulled from IsoplotR: @authors: Pieter Vermeesch: Reference: Vermeesch, P., 2018, IsoplotR: a free and open toolbox for geochronology. Geoscience Frontiers, v.9, p.1479-1493, doi: 10.1016/j.gsf.2018.04.001.
 
 def MLA(sample_list, dataToLoad_MLA):
     
     # Lets delete all files that are inside the temp folder
-    # The solution is a mix of python, R and markdown to manage the files, plot and display of pictures here on jupyter.
+    # The solution is a mix of python, R and markdown to manage the files, plot and display of pictures.
     import glob, os, json, subprocess
     #
     files = glob.glob("assets/plots/IsoplotR/*.png")
