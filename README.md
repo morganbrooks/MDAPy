@@ -10,9 +10,7 @@ MDAPy is a Python tool for calculating and evaluating 10 Maximum Depositional Ag
 
 ### Installation & Setup
 
-MDAPy runs locally via Docker, an open platform for developing and running applications in isolated containers, ensuring MDAPy runs consistently regardless of your system configuration.
-
-
+MDAPy runs locally via Docker, an open platform for developing and running applications in isolated containers, ensuring MDAPy runs consistently regardless of your system configuration. Docker simplifies the install process for users as it employs a container, which builds the application using the original source code, but does not require users to download Python or any required libraries.
 
 1. Download the zip file from this GitHub page using the green **Code** button at the top
 2. Unzip and place the folder somewhere easy to find, such as **Documents**
