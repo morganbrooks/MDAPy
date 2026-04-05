@@ -115,8 +115,8 @@ The **Run Analysis** panel displays a summary of your uploaded data including ea
 Calculates all 10 MDA methods simultaneously for each selected sample. Use this option to quickly compare all methods side by side.
 
 **Outputs:**
-- A summary table of all 10 calculated MDAs with 1σ absolute uncertainty, exportable as Excel
-- A comparison plot for each sample showing all MDA results with 1σ/2σ uncertainty bars
+- A summary table of all 10 calculated MDAs with 1σ absolute uncertainty, exportable as an Excel document.
+- A comparison plot for each sample showing all MDA results with 1σ/2σ uncertainty bars, exportable as an image file in many formats. 
 
 #### Option 2: Calculate One MDA Method and Plot
 Calculates a single MDA method, selected from the **Input Data** tab. Use this option for a detailed view of one method across your dataset.
@@ -179,21 +179,21 @@ Uses the single youngest detrital zircon grain and its uncertainty as the MDA. I
 ---
 
 ### YC1σ (2+) — Youngest Grain Cluster at 1σ
-Calculates the weighted mean age of the youngest two or more grains that overlap within 1σ uncertainty. The grain cluster is identified using the youngest grain cluster algorithm.
+Calculates the weighted mean age of the youngest two or more grains that overlap within 1σ uncertainty. 
 
 *Output: summary table (MDA, 1σ uncertainty, MSWD, n grains) + age plot*
 
 ---
 
 ### YC2σ (3+) — Youngest Grain Cluster at 2σ
-Calculates the weighted mean age of the youngest three or more grains that overlap within 2σ uncertainty. The grain cluster is identified using the youngest grain cluster algorithm.
+Calculates the weighted mean age of the youngest three or more grains that overlap within 2σ uncertainty. 
 
 *Output: summary table (MDA, 1σ uncertainty, MSWD, n grains) + age plot*
 
 ---
 
 ### Y3Zo — Youngest Three Zircons at 2σ
-Calculates the weighted mean age of the youngest three grains that overlap within 2σ uncertainty. The grain cluster is identified using the youngest grain cluster algorithm.
+Calculates the weighted mean age of the youngest three grains that overlap within 2σ uncertainty. 
 
 *Output: summary table (MDA, 1σ uncertainty, MSWD) + age plot*
 
@@ -253,7 +253,7 @@ All summary tables can be exported as **Microsoft Excel (.xlsx)** files.
 
 - MDAPy calculates the 10 most commonly applied MDA methods. Some newer or less common methods — such as the Youngest Gaussian Fit (YGF), TuffZirc, or the weighted average of the youngest 4 zircons (Y4Z) — are not currently available.
 - MDAPy does not recommend which MDA method is optimal for a given dataset. Researcher expertise and knowledge of the geologic setting are required to interpret results and select the most appropriate method.
-- For guidance on method selection, see: Coutts et al. (2019), Herriott et al. (2019), and Brooks (2025).
+- For guidance on method selection, see: Coutts et al. (2019) and Brooks (2025).
 
 ---
 
@@ -271,8 +271,3 @@ Brooks, M. (2025). An evaluation of the accuracy of maximum depositional age alg
 
 Coutts, D.S., Matthews, W.A., and Hubbard, S.M. (2019). Assessment of widely used methods to derive depositional ages from detrital zircon populations. *Geoscience Frontiers*, 10(4), 1421–1435.
 
-Sharman, G.R., Sharman, J.P., and Sylvester, Z. (2018). detritalPy: A Python-based toolset for visualizing and analysing detrital geo- and thermochronologic data. *The Depositional Record*, 4(2), 202–215. https://doi.org/10.1002/dep2.45
-
-Vermeesch, P. (2018). IsoplotR: A free and open toolbox for geochronology. *Geoscience Frontiers*, 9(5), 1479–1493. https://doi.org/10.1016/j.gsf.2018.04.001
-
-Vermeesch, P. (2021). Corrigendum to "IsoplotR: A free and open toolbox for geochronology." *Geoscience Frontiers*, 12(2), 1227. https://doi.org/10.1016/j.gsf.2020.12.027
