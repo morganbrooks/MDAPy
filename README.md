@@ -1,69 +1,70 @@
-<!-- ![MDAPy Logo](assets/img/logo.png) -->
 <p align="center" width="100%">
   <img align="center" src="src/MDAPy/Logo/logo4.png">   
 </p>
 
-MDAPy is a Python Tool for Calculating and Evaluating Maximum Depositional Ages (MDA) Using Detrital Zircon U-Pb Geochronology. 
+# MDAPy
 
-With the increase in the use of MDA methods, and the requirement for more rigorous testing and analysis of each, we introduce MDAPy, a free, open source, Python 3-based MDA toolset for efficiently calculating and comparing 10 MDA calculation methods: YSG, YC1s, YC2s, YDZ, MLA, YPP, YSP, Y3Za, Y3Zo, Tau. 
+MDAPy is a Python tool for calculating and evaluating 10 Maximum Depositional Age (MDA) methods: YSG, YC1σ, YC2σ, YDZ, MLA, YPP, YSP, Y3Za, Y3Zo, and Tau. MDAPy is available as a downloadable software package. 
 
-Researchers will now have the ability to calculate and evaluate multiple MDAs for several large-n datasets all in one location, facilitating a greater comprehension of the data and the ability to make more informed decision on the best method, or combination of methods to apply to their data. 
+---
 
-The current version of MDAPy is accessible as a downloadable software package. This offline version can be downloaded and run locally on computers without a permanent or stable internet connection. To simplify the process we use a Docker container, which builds the application using the original source code, but does not require users to download Python or any required libraries. 
+### Installation & Setup
 
-What is Docker? Docker is an open platform for developing, shipping, and running applications. Docker enables you to separate your applications from your infrastructure so you can deliver software quickly. 
+MDAPy runs locally via Docker, an open platform for developing and running applications in isolated containers, ensuring MDAPy runs consistently regardless of your system configuration.
 
-Instructions for installing and running MDAPy:
 
-1. Download the code zip file from this GitHub page using the green code button at the top. 
 
-2. Unzip and place the folder in an easy to locate area, like 'Documents' 
-
-3. Download Docker for free - you will need to sign up for an account, but that is also free: 
-    
-- If using a newer computer download Docker for free here: https://docs.docker.com/desktop/?_gl=1*ykuao1*_ga*MTM1MjY4NjgxNS4xNzEyNTE2ODY3*_ga_XJWPQMJYHQ*MTcxMjUxNjg2Ny4xLjEuMTcxMjUxNzY2Mi4yMC4wLjA.
-  
-- If using an older computer an older version of Docker must be downloaded, find the one for your computer here: https://docs.docker.com/desktop/previous-versions/archive-windows/
-
-4. Once docker is downloaded, make sure it is open on your computer, then locate the terminal (Apple) or command prompt (PC)
-
-5. Locate the folder where you put MDAPy in your terminal/command prompt: 
-
-This will show you what is in the directory you are in
+1. Download the zip file from this GitHub page using the green **Code** button at the top
+2. Unzip and place the folder somewhere easy to find, such as **Documents**
+3. Download and install Docker Desktop (free — requires a free account):
+   - **Newer computers:** https://docs.docker.com/desktop/
+   - **Older computers (Windows):** https://docs.docker.com/desktop/previous-versions/archive-windows/
+4. Open Docker Desktop, then open your **Terminal** (Mac) or **Command Prompt** (Windows)
+5. Navigate to the MDAPy folder. For example:
 ```sh
-ls
+# Mac
+cd /Users/yourname/Documents/MDAPy
+
+# Windows
+cd C:\Users\yourname\Documents\MDAPy
 ```
 
-
-cd = change directory, find the folder where MDAPy is kept using cd 
-```sh
-cd 'Folder where MDAPy is kept' 
-```
-
-Go into the MDAPy folder where the docker files are kept
-
+Then enter the MDAPy subfolder:
 ```sh
 cd MDAPy
 ```
 
-This will build the docker container of MDAPy, this will take a while the first time
+6. Build and launch MDAPy:
 ```sh
+# Build the Docker container — first time only, takes a few minutes
 docker-compose build
+
+# Launch MDAPy
+docker-compose up
 ```
 
-This will launch MDAPy on your computer
+> **Note:** After the first build, you only need to run `docker-compose up` to launch MDAPy in future sessions.
 
-```sh
-docker-compose up 
-```
+7. Open a browser and go to: **http://localhost:8080**
 
+---
 
-6. Open an internet browser and type in http://localhost:8080
+## Citation
 
+If you use MDAPy in your research, please cite:
 
+> Brooks, M. (2025). An evaluation of the accuracy of maximum depositional age algorithms 
+> in a variety of tectonic settings using MDAPy: a new Python based application 
+> (Master's thesis, University of Calgary, Calgary, Canada). 
+> https://doi.org/10.11575/PRISM/49790
 
+---
 
+## Acknowledgements & Third-Party Code
+Portions of the code in MDAPy is adapted from **detritalPy v1.3** (Sharman et al., 2018). The MLA 
+method is adapted from the **IsoplotR** package (Vermeesch, 2018; 2021). Full 
+attribution is provided in the source code comments. 
 
-
+---
 
 
