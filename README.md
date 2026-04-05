@@ -61,9 +61,9 @@ If you use MDAPy in your research, please cite:
 ---
 
 ## Acknowledgements & Third-Party Code
-Portions of the code in MDAPy is adapted from **detritalPy v1.3** (Sharman et al., 2018). The MLA 
-method is adapted from the **IsoplotR** package (Vermeesch, 2018; 2021). Full 
-attribution is provided in the source code comments. 
+MDAPy is released under the **MIT License**. Portions of the code are adapted from 
+**detritalPy v1.3** (Sharman et al., 2018) under Apache 2.0, and **IsoplotR** 
+(Vermeesch, 2018; 2021) under GPL. Full attribution is provided in the source code comments.
 
 ---
 
