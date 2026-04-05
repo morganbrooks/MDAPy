@@ -44,6 +44,8 @@ docker-compose up
 > **Note:** After the first build, you only need to run `docker-compose up` to launch MDAPy in future sessions.
 
 7. Open a browser and go to: **http://localhost:8080**
+   
+8. For detailed usage instructions, see the [User Manual](MANUAL.md).
 
 ---
 
