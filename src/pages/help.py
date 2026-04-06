@@ -5,9 +5,9 @@ import dash_bootstrap_components as dbc
 
 dash.register_page(__name__)
 
-# Load the manual from MANUAL.md
-# The file is located in the root of the project, two levels up from this file
-MANUAL_PATH = os.path.join(os.path.dirname(__file__), '..', '..', 'MDAPy_User_Manual.md')
+# Load the manual from MDAPy_User_Manual.md
+# Place MDAPy_User_Manual.md in the src/ directory alongside app.py
+MANUAL_PATH = os.path.join(os.path.dirname(__file__), '..', 'MDAPy_User_Manual.md')
 
 try:
     with open(MANUAL_PATH, 'r', encoding='utf-8') as f:
