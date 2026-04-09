@@ -264,5 +264,4 @@ If you use MDAPy in your research, please cite:
 > Brooks, M. (2025). An evaluation of the accuracy of maximum depositional age algorithms in a variety of tectonic settings using MDAPy: a new Python based application (Master's thesis, University of Calgary, Calgary, Canada). https://doi.org/10.11575/PRISM/49790
 
 ---
-Coutts, D.S., Matthews, W.A., and Hubbard, S.M. (2019). Assessment of widely used methods to derive depositional ages from detrital zircon populations. *Geoscience Frontiers*, 10(4), 1421–1435.
 
